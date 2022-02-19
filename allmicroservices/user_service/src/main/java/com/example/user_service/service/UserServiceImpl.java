@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -25,8 +26,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserEntity getUserById(Integer user_id) {
-        return userRepository.getById(user_id);
+    public Optional<UserEntity> getUserById(Integer user_id) {
+        return userRepository.findById(user_id);
     }
 
     @Override
