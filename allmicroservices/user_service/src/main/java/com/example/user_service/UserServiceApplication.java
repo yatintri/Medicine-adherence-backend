@@ -8,6 +8,7 @@ public class UserServiceApplication {
 
 	public static void main(String[] args) {
 		System.out.println("food palaxaxa 123 i");
+		System.out.println("food");
 		SpringApplication.run(UserServiceApplication.class, args);
 	}
 
