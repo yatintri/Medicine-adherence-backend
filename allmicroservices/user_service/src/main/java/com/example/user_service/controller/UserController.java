@@ -5,6 +5,7 @@ import com.example.user_service.model.UserEntity;
 import com.example.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -16,7 +17,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/saveuser")
+    @PostMapping(value = "/saveuser" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage {
         try{
             return new ResponseEntity<>(userService.saveUser(userEntity) , HttpStatus.CREATED);
@@ -25,7 +26,7 @@ public class UserController {
            throw new UserexceptionMessage("Error try again!");
         }
     }
-    @GetMapping(value = "/getusers")
+    @GetMapping(value = "/getusers" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage{
         try {
             return new ResponseEntity<>(userService.getUsers() , HttpStatus.OK);
@@ -35,7 +36,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/getuser/{id}")
+    @GetMapping(value = "/getuser/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserById (@PathVariable("id") int user_id) throws UserexceptionMessage{
         try {
             return new ResponseEntity<>(userService.getUserById(user_id) , HttpStatus.OK);
@@ -44,7 +45,7 @@ public class UserController {
         }
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/update/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateUser(@PathVariable("id") Integer user_id
             , @RequestBody UserEntity userEntity)throws  UserexceptionMessage {
         try {
@@ -56,7 +57,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/getuser/byname")
+    @GetMapping(value = "/getuser/byname" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByName(@RequestParam("name") String user_name) throws UserexceptionMessage
     {
         try {
@@ -68,7 +69,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/users/email")
+    @GetMapping(value = "/users/email" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email) throws UserexceptionMessage
     {
         try {

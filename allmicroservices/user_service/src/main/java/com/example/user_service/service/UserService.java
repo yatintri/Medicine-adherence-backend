@@ -15,8 +15,6 @@ public interface UserService {
 
     public Optional<UserEntity> getUserById(Integer user_id) throws UserexceptionMessage;
 
-    public  void deleteUserById(Integer user_id);
-
     public UserEntity updateUser(Integer user_id, UserEntity userEntity)throws UserexceptionMessage;
 
     public UserEntity getUserByName(String user_name)throws UserexceptionMessage;
