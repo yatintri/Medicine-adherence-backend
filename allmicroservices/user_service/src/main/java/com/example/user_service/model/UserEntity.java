@@ -26,9 +26,12 @@ public class UserEntity {
 
   @OneToOne(
           cascade = CascadeType.ALL,
-          mappedBy = "user"
+          mappedBy = "user",
+          fetch = FetchType.LAZY
   )
   private UserDetails userDetails;
+
+
 
 
 }

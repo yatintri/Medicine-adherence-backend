@@ -1,5 +1,6 @@
 package com.example.user_service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "userdetails")
+
 public class UserDetails {
     @Id
     @Column(name = "userdet_id")
@@ -63,10 +65,12 @@ public class UserDetails {
     private String past_medication;
 
     @OneToOne(
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
     )
     @JoinColumn(
             name = "user_user_id"
     )
+    @JsonIgnore
     private UserEntity user;
 }
