@@ -15,7 +15,7 @@ public class UserDetails {
     @Id
     @Column(name = "userdet_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userdet_id;
+    private long userdet_id;
 
     @Column(name = "bio")
     private String bio;
@@ -66,7 +66,7 @@ public class UserDetails {
             cascade = CascadeType.ALL
     )
     @JoinColumn(
-            name = "user_id"
+            name = "user_user_id"
     )
     private UserEntity user;
 }
