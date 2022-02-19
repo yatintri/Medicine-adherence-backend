@@ -1,9 +1,9 @@
 package com.example.user_service.service;
 
 import com.example.user_service.model.UserEntity;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserService {
@@ -11,7 +11,7 @@ public interface UserService {
 
     public List<UserEntity> getUsers();
 
-    public UserEntity getUserById(Integer user_id);
+    public Optional<UserEntity> getUserById(Integer user_id);
 
     public  void deleteUserById(Integer user_id);
 
