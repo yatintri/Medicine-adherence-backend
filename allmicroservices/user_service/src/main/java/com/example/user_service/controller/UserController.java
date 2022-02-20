@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -21,7 +20,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    //updated
 
     @PostMapping(value = "/saveuser" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage {
