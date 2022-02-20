@@ -4,7 +4,6 @@ package com.example.user_service.controller;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.service.UserService;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @RestController
 @RequestMapping(path = "/api/user")
@@ -20,7 +19,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    //updated
+
 
     @PostMapping(value = "/saveuser" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage {
@@ -28,7 +27,7 @@ public class UserController {
             return new ResponseEntity<>(userService.saveUser(userEntity) , HttpStatus.CREATED);
 
         }catch (UserexceptionMessage userexceptionMessage){
-           throw new UserexceptionMessage("Error try again!");
+            throw new UserexceptionMessage("Error try again!");
         }
     }
     @GetMapping(value = "/getusers" , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,7 +36,7 @@ public class UserController {
             return new ResponseEntity<>(userService.getUsers() , HttpStatus.OK);
 
         }catch (UserexceptionMessage userexceptionMessage){
-             throw new UserexceptionMessage("cant fetch user try again!");
+            throw new UserexceptionMessage("cant fetch user try again!");
         }
     }
 
@@ -55,10 +54,10 @@ public class UserController {
             , @RequestBody UserEntity userEntity)throws  UserexceptionMessage {
         try {
 
-          return new ResponseEntity<>(userService.updateUser(user_id, userEntity) , HttpStatus.OK);
+            return new ResponseEntity<>(userService.updateUser(user_id, userEntity) , HttpStatus.OK);
 
         }catch (UserexceptionMessage userexceptionMessage){
-          throw new UserexceptionMessage("Error updating data!");
+            throw new UserexceptionMessage("Error updating data!");
         }
     }
 
