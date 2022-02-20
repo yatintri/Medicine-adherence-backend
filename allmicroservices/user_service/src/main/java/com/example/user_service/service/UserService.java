@@ -17,7 +17,7 @@ public interface UserService {
 
     public UserEntity updateUser(Integer user_id, UserEntity userEntity)throws UserexceptionMessage;
 
-    public UserEntity getUserByName(String user_name)throws UserexceptionMessage;
+    public List<UserEntity> getUserByName(String user_name)throws UserexceptionMessage;
 
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage;
 }
