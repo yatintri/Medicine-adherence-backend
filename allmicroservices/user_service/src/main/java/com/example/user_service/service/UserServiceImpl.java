@@ -61,9 +61,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserEntity getUserByName(String user_name) throws UserexceptionMessage,NullPointerException{
+    public List<UserEntity> getUserByName(String user_name) throws UserexceptionMessage,NullPointerException{
 
-        UserEntity userEntity = userRepository.findByNameIgnoreCase(user_name);
+        List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(user_name);
         if(userEntity == null){
             throw new UserexceptionMessage("User not available with this name!");
         }

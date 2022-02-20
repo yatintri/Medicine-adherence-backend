@@ -1,5 +1,6 @@
 package com.example.user_service.controller;
 
+
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.service.UserService;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
