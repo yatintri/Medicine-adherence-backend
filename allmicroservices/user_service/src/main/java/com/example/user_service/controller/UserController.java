@@ -4,6 +4,7 @@ package com.example.user_service.controller;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.service.UserService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(path = "/api/user")
@@ -19,6 +21,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
 
     @PostMapping(value = "/saveuser" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage {
