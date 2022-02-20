@@ -29,7 +29,7 @@ public class SwaggerConfig {
         return new ApiInfo(
                 "Medicine adherence user_service REST API",
                 "Some custom description of API.",
-                "API TOS",
+                "API version 1.0",
                 "Terms of service",
                 new Contact("Nineleaps", "www.example.com", "myeaddress@company.com"),
                 "License of API", "API license URL", Collections.emptyList());
