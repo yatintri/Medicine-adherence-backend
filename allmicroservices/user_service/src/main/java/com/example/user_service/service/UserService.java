@@ -13,7 +13,7 @@ public interface UserService {
 
     public List<UserEntity> getUsers() throws UserexceptionMessage;
 
-    public Optional<UserEntity> getUserById(Integer user_id) throws UserexceptionMessage;
+    public UserEntity getUserById(Integer user_id) throws UserexceptionMessage;
 
     public UserEntity updateUser(Integer user_id, UserEntity userEntity)throws UserexceptionMessage;
 

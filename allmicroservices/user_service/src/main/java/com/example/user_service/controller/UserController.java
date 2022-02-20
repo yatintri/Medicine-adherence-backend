@@ -41,7 +41,7 @@ public class UserController {
         try {
             return new ResponseEntity<>(userService.getUserById(user_id) , HttpStatus.OK);
         }catch (UserexceptionMessage userexceptionMessage){
-            throw  new UserexceptionMessage("Cant find user!");
+            throw  new UserexceptionMessage("Cant find user with this id!");
         }
     }
 
@@ -61,9 +61,7 @@ public class UserController {
     public ResponseEntity<?> getUserByName(@RequestParam("name") String user_name) throws UserexceptionMessage
     {
         try {
-            System.out.println(user_name);
             return new ResponseEntity<>(userService.getUserByName(user_name) , HttpStatus.OK);
-
         }catch (UserexceptionMessage userexceptionMessage){
             throw new UserexceptionMessage("User not available with this name!");
         }
