@@ -6,13 +6,16 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.HashMap;
+
 @ControllerAdvice
 public class UserExceptions {
 
  @ExceptionHandler({UserexceptionMessage.class})
  public ResponseEntity<?> getuserException(UserexceptionMessage uem , WebRequest webRequest){
-
-     return new ResponseEntity<>(uem.getMessage() , HttpStatus.NOT_FOUND);
+     HashMap<String,String> map = new HashMap<>();
+     map.put("error",uem.getMessage());
+     return new ResponseEntity<>(map , HttpStatus.NOT_FOUND);
 
  }
 

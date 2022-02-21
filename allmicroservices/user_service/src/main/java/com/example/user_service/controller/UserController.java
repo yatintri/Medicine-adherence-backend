@@ -61,7 +61,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/getuser/byname" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getuser/byname")
     public ResponseEntity<?> getUserByName(@RequestParam("name") String user_name) throws UserexceptionMessage
     {
         try {
