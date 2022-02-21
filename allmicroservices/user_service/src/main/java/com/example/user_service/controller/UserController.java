@@ -21,67 +21,50 @@ public class UserController {
     private UserService userService;
 
 
-    @PostMapping(value = "/saveuser" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage {
-        try{
-            return new ResponseEntity<>(userService.saveUser(userEntity) , HttpStatus.CREATED);
 
-        }catch (UserexceptionMessage userexceptionMessage){
-            throw new UserexceptionMessage("Error try again!");
-        }
-    }
-    @GetMapping(value = "/getusers" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage{
-        try {
-            return new ResponseEntity<>(userService.getUsers() , HttpStatus.OK);
+        return new ResponseEntity<>(userService.saveUser(userEntity), HttpStatus.CREATED);
 
-        }catch (UserexceptionMessage userexceptionMessage){
-            throw new UserexceptionMessage("cant fetch user try again!");
-        }
+
     }
 
-    @GetMapping(value = "/getuser/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserById (@PathVariable("id") String user_id) throws UserexceptionMessage{
-        try {
-            return new ResponseEntity<>(userService.getUserById(user_id) , HttpStatus.OK);
-        }catch (UserexceptionMessage userexceptionMessage){
-            throw  new UserexceptionMessage("Cant find user with this id!");
-        }
+    @GetMapping(value = "/getusers", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage {
+
+        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+
+
     }
 
-    @PutMapping(value = "/update/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getuser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserById(@PathVariable("id") String user_id) throws UserexceptionMessage {
+
+        return new ResponseEntity<>(userService.getUserById(user_id), HttpStatus.OK);
+
+    }
+
+    @PutMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateUser(@PathVariable("id") String user_id
-            , @RequestBody UserEntity userEntity)throws  UserexceptionMessage {
-        try {
+            , @RequestBody UserEntity userEntity) throws UserexceptionMessage {
 
-            return new ResponseEntity<>(userService.updateUser(user_id, userEntity) , HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(user_id, userEntity), HttpStatus.OK);
 
-        }catch (UserexceptionMessage userexceptionMessage){
-            throw new UserexceptionMessage("Error updating data!");
-        }
+
     }
 
-    @GetMapping(value = "/getuser/byname",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserByName(@RequestParam("name") String user_name) throws UserexceptionMessage
-    {
-        try {
-            return new ResponseEntity<>(userService.getUserByName(user_name) , HttpStatus.OK);
-        }catch (UserexceptionMessage userexceptionMessage){
-            throw new UserexceptionMessage("User not available with this name!");
-        }
+    @GetMapping(value = "/getuser/byname", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserByName(@RequestParam("name") String user_name) throws UserexceptionMessage {
+
+        return new ResponseEntity<>(userService.getUserByName(user_name), HttpStatus.OK);
+
     }
 
-    @GetMapping(value = "/users/email" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email) throws UserexceptionMessage
-    {
-        try {
-            return new ResponseEntity<>(userService.getUserByEmail(email),HttpStatus.OK);
-        }catch (UserexceptionMessage userexceptionMessage){
-            throw new UserexceptionMessage("User this email is not available");
-        }
+    @GetMapping(value = "/users/email", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email) throws UserexceptionMessage {
+        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
+
     }
-
-
 
 
 }
