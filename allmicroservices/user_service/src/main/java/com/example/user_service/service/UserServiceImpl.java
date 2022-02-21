@@ -1,6 +1,7 @@
 package com.example.user_service.service;
 
 import com.example.user_service.exception.UserexceptionMessage;
+import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity saveUser(UserEntity userEntity) throws UserexceptionMessage {
 
-       UserEntity userEntity1 =  userRepository.save(userEntity);
-       if(userEntity1 == null){
+        UserDetails userDetails = new UserDetails();
+        userEntity.setUserDetails(userDetails);
+        UserEntity savedEntry =   userRepository.save(userEntity);
+        if(userEntity == null || savedEntry == null){
            throw new UserexceptionMessage("Error try again!");
 
        }
-       return userEntity1;
+       return savedEntry;
 
     }
 

@@ -12,13 +12,17 @@ public class UserDetailServiceImpl implements UserDetailService{
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
-    //     Vinay is pro
+
     @Autowired
     private UserRepository userRepository;
     @Override
     public UserDetails saveUserDetail(int id,UserDetails userDetails) {
+
         UserEntity userEntity = userRepository.findById(id).get();
         userDetails.setUser(userEntity);
+        
         return userDetailsRepository.save(userDetails);
+
     }
+
 }

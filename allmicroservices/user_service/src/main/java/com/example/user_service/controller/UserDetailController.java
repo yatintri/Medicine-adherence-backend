@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserDetailController {
 
 
-//     Vinay is pro
     @Autowired
     private UserDetailService userDetailService;
-    @PostMapping(value = "/saveuserdetails/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUserDetails(@PathVariable("id") int id, @RequestBody UserDetails userDetails) {
+
+    @PostMapping(value = "/updateuserdetails/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUserDetails(@PathVariable("id") int id, @RequestBody UserDetails userDetails) {
          return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetails),HttpStatus.CREATED);
 
     }
