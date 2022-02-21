@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/update/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateUser(@PathVariable("id") Integer user_id
+    public ResponseEntity<?> updateUser(@PathVariable("id") String user_id
             , @RequestBody UserEntity userEntity)throws  UserexceptionMessage {
         try {
 
