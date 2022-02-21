@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -31,6 +33,12 @@ public class UserEntity {
 
   @Column(name = "email")
     private String email;
+
+  @Column(name = "last_login")
+  private String last_login;
+
+  @Column(name = "created_at")
+  private java.sql.Date created_at;
 
   @OneToOne(
           cascade = CascadeType.ALL,

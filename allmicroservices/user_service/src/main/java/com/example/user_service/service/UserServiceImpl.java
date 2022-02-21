@@ -5,6 +5,7 @@ import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
+import com.example.user_service.util.Datehelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity saveUser(UserEntity userEntity) throws UserexceptionMessage {
 
+        userEntity.setLast_login(Datehelper.getcurrentdatatime());
+        userEntity.setCreated_at(Datehelper.getcurrentdate());
         UserEntity ue = userRepository.save(userEntity);
         UserDetails userDetails = new UserDetails();
         userDetails.setUser(ue);
         userDetailsRepository.save(userDetails);
+
         if(ue == null){
            throw new UserexceptionMessage("Error try again!");
 

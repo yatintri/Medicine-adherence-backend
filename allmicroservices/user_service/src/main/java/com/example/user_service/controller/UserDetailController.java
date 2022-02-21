@@ -2,6 +2,7 @@ package com.example.user_service.controller;
 
 
 
+import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserDetails;
 
 import com.example.user_service.service.UserDetailService;
@@ -19,8 +20,10 @@ public class UserDetailController {
     @Autowired
     private UserDetailService userDetailService;
 
-    @PostMapping(value = "/updateuserdetails/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateUserDetails(@PathVariable("id") int id, @RequestBody UserDetails userDetails) {
+    @PutMapping(value = "/updateuserdetails/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUserDetails(@PathVariable("id") String id,
+                                               @RequestBody UserDetails userDetails) throws UserexceptionMessage {
+
          return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetails),HttpStatus.CREATED);
 
     }

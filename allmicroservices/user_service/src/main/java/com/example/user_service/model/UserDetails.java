@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "userdetails")
-
+@ToString(exclude = "")
 public class UserDetails {
     @Id
     @Column(name = "userdet_id")
@@ -65,7 +66,6 @@ public class UserDetails {
     private String past_medication;
 
     @OneToOne(
-            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     @JoinColumn(
