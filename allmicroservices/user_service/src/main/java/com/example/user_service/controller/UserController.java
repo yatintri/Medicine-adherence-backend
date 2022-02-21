@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/getuser/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserById (@PathVariable("id") int user_id) throws UserexceptionMessage{
+    public ResponseEntity<?> getUserById (@PathVariable("id") String user_id) throws UserexceptionMessage{
         try {
             return new ResponseEntity<>(userService.getUserById(user_id) , HttpStatus.OK);
         }catch (UserexceptionMessage userexceptionMessage){

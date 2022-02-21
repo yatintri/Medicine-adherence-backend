@@ -44,8 +44,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Cacheable(value = "user" , key="#user_id")
-    public UserEntity getUserById(Integer user_id)throws UserexceptionMessage {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(user_id);
+    public UserEntity getUserById(String user_id)throws UserexceptionMessage {
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getByid(user_id));
         if(optionalUserEntity.isEmpty()){
             throw new UserexceptionMessage("Not present with this id");
         }
