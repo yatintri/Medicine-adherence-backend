@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public UserEntity updateUser(Integer user_id, UserEntity userEntity) {
-        UserEntity userDB = userRepository.getById(user_id);
+    public UserEntity updateUser(String user_id, UserEntity userEntity) {
+        UserEntity userDB = userRepository.getByid(user_id);
 
         if(Objects.nonNull(userEntity.getUser_name()) && !"".equalsIgnoreCase(userEntity.getUser_name())) {
             userDB.setUser_name(userEntity.getUser_name());
