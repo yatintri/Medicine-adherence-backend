@@ -3,6 +3,7 @@ package com.example.user_service.service;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,18 +18,21 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserDetailsRepository userDetailsRepository;
 
     @Override
     public UserEntity saveUser(UserEntity userEntity) throws UserexceptionMessage {
 
+        UserEntity ue = userRepository.save(userEntity);
         UserDetails userDetails = new UserDetails();
-        userEntity.setUserDetails(userDetails);
-        UserEntity savedEntry =   userRepository.save(userEntity);
-        if(userEntity == null || savedEntry == null){
+        userDetails.setUser(ue);
+        userDetailsRepository.save(userDetails);
+        if(ue == null){
            throw new UserexceptionMessage("Error try again!");
 
        }
-       return savedEntry;
+       return ue;
 
     }
 

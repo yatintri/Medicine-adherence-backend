@@ -69,7 +69,8 @@ public class UserDetails {
             fetch = FetchType.LAZY
     )
     @JoinColumn(
-            name = "user_user_id"
+            name = "user_user_id",
+            referencedColumnName = "user_id"
     )
     @JsonIgnore
     private UserEntity user;
