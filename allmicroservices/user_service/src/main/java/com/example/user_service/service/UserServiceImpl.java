@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
     public UserEntity saveUser(UserEntity userEntity) throws UserexceptionMessage {
 
         userEntity.setLast_login(Datehelper.getcurrentdatatime());
-        userEntity.setCreated_at(Datehelper.getcurrentdate());
+        userEntity.setCreated_at(Datehelper.getcurrentdatatime());
         UserEntity ue = userRepository.save(userEntity);
         UserDetails userDetails = new UserDetails();
         userDetails.setUser(ue);
