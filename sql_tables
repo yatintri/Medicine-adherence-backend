@@ -49,14 +49,6 @@ SELECT user_id from sample.user;
             SELECT * FROM sample.my_caretakers;                  
                            
   
--- CREATE TABLE student_data(
---                       ID int not null primary key
---                       ,name varchar(30) not null,
---                       image varchar(100),
--- 					  firebase_token varchar(150),
---                       age int not null,
---                       bio varchar(100));
---                       
 
 
                       
