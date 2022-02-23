@@ -7,7 +7,15 @@ import java.util.List;
 public interface CareTakerService {
     public UserCaretaker saveCareTaker(UserCaretaker userCaretaker);
 
-    public UserCaretaker updatecaretakerStatus(String c_id);
+    public UserCaretaker updateCaretakerStatus(String c_id);
+
+    public List<UserCaretaker> getPatientCaretakerMap();
 
     public List<UserCaretaker> getPatientsUnderMe(String user_id);
+
+    public List<UserCaretaker> getPatientRequests(String user_id);
+
+    public List<UserCaretaker> getMyCaretakers(String user_id);
+
+    public List<UserCaretaker> getCaretakerRequests(String user_id);
 }

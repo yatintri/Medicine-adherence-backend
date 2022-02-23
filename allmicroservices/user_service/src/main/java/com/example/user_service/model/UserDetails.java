@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -17,8 +18,12 @@ import javax.persistence.*;
 public class UserDetails {
     @Id
     @Column(name = "userdet_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userdet_id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private String userdet_id;
 
     @Column(name = "bio")
     private String bio;

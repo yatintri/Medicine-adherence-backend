@@ -26,16 +26,37 @@ public class CaretakerController {
     public ResponseEntity<?> updatecaretakerStatus(@RequestParam(name = "c_id") String c_id){
 
 
-        return  new ResponseEntity<>(careTakerService.updatecaretakerStatus(c_id), HttpStatus.OK);
+        return  new ResponseEntity<>(careTakerService.updateCaretakerStatus(c_id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getPatients")
-    public ResponseEntity<?> getPatientsUnderMe(@RequestParam(name = "user_id") String  user_id){
+    @GetMapping(value = "/get_c_id")
+    public ResponseEntity<?> getPatientCaretakerMap(){
+
+        return new ResponseEntity(careTakerService.getPatientCaretakerMap(),HttpStatus.OK);
+    }
+    @GetMapping(value = "/myPatients(Caretaker)")
+    public ResponseEntity<?> getPatientsUnderMe(@RequestParam(name = "caretaker_id") String  user_id){
 
         return new ResponseEntity(careTakerService.getPatientsUnderMe(user_id),HttpStatus.OK);
     }
 
+    @GetMapping(value = "/patientRequests(Caretaker)")
+    public ResponseEntity<?> getPatientRequests(@RequestParam(name = "caretaker_id") String  user_id){
 
+        return new ResponseEntity(careTakerService.getPatientRequests(user_id),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/myCareTakers(Patient)")
+    public ResponseEntity<?> getMyCaretakers(@RequestParam(name = "patient_id") String  user_id){
+
+        return new ResponseEntity(careTakerService.getMyCaretakers(user_id),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/caretakerRequests(Patient)")
+    public ResponseEntity<?> getCaretakerRequests(@RequestParam(name = "patient_id") String  user_id){
+
+        return new ResponseEntity(careTakerService.getCaretakerRequests(user_id),HttpStatus.OK);
+    }
 
 
 }
