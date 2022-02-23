@@ -29,6 +29,7 @@ public class UserCaretaker {
     @Column(name = "status")
     private boolean status;
 
+    //something
     @Column(name = "caretaker_id")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
