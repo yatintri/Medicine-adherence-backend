@@ -19,4 +19,17 @@ public class UserExceptions {
 
  }
 
+ @ExceptionHandler({UserCaretakerException.class})
+    public ResponseEntity<?> getcaretakerexception(UserCaretakerException uce , WebRequest webRequest){
+
+     HashMap<String , String> map = new HashMap<>();
+     map.put("error" , uce.getMessage());
+     return new ResponseEntity<>(map , HttpStatus.BAD_REQUEST);
+
+ }
+
+
+
+
+
 }

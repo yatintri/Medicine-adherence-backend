@@ -1,5 +1,6 @@
 package com.example.user_service.controller;
 
+import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.service.CareTakerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +24,18 @@ public class CaretakerController {
     }
 
     @PutMapping(value = "/updatestatus")
-    public ResponseEntity<?> updatecaretakerStatus(@RequestParam(name = "c_id") String c_id){
-
+    public ResponseEntity<?> updatecaretakerStatus(@RequestParam(name = "c_id") String c_id)
+             throws UserCaretakerException {
 
         return  new ResponseEntity<>(careTakerService.updateCaretakerStatus(c_id), HttpStatus.OK);
+
     }
 
     @GetMapping(value = "/get_c_id")
     public ResponseEntity<?> getPatientCaretakerMap(){
 
         return new ResponseEntity(careTakerService.getPatientCaretakerMap(),HttpStatus.OK);
+
     }
     @GetMapping(value = "/myPatients(Caretaker)")
     public ResponseEntity<?> getPatientsUnderMe(@RequestParam(name = "caretaker_id") String  user_id){
@@ -44,6 +47,7 @@ public class CaretakerController {
     public ResponseEntity<?> getPatientRequests(@RequestParam(name = "caretaker_id") String  user_id){
 
         return new ResponseEntity(careTakerService.getPatientRequests(user_id),HttpStatus.OK);
+
     }
 
     @GetMapping(value = "/myCareTakers(Patient)")
@@ -56,6 +60,7 @@ public class CaretakerController {
     public ResponseEntity<?> getCaretakerRequests(@RequestParam(name = "patient_id") String  user_id){
 
         return new ResponseEntity(careTakerService.getCaretakerRequests(user_id),HttpStatus.OK);
+
     }
 
 

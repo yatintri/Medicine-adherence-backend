@@ -1,13 +1,15 @@
 package com.example.user_service.service;
 
+import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.UserCaretaker;
 
 import java.util.List;
 
 public interface CareTakerService {
+
     public UserCaretaker saveCareTaker(UserCaretaker userCaretaker);
 
-    public UserCaretaker updateCaretakerStatus(String c_id);
+    public UserCaretaker updateCaretakerStatus(String c_id) throws UserCaretakerException;
 
     public List<UserCaretaker> getPatientCaretakerMap();
 

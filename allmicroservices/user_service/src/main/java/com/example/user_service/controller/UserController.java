@@ -74,6 +74,7 @@ public class UserController {
 
           mailService.sendEmail(email);
           return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);
+
        }
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
 

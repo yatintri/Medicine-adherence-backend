@@ -1,5 +1,6 @@
 package com.example.user_service.service;
 
+import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.repository.UserCaretakerRepository;
 import com.example.user_service.util.Datehelper;
@@ -26,8 +27,11 @@ public class CareTakerServiceImpl implements CareTakerService{
     }
 
     @Override
-    public UserCaretaker updateCaretakerStatus(String c_id) {
-        UserCaretaker uc= userCaretakerRepository.getById(c_id);
+    public UserCaretaker updateCaretakerStatus(String c_id) throws UserCaretakerException {
+        UserCaretaker uc = userCaretakerRepository.getById(c_id);
+        if(uc == null){
+            throw new UserCaretakerException("No user found with this id");
+        }
         uc.setReq_status(true);
         return userCaretakerRepository.save(uc);
     }
