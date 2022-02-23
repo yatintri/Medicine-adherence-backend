@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -23,28 +24,18 @@ public class UserCaretaker {
     )
     private String c_id;
 
-    @Column(name = "pateint_name")
-    private String pateint_username;
+    @Column(name = "patient_name")
+    private String patient_name;
 
     @Column(name = "status")
-    private boolean status;
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean req_status;
 
-    //something
     @Column(name = "caretaker_id")
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     private String caretaker_id;
 
-    @Column(name = "pateint_id")
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private String pateint_id;
+    @Column(name = "patient_id")
+    private String patient_id;
 
     @Column(name = "caretaker_username")
     private String caretaker_username;

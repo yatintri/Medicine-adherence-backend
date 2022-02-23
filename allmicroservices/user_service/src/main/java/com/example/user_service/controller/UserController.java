@@ -3,6 +3,7 @@ package com.example.user_service.controller;
 
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.service.MailService;
 import com.example.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.SendFailedException;
 import java.util.List;
 
 
@@ -19,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    MailService mailService;
 
 
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,9 +65,17 @@ public class UserController {
 
     }
 
-    @GetMapping(value = "/users/email", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email) throws UserexceptionMessage {
-        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
+    @GetMapping(value = "/getbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email)
+                               throws UserexceptionMessage , SendFailedException {
+
+       UserEntity userEntity = userService.getUserByEmail(email);
+       if(userEntity == null){
+
+          mailService.sendEmail(email);
+          return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);
+       }
+        return new ResponseEntity<>(userEntity, HttpStatus.OK);
 
     }
 

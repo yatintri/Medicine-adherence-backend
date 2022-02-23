@@ -5,12 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-
-
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -36,6 +31,8 @@ public class UserEntity {
 
   @Column(name = "last_login")
   private String last_login;
+
+
 
   @Column(name = "created_at")
   private String created_at;
