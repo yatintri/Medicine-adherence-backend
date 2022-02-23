@@ -38,7 +38,7 @@ public class UserEntity {
   private String last_login;
 
   @Column(name = "created_at")
-  private java.sql.Date created_at;
+  private String created_at;
 
   @OneToOne(
           cascade = CascadeType.ALL,
