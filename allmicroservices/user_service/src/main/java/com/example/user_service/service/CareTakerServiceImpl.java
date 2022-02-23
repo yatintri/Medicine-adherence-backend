@@ -14,6 +14,10 @@ public class CareTakerServiceImpl implements CareTakerService{
     @Autowired
     private UserCaretakerRepository userCaretakerRepository;
 
+    @Override
+    public List<UserCaretaker> getPatientCaretakerMap(){
+        return userCaretakerRepository.findAll();
+    }
 
     @Override
     public UserCaretaker saveCareTaker(UserCaretaker userCaretaker) {
@@ -22,12 +26,29 @@ public class CareTakerServiceImpl implements CareTakerService{
     }
 
     @Override
-    public UserCaretaker updatecaretakerStatus(String c_id) {
-        return null;
+    public UserCaretaker updateCaretakerStatus(String c_id) {
+        UserCaretaker uc= userCaretakerRepository.getById(c_id);
+        uc.setReq_status(true);
+        return userCaretakerRepository.save(uc);
     }
 
     @Override
     public List<UserCaretaker> getPatientsUnderMe(String user_id) {
         return userCaretakerRepository.getpatientsunderme(user_id);
+    }
+
+    @Override
+    public List<UserCaretaker> getPatientRequests(String user_id) {
+        return userCaretakerRepository.getpatientrequests(user_id);
+    }
+
+    @Override
+    public List<UserCaretaker> getMyCaretakers(String user_id) {
+        return userCaretakerRepository.getmycaretakers(user_id);
+    }
+
+    @Override
+    public List<UserCaretaker> getCaretakerRequests(String user_id) {
+        return userCaretakerRepository.getcaretakerequests(user_id);
     }
 }
