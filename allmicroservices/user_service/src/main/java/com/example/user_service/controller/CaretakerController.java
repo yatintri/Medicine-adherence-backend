@@ -18,9 +18,6 @@ public class CaretakerController {
     @PostMapping(value = "/savecaretaker" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveCaretaker(@RequestBody UserCaretaker userCaretaker){
 
-        // save to data through service
-
-
         return new ResponseEntity<>(careTakerService.saveCareTaker(userCaretaker), HttpStatus.CREATED);
 
     }
