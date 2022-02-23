@@ -27,7 +27,7 @@ public class UserCaretaker {
     @Column(name = "patient_name")
     private String patient_name;
 
-    @Column(name = "status")
+    @Column(name = "req_status")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean req_status;
 
@@ -41,5 +41,5 @@ public class UserCaretaker {
     private String caretaker_username;
 
     @Column(name = "created_at")
-    private java.sql.Date created_at;
+    private String created_at;
 }
