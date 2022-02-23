@@ -1,0 +1,62 @@
+-- CREATE DATABASE sample;
+
+SELECT user_id from sample.user;
+
+ CREATE TABLE sample.user(
+  
+   user_id VARCHAR(40) primary key,
+   user_name varchar(100) not null,
+   email varchar(100) not null,
+   last_login varchar(40),
+   created_at date
+
+   );
+   
+    select * from sample.user;
+    select * from sample.userdetails;
+ create table sample.userdetails(
+     userdet_id int primary key auto_increment,
+     bio varchar(250) default null,
+     pic_path varchar(45) default null,
+     age int default null,
+     fcm_token varchar(245),
+     pincode int default null,
+     usercontact bigint default null,
+     lattitude float default null,
+     longitude float default null,
+     address varchar(45),
+     gender varchar(45) default null,
+     blood_group varchar(45) default null,
+     martial_status varchar(45) default null,
+     weight int default null,
+     emergency_contact bigint default null,
+     past_medication varchar(800),
+     user_user_id varchar(40) default null,
+     foreign key (user_user_id) references user (user_id));
+     
+     
+     CREATE TABLE sample.my_caretakers(
+                           
+                           c_id varchar(40) primary key,
+                           patient_name varchar(40) not null,
+                           req_status tinyint default 0,
+                           caretaker_id varchar(40) not null,
+						   patient_id varchar(40) not null,
+                           caretaker_username varchar(40) not null,
+                           created_at date not null);
+                           
+                           
+            SELECT * FROM sample.my_caretakers;                  
+                           
+  
+-- CREATE TABLE student_data(
+--                       ID int not null primary key
+--                       ,name varchar(30) not null,
+--                       image varchar(100),
+-- 					  firebase_token varchar(150),
+--                       age int not null,
+--                       bio varchar(100));
+--                       
+
+
+                      
