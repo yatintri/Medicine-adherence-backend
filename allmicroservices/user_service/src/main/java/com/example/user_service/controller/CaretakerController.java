@@ -56,12 +56,25 @@ public class CaretakerController {
         return new ResponseEntity(careTakerService.getMyCaretakers(user_id),HttpStatus.OK);
     }
 
-    @GetMapping(value = "/caretakerRequests(Patient)")
-    public ResponseEntity<?> getCaretakerRequests(@RequestParam(name = "patient_id") String  user_id){
+    @GetMapping(value = "/caretakerRequests(sentstatus)")
+    public ResponseEntity<?> getCaretakerSentStatus(@RequestParam(name = "patient_id") String  user_id){
 
-        return new ResponseEntity(careTakerService.getCaretakerRequests(user_id),HttpStatus.OK);
+        return new ResponseEntity(careTakerService.getCaretakerRequestStatus(user_id),HttpStatus.OK);
 
     }
 
+    @GetMapping(value = "/patientRequests(sentstatus)")
+    public ResponseEntity<?> getPatientSentStatus(@RequestParam(name = "caretaker_id") String  user_id){
+
+        return new ResponseEntity(careTakerService.getPatientRequestStatus(user_id),HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/caretakerRequests(for patient)")
+    public ResponseEntity<?> getCaretakerRequestsP(@RequestParam(name = "patient_id") String  user_id){
+
+        return new ResponseEntity(careTakerService.getCaretakerRequestsP(user_id),HttpStatus.OK);
+
+    }
 
 }

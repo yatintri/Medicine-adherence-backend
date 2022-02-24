@@ -19,5 +19,10 @@ public interface CareTakerService {
 
     public List<UserCaretaker> getMyCaretakers(String user_id);
 
-    public List<UserCaretaker> getCaretakerRequests(String user_id);
+    public List<UserCaretaker> getCaretakerRequestStatus(String user_id);
+
+    public List<UserCaretaker> getPatientRequestStatus(String user_id);
+
+    public List<UserCaretaker> getCaretakerRequestsP(String user_id);
+
 }

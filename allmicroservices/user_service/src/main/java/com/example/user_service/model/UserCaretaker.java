@@ -42,4 +42,7 @@ public class UserCaretaker {
 
     @Column(name = "created_at")
     private String created_at;
+
+    @Column(name = "sent_by")
+    private String sent_by;
 }
