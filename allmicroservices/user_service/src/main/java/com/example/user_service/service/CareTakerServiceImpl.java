@@ -52,7 +52,19 @@ public class CareTakerServiceImpl implements CareTakerService{
     }
 
     @Override
-    public List<UserCaretaker> getCaretakerRequests(String user_id) {
-        return userCaretakerRepository.getcaretakerequests(user_id);
+    public List<UserCaretaker> getCaretakerRequestStatus(String user_id) {
+        return userCaretakerRepository.getcaretakerequeststatus(user_id);
     }
+
+    @Override
+    public List<UserCaretaker> getPatientRequestStatus(String user_id) {
+        return userCaretakerRepository.getpatientrequeststatus(user_id);
+    }
+
+    @Override
+    public List<UserCaretaker> getCaretakerRequestsP(String user_id){
+        return userCaretakerRepository.getcaretakerrequestsp(user_id);
+    }
+
+
 }

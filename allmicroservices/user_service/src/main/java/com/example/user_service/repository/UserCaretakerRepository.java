@@ -1,9 +1,12 @@
 package com.example.user_service.repository;
 
 import com.example.user_service.model.UserCaretaker;
+import io.swagger.annotations.License;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.validation.constraints.Max;
 import java.util.List;
 
 public interface UserCaretakerRepository extends JpaRepository<UserCaretaker, String> {
@@ -19,6 +22,13 @@ public interface UserCaretakerRepository extends JpaRepository<UserCaretaker, St
     List<UserCaretaker> getmycaretakers(String id);
 
     @Query("select u from UserCaretaker u where u.req_status=false and u.patient_id = ?1")
-    List<UserCaretaker> getcaretakerequests(String id);
+    List<UserCaretaker> getcaretakerequeststatus(String id);
+
+    @Query("select u from UserCaretaker u where u.req_status=false and u.caretaker_id = ?1")
+    List<UserCaretaker> getpatientrequeststatus(String id);
+
+    @Query("select u from UserCaretaker u where u.sent_by='c' and u.patient_id= ?1 and u.req_status=false")
+    List<UserCaretaker> getcaretakerrequestsp(String user_id);
+
 
 }
