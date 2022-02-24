@@ -3,8 +3,10 @@ package com.example.user_service.controller;
 
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.pojos.MailInfo;
 import com.example.user_service.service.MailService;
 import com.example.user_service.service.UserService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +25,8 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    MailService mailService;
+    private RabbitTemplate rabbitTemplate;
+
 
 
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,7 +75,8 @@ public class UserController {
        UserEntity userEntity = userService.getUserByEmail(email);
        if(userEntity == null){
 
-          mailService.sendEmail(email);
+         rabbitTemplate.convertAndSend("project_exchange",
+                 "mail_key",new MailInfo(email,"Please join","patient_request"));
           return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);
 
        }
