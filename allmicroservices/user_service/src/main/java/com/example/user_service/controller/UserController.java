@@ -6,7 +6,6 @@ import com.example.user_service.model.MedicineEntity;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.MailInfo;
 import com.example.user_service.repository.Medrepo;
-import com.example.user_service.service.MailService;
 import com.example.user_service.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.SendFailedException;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
