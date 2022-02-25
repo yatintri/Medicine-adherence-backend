@@ -115,7 +115,7 @@ public class UserController {
         medrepo.saveAll(list);
 
         return "Ho gaya";
-
+//
     }
 
     @GetMapping(value = "/searchmed")
