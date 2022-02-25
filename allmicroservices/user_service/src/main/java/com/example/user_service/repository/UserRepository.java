@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-    @Query("select u from UserEntity u where lower(u.user_name) like lower(concat('%', ?1,'%'))")
+    @Query("select u from UserEntity u where lower(u.user_name) like lower(concat(?1,'%'))")
     public List<UserEntity> findByNameIgnoreCase(String user_name);
 
     public UserEntity findByEmailIgnoreCase(String email);

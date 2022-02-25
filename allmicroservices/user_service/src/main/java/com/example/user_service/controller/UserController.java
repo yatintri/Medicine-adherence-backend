@@ -2,8 +2,10 @@ package com.example.user_service.controller;
 
 
 import com.example.user_service.exception.UserexceptionMessage;
+import com.example.user_service.model.MedicineEntity;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.MailInfo;
+import com.example.user_service.repository.Medrepo;
 import com.example.user_service.service.MailService;
 import com.example.user_service.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -14,6 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.SendFailedException;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -27,7 +35,8 @@ public class UserController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-
+    @Autowired
+    Medrepo medrepo;
 
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage {
@@ -69,18 +78,52 @@ public class UserController {
     }
 
     @GetMapping(value = "/getbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email)
-                               throws UserexceptionMessage , SendFailedException {
+    public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email
+                                        ,@RequestParam("sender") String sender)
+                                        throws UserexceptionMessage , SendFailedException {
 
        UserEntity userEntity = userService.getUserByEmail(email);
        if(userEntity == null){
 
          rabbitTemplate.convertAndSend("project_exchange",
-                 "mail_key",new MailInfo(email,"Please join","patient_request"));
+                 "mail_key",new MailInfo(email,"Please join","patient_request",sender));
           return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);
 
        }
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
+
+    }
+
+
+    @GetMapping(value = "/getmeds")
+    public String savemed() throws IOException {
+
+        BufferedReader bufferedReader = new BufferedReader
+                (new FileReader("/home/nineleaps/Downloads/project/allmicroservices/user_service/src/main/resources/drugs.tsv"));
+        HashSet<String> set = new HashSet<>();
+        String d = "";
+        while((d = bufferedReader.readLine()) != null){
+            set.add(d.split(" ")[0]);
+        }
+        System.out.println(set);
+        List<MedicineEntity> list = new ArrayList<>();
+        for(String m : set){
+            MedicineEntity medicineEntity = new MedicineEntity();
+            medicineEntity.setMed_name(m);
+
+            list.add(medicineEntity);
+        }
+
+        medrepo.saveAll(list);
+
+        return "Ho gaya";
+
+    }
+
+    @GetMapping(value = "/searchmed")
+    public ResponseEntity<?> getallmeds(@RequestParam(name = "search_med") String search_med){
+
+        return new ResponseEntity<>(medrepo.getmedicines(search_med),HttpStatus.OK);
 
     }
 

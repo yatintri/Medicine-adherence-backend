@@ -23,19 +23,16 @@ public class RabbitmqConfiguration {
     private String routing_key;
 
 
-
     @Bean
     public Queue getmailqueue(){
     return new Queue(queue_name);
 }
 
 
-@Bean
+    @Bean
     public TopicExchange gettopicexchange(){
-
-    return new TopicExchange(topic_exchange);
-
-}
+        return new TopicExchange(topic_exchange);
+    }
 
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {

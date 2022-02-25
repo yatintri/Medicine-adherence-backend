@@ -6,17 +6,26 @@ public class MailInfo {
     private String receiver_mail;
     private String mail_message;
     private String mail_subject;
+    private String sender;
 
     public MailInfo(String receiver_mail ,
-                    String mail_message , String mail_subject){
+                    String mail_message , String mail_subject,String sender){
 
         this.receiver_mail = receiver_mail;
         this.mail_message = mail_message;
         this.mail_subject = mail_subject;
-
+this.sender = sender;
     }
 
     public MailInfo() {
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public void setReceiver_mail(String receiver_mail) {
