@@ -14,7 +14,7 @@ public class MailInfo {
         this.receiver_mail = receiver_mail;
         this.mail_message = mail_message;
         this.mail_subject = mail_subject;
-this.sender = sender;
+        this.sender = sender;
     }
 
     public MailInfo() {

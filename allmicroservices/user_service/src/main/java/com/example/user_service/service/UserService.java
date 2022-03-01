@@ -5,13 +5,14 @@ import com.example.user_service.model.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 
 public interface UserService {
 
-    public UserEntity saveUser(UserEntity userEntity) throws UserexceptionMessage;
+    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity) throws UserexceptionMessage;
 
-    public List<UserEntity> getUsers() throws UserexceptionMessage;
+    public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage;
 
     public UserEntity getUserById(String user_id) throws UserexceptionMessage;
 

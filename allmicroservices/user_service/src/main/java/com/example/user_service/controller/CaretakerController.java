@@ -16,6 +16,7 @@ public class CaretakerController {
     @Autowired
     private CareTakerService careTakerService;
 
+    // save caretaker for a patients
     @PostMapping(value = "/savecaretaker" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveCaretaker(@RequestBody UserCaretaker userCaretaker){
 
@@ -23,6 +24,7 @@ public class CaretakerController {
 
     }
 
+    // update request status if request is accepted or rejected
     @PutMapping(value = "/updatestatus")
     public ResponseEntity<?> updatecaretakerStatus(@RequestParam(name = "c_id") String c_id)
              throws UserCaretakerException {
@@ -31,18 +33,22 @@ public class CaretakerController {
 
     }
 
+    // get record with a particular id
     @GetMapping(value = "/get_c_id")
     public ResponseEntity<?> getPatientCaretakerMap(){
 
         return new ResponseEntity(careTakerService.getPatientCaretakerMap(),HttpStatus.OK);
 
     }
+
+    // fetch all the patients of a particular caretaker
     @GetMapping(value = "/myPatients(Caretaker)")
     public ResponseEntity<?> getPatientsUnderMe(@RequestParam(name = "caretaker_id") String  user_id){
 
         return new ResponseEntity(careTakerService.getPatientsUnderMe(user_id),HttpStatus.OK);
     }
 
+    // fetch all the request sent by a patients to a caretaker
     @GetMapping(value = "/patientRequests(Caretaker)")
     public ResponseEntity<?> getPatientRequests(@RequestParam(name = "caretaker_id") String  user_id){
 
@@ -50,12 +56,14 @@ public class CaretakerController {
 
     }
 
+    // where the patients can view all his caretakers
     @GetMapping(value = "/myCareTakers(Patient)")
     public ResponseEntity<?> getMyCaretakers(@RequestParam(name = "patient_id") String  user_id){
 
         return new ResponseEntity(careTakerService.getMyCaretakers(user_id),HttpStatus.OK);
     }
 
+    // to fetch the caretaker request to a patients
     @GetMapping(value = "/caretakerRequests(sentstatus)")
     public ResponseEntity<?> getCaretakerSentStatus(@RequestParam(name = "patient_id") String  user_id){
 
@@ -63,12 +71,15 @@ public class CaretakerController {
 
     }
 
+    // to check the status of a request by patient
     @GetMapping(value = "/patientRequests(sentstatus)")
     public ResponseEntity<?> getPatientSentStatus(@RequestParam(name = "caretaker_id") String  user_id){
 
         return new ResponseEntity(careTakerService.getPatientRequestStatus(user_id),HttpStatus.OK);
 
     }
+
+    // to check the status of a request by caretaker
 
     @GetMapping(value = "/caretakerRequests(for patient)")
     public ResponseEntity<?> getCaretakerRequestsP(@RequestParam(name = "patient_id") String  user_id){

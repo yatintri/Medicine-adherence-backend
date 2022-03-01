@@ -6,13 +6,17 @@ import com.example.user_service.model.UserEntity;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -22,9 +26,13 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
-    @Override
-    public UserEntity saveUser(UserEntity userEntity) throws UserexceptionMessage {
+    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    @Override
+    @Async
+    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity) throws UserexceptionMessage {
+
+        logger.info(Thread.currentThread().getName());
         userEntity.setLast_login(Datehelper.getcurrentdatatime());
         userEntity.setCreated_at(Datehelper.getcurrentdatatime());
         UserEntity ue = userRepository.save(userEntity);
@@ -36,13 +44,18 @@ public class UserServiceImpl implements UserService{
            throw new UserexceptionMessage("Error try again!");
 
        }
-       return ue;
+       return CompletableFuture.completedFuture(ue);
 
     }
 
     @Override
-    public List<UserEntity> getUsers() throws UserexceptionMessage{
-        return userRepository.findAll();
+    @Async
+    public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage{
+
+
+         List<UserEntity> list = userRepository.findAllusers();
+         logger.info(Thread.currentThread().getName());
+         return CompletableFuture.completedFuture(list);
     }
 
 
@@ -50,6 +63,7 @@ public class UserServiceImpl implements UserService{
     @Cacheable(value = "user" , key="#user_id")
     public UserEntity getUserById(String user_id)throws UserexceptionMessage {
         Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getByid(user_id));
+        logger.info(Thread.currentThread().getName());
         if(optionalUserEntity.isEmpty()){
             throw new UserexceptionMessage("Not present with this id");
         }
@@ -79,6 +93,7 @@ public class UserServiceImpl implements UserService{
             throw new UserexceptionMessage("User not available with this name!");
         }
         return userEntity;
+
     }
 
     @Override

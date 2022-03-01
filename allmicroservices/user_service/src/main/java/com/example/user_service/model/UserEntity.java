@@ -12,6 +12,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
+@NamedEntityGraph(name="userdetail_graph" ,
+        attributeNodes = @NamedAttributeNode(value = "userDetails"))
 public class UserEntity {
 
   @Id

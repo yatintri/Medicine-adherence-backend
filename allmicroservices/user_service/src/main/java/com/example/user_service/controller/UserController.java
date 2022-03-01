@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 @RestController
@@ -36,6 +37,7 @@ public class UserController {
     @Autowired
     Medrepo medrepo;
 
+    // saving the user when they signup
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage {
 
@@ -44,21 +46,25 @@ public class UserController {
 
     }
 
+    // fetching all the users along with details
     @GetMapping(value = "/getusers", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage {
+    public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage, ExecutionException, InterruptedException {
 
-        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+        return new ResponseEntity(userService.getUsers().get(), HttpStatus.OK);
 
 
     }
 
+    // fetching user by id
     @GetMapping(value = "/getuser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserById(@PathVariable("id") String user_id) throws UserexceptionMessage {
+
 
         return new ResponseEntity<>(userService.getUserById(user_id), HttpStatus.OK);
 
     }
 
+    // updating the user
     @PutMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateUser(@PathVariable("id") String user_id
             , @RequestBody UserEntity userEntity) throws UserexceptionMessage {
@@ -68,6 +74,7 @@ public class UserController {
 
     }
 
+    // fetching user by name
     @GetMapping(value = "/getuser/byname", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByName(@RequestParam("name") String user_name) throws UserexceptionMessage {
 
@@ -75,6 +82,7 @@ public class UserController {
 
     }
 
+    // fetching the user with email if not present then seding to that email address
     @GetMapping(value = "/getbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email
                                         ,@RequestParam("sender") String sender)
