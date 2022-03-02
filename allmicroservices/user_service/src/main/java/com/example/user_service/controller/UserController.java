@@ -105,7 +105,7 @@ public class UserController {
     public String savemed() throws IOException {
 
         BufferedReader bufferedReader = new BufferedReader
-                (new FileReader("/home/nineleaps/Downloads/project/allmicroservices/user_service/src/main/resources/drugs.tsv"));
+                (new FileReader("/home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service/src/main/resources/drugs.tsv"));
         HashSet<String> set = new HashSet<>();
         String d = "";
         while((d = bufferedReader.readLine()) != null){
