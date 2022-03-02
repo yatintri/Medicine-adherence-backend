@@ -31,8 +31,8 @@ public class UserMedicines {
     @Column(name = "medicine_name")
     private String medicine_name;
 
-    @Column(name = "medicine_type")
-    private String medicine_type;
+    @Column(name = "medicine_des")
+    private String medicine_des;
 
     @Column(name = "active_status")
     @Type(type = "org.hibernate.type.NumericBooleanType")

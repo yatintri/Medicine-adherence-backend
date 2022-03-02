@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -35,8 +36,6 @@ public class UserEntity {
   @Column(name = "last_login")
   private String last_login;
 
-
-
   @Column(name = "created_at")
   private String created_at;
 
@@ -53,7 +52,7 @@ public class UserEntity {
           fetch = FetchType.LAZY
   )
   @JsonIgnore
-  private UserMedicines userMedicines;
+  private List<UserMedicines> userMedicines;
 
 
 //
