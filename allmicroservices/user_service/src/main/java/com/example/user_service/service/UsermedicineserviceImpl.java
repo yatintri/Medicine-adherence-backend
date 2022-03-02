@@ -8,10 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@Service
 public class UsermedicineserviceImpl implements UserMedicineService{
 
     @Autowired
@@ -23,7 +25,7 @@ public class UsermedicineserviceImpl implements UserMedicineService{
     Logger logger = LoggerFactory.getLogger(UsermedicineserviceImpl.class);
 
     @Override
-    public UserMedicines saveUserMedicine(UserMedicines userMedicines , String user_id) {
+    public UserMedicines saveUserMedicine( String user_id, UserMedicines userMedicines) {
 
         UserEntity user = userRepository.getByid(user_id);
         userMedicines.setUserEntity(user);

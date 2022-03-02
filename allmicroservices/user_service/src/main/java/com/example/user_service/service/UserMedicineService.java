@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface UserMedicineService {
 
-    public UserMedicines saveUserMedicine(UserMedicines userMedicines , String user_id);
+    public UserMedicines saveUserMedicine(String user_id, UserMedicines userMedicines);
 
     public boolean updateMedicineStatus(String medicine_id);
 
