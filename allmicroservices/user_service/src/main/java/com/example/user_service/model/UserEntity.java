@@ -1,6 +1,7 @@
 package com.example.user_service.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,7 +47,16 @@ public class UserEntity {
   )
   private UserDetails userDetails;
 
+  @OneToMany(
+          cascade = CascadeType.ALL,
+          mappedBy = "userEntity",
+          fetch = FetchType.LAZY
+  )
+  @JsonIgnore
+  private UserMedicines userMedicines;
 
+
+//
 
 
 }
