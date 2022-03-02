@@ -49,7 +49,7 @@ public class UserEntity {
   @OneToMany(
           cascade = CascadeType.ALL,
           mappedBy = "userEntity",
-          fetch = FetchType.LAZY
+          fetch = FetchType.EAGER
   )
   @JsonIgnore
   private List<UserMedicines> userMedicines;
