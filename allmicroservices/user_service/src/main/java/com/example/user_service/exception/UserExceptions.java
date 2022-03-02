@@ -27,6 +27,14 @@ public class UserExceptions {
      return new ResponseEntity<>(map , HttpStatus.BAD_REQUEST);
 
  }
+    @ExceptionHandler({UserMedicineException.class})
+    public ResponseEntity<?> getUserMedicineException(UserMedicineException udm , WebRequest webRequest){
+
+        HashMap<String , String> map = new HashMap<>();
+        map.put("error" , udm.getMessage());
+        return new ResponseEntity<>(map , HttpStatus.BAD_REQUEST);
+
+    }
 
 
 

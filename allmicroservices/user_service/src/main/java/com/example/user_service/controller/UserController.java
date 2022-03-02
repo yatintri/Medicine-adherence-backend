@@ -82,7 +82,7 @@ public class UserController {
 
     }
 
-    // fetching the user with email if not present then seding to that email address
+    // fetching the user with email if not present then sending to that email address
     @GetMapping(value = "/getbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByEmail(@RequestParam("email") String email
                                         ,@RequestParam("sender") String sender)
@@ -135,3 +135,4 @@ public class UserController {
 
 
 }
+///
