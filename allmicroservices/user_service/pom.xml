@@ -81,6 +81,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>user-service_api</finalName>
 	</build>
 
 </project>

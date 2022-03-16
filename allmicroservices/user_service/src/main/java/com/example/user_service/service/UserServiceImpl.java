@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage {
 
-        UserEntity userEntity = userRepository.findByEmailIgnoreCase(email);
+        UserEntity userEntity = userRepository.findBymail(email);
 
         return userEntity;
     }

@@ -5,6 +5,7 @@ import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.MedicineEntity;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.MailInfo;
+import com.example.user_service.pojos.Userresponse;
 import com.example.user_service.repository.Medrepo;
 import com.example.user_service.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -39,12 +40,34 @@ public class UserController {
 
     // saving the user when they signup
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage {
+    public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage, ExecutionException, InterruptedException {
+        UserEntity user = userService.getUserByEmail(userEntity.getEmail());
+        if(user != null){
+            Userresponse userresponse = new Userresponse("Already present",user);
+            return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
+        }
+        user = userService.saveUser(userEntity).get();
+        Userresponse userresponse = new Userresponse("success",user);
 
-        return new ResponseEntity<>(userService.saveUser(userEntity), HttpStatus.CREATED);
+        return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
 
 
     }
+
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> login(@RequestParam String email) throws UserexceptionMessage, ExecutionException, InterruptedException {
+        UserEntity user = userService.getUserByEmail(email);
+        if(user != null){
+            Userresponse userresponse = new Userresponse("success",user);
+            return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
+        }
+        Userresponse userresponse = new Userresponse("Not found",null);
+
+        return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
+
+
+    }
+
 
     // fetching all the users along with details
     @GetMapping(value = "/getusers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -90,7 +113,7 @@ public class UserController {
 
        UserEntity userEntity = userService.getUserByEmail(email);
        if(userEntity == null){
-
+System.out.println(userEntity);
          rabbitTemplate.convertAndSend("project_exchange",
                  "mail_key",new MailInfo(email,"Please join","patient_request",sender));
           return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);

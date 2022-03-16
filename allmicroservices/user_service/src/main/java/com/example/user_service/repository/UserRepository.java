@@ -14,7 +14,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userdetail_graph")
     public List<UserEntity> findByNameIgnoreCase(String user_name);
 
-    public UserEntity findByEmailIgnoreCase(String email);
+    @Query("select u from UserEntity u where lower(u.email) like lower(?1)")
+    public UserEntity findBymail(String email);
 
     @Query("SELECT u from UserEntity u where u.user_id = ?1")
     public UserEntity getByid(String user_id);
