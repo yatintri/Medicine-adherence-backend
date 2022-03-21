@@ -5,6 +5,7 @@ import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedReminder;
 import com.example.user_service.model.UserMedicines;
+import com.example.user_service.repository.UserMedRemRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class UserMedicineServiceImpl implements UserMedicineService{
 
     @Autowired
     UserMedicineRepository userMedicineRepository;
+
+    @Autowired
+    UserMedRemRepository userMedRemRepository;
 
     Logger logger = LoggerFactory.getLogger(UserMedicineServiceImpl.class);
 
@@ -104,19 +108,30 @@ public class UserMedicineServiceImpl implements UserMedicineService{
 //    and make query in usermed repo
 
 
+//    @Override
+//    public UserMedicines getMedReminders() {
+//        return userMedicineRepository.getmedreminders();
+//    }
+
     @Override
-    public UserMedicines getMedReminders() {
-        return null;
+    public UserMedicines getMedRemById(String medicine_id) throws UserMedicineException, UserexceptionMessage {
+        UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicine_id);
+        if(userMedicines2 == null)
+        {
+            throw new UserMedicineException("Please Enter Valid Id!!!");
+        }
+        return userMedicines2;
     }
 
     @Override
-    public UserMedicines getMedRemById(String medicine_id) {
-        return null;
-    }
-
-    @Override
-    public UserMedicines saveMedReminder(UserMedReminder userMedReminder) {
-        return null;
+    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder,String medicine_id) throws UserMedicineException, UserexceptionMessage {
+        UserMedicines userMedicines =  userMedicineRepository.findById(medicine_id).get();
+        userMedReminder.setUser_rem(userMedicines);
+        UserMedReminder userMedReminder1 = userMedRemRepository.save(userMedReminder);
+        if(userMedReminder1 == null){
+            throw new UserMedicineException("Error try again");
+        }
+        return userMedReminder1;
     }
 
 
