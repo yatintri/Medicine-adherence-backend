@@ -55,7 +55,7 @@ public class UserMedicines {
             mappedBy = "user_rem",
             fetch = FetchType.LAZY
     )
-    private ReminderEntity reminderEntity;
+    private UserMedReminder reminderEntity;
 
 }
 //
