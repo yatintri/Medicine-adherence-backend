@@ -50,6 +50,12 @@ public class UserMedicines {
     @JsonIgnore
     private UserEntity userEntity;
 
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            mappedBy = "user_rem",
+            fetch = FetchType.LAZY
+    )
+    private ReminderEntity reminderEntity;
 
 }
 //
