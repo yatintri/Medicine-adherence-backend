@@ -1,6 +1,8 @@
 package com.example.user_service.controller;
 
 
+import com.example.user_service.exception.UserMedicineException;
+import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserMedReminder;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.repository.UserMedicineRepository;
@@ -24,19 +26,21 @@ public class UserMedRemController {
 
     //something
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<UserMedReminder>> getMedReminders() throws ExecutionException, InterruptedException {
-        return new ResponseEntity(userMedicineService.getMedReminders(), HttpStatus.OK);
-    }
+//    @GetMapping("/getAll")
+//    public ResponseEntity<List<UserMedReminder>> getMedReminders() throws ExecutionException, InterruptedException {
+//        return new ResponseEntity(userMedicineService.getMedReminders(), HttpStatus.OK);
+//    }
 
     @GetMapping("/getUserMedRem")
-    public ResponseEntity<?> getMedRemById(@RequestParam String medicine_id){
+    public ResponseEntity<?> getMedRemById(@RequestParam String medicine_id) throws UserMedicineException, UserexceptionMessage {
         return  new ResponseEntity<>(userMedicineService.getMedRemById(medicine_id),HttpStatus.OK);
     }
 
     @PostMapping(value = "/saveMedReminder", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveMedReminders(@RequestBody UserMedReminder userMedReminder){
-        return  new ResponseEntity<>(userMedicineService.saveMedReminder(userMedReminder), HttpStatus.OK);
+    public ResponseEntity<?> saveMedReminders(@RequestBody UserMedReminder userMedReminder,
+                                              @RequestParam String medicine_id) throws UserMedicineException, UserexceptionMessage{
+        return  new ResponseEntity<>(userMedicineService.saveMedReminder(userMedReminder,medicine_id)
+                , HttpStatus.OK);
     }
 
 }

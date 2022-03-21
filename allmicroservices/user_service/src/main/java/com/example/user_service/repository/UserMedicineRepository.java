@@ -8,5 +8,8 @@ public interface UserMedicineRepository extends JpaRepository<UserMedicines,Stri
 
 
     @Query("SELECT u from UserMedicines u where u.medicine_id = ?1")
-    public UserMedicines getMedRemById(String medicine_id);
+    public UserMedicines getmedrembyid(String medicine_id);
+
+//    @Query()
+//    public UserMedicines getmedreminders();
 }

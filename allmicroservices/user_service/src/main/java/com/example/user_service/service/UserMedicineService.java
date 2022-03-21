@@ -19,10 +19,10 @@ public interface UserMedicineService {
     public UserMedicines editMedicineDetails(String medicine_id , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage;
 
 
-    public UserMedicines getMedReminders();
+//    public UserMedicines getMedReminders();
 
-    public UserMedicines getMedRemById(String medicine_id);
+    public UserMedicines getMedRemById(String medicine_id)throws UserMedicineException, UserexceptionMessage ;
 
-    public UserMedicines saveMedReminder(UserMedReminder userMedReminder);
+    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder, String medicine_id)throws UserMedicineException, UserexceptionMessage ;
 }
 //
