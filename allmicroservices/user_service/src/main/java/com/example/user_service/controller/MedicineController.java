@@ -23,21 +23,21 @@ public class MedicineController {
 
     // save caretaker for a patients
     @PostMapping(value = "/savemedicine/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUserMedicine(@PathVariable("id") String id, @RequestBody UserMedicines userMedicines)throws UserMedicineException , UserexceptionMessage {
+    public ResponseEntity<?> saveUserMedicine(@PathVariable("user_id") String id, @RequestBody UserMedicines userMedicines)throws UserMedicineException , UserexceptionMessage {
 
         return new ResponseEntity<>(userMedicineService.saveUserMedicine(id,userMedicines), HttpStatus.CREATED);
 
     }
 
     @PutMapping(value = "/updatestatus/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateMedicineStatus(@PathVariable("id") String med_id)throws UserMedicineException{
+    public ResponseEntity<?> updateMedicineStatus(@PathVariable("med_id") String med_id)throws UserMedicineException{
 
         return new ResponseEntity<>(userMedicineService.updateMedicineStatus(med_id),HttpStatus.CREATED);
 
     }
 
     @GetMapping(value = "/getusermedicine/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserMedicines(@PathVariable("id") String user_id) throws UserMedicineException,UserexceptionMessage,ExecutionException, InterruptedException {
+    public ResponseEntity<?> getUserMedicines(@PathVariable("user_id") String user_id) throws UserMedicineException,UserexceptionMessage,ExecutionException, InterruptedException {
 
 
         return new ResponseEntity<>(userMedicineService.getallUserMedicines(user_id).get(), HttpStatus.OK);
@@ -45,7 +45,7 @@ public class MedicineController {
     }
 
     @PutMapping(value = "/editmedicine/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editMedicineDetails(@PathVariable("id") String id,
+    public ResponseEntity<?> editMedicineDetails(@PathVariable("med_id") String id,
                                                @RequestBody UserMedicines userMedicines) throws UserMedicineException,UserexceptionMessage {
 
         return new ResponseEntity<>(userMedicineService.editMedicineDetails(id,userMedicines),HttpStatus.CREATED);

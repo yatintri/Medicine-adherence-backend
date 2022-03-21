@@ -3,6 +3,7 @@ package com.example.user_service.service;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.model.UserMedReminder;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -48,15 +50,14 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     public boolean updateMedicineStatus(String medicine_id)  throws UserMedicineException{
 
 
-        UserMedicines userMedicines = userMedicineRepository
-                                     .findById(medicine_id)
-                                     .get();
-        if(userMedicines == null)
+        Optional<UserMedicines> userMedicines = userMedicineRepository
+                                     .findById(medicine_id);
+        if(userMedicines.isEmpty())
         {
             throw new UserMedicineException("Medicine not found");
         }
-        userMedicines.setActive_status(false);
-        userMedicineRepository.save(userMedicines);
+        userMedicines.get().setActive_status(false);
+        userMedicineRepository.save(userMedicines.get());
 
         return true;
 
@@ -84,19 +85,38 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     @Override
     public UserMedicines editMedicineDetails(String medicine_id , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage {
 
-        UserMedicines userMeds = userMedicineRepository.findById(medicine_id).get();
-        if(userMeds == null)
+        Optional<UserMedicines> userMeds = userMedicineRepository.findById(medicine_id);
+        if(userMeds.isEmpty())
         {
             throw  new UserexceptionMessage("Please enter valid id");
         }
-        userMeds.setMedicine_des(userMedicines.getMedicine_des());
-        userMeds.setMedicine_name(userMedicines.getMedicine_name());
-        UserMedicines userMeds1 = userMedicineRepository.save(userMeds);
+        userMeds.get().setMedicine_des(userMedicines.getMedicine_des());
+        userMeds.get().setMedicine_name(userMedicines.getMedicine_name());
+        UserMedicines userMeds1 = userMedicineRepository.save(userMeds.get());
         if(userMeds1 == null)
         {
             throw new UserMedicineException("Error try again!");
         }
         return userMeds1;
+    }
+
+    //Implement following Methods
+//    and make query in usermed repo
+
+
+    @Override
+    public UserMedicines getMedReminders() {
+        return null;
+    }
+
+    @Override
+    public UserMedicines getMedRemById(String medicine_id) {
+        return null;
+    }
+
+    @Override
+    public UserMedicines saveMedReminder(UserMedReminder userMedReminder) {
+        return null;
     }
 
 
