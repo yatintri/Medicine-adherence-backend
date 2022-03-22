@@ -40,13 +40,13 @@ public class UserController {
 
     // saving the user when they signup
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) throws UserexceptionMessage, ExecutionException, InterruptedException {
+    public ResponseEntity<?> saveUser(@RequestParam (name = "fcm_token")String fcm_token ,@RequestParam (name = "pic_path")String pic_path , @RequestBody UserEntity userEntity) throws UserexceptionMessage, ExecutionException, InterruptedException {
         UserEntity user = userService.getUserByEmail(userEntity.getEmail());
         if(user != null){
             Userresponse userresponse = new Userresponse("Already present",user);
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
-        user = userService.saveUser(userEntity).get();
+        user = userService.saveUser(userEntity,fcm_token,pic_path).get();
         Userresponse userresponse = new Userresponse("success",user);
 
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
@@ -113,7 +113,7 @@ public class UserController {
 
        UserEntity userEntity = userService.getUserByEmail(email);
        if(userEntity == null){
-System.out.println(userEntity);
+        System.out.println(userEntity);
          rabbitTemplate.convertAndSend("project_exchange",
                  "mail_key",new MailInfo(email,"Please join","patient_request",sender));
           return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);

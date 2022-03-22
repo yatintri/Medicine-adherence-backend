@@ -30,13 +30,15 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Async
-    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity) throws UserexceptionMessage {
+    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity,String fcm_token,String pic_path) throws UserexceptionMessage {
 
         logger.info(Thread.currentThread().getName());
         userEntity.setLast_login(Datehelper.getcurrentdatatime());
         userEntity.setCreated_at(Datehelper.getcurrentdatatime());
         UserEntity ue = userRepository.save(userEntity);
         UserDetails userDetails = new UserDetails();
+        userDetails.setFcm_token(fcm_token);
+        userDetails.setPic_path(pic_path);
         userDetails.setUser(ue);
         userDetailsRepository.save(userDetails);
 
