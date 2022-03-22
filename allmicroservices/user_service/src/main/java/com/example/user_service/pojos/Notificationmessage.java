@@ -1,7 +1,7 @@
 package com.example.user_service.pojos;
 
 public class Notificationmessage {
-
+//
     private String fcm_token;
     private String message;
 

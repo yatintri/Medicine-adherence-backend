@@ -161,7 +161,7 @@ public class UserController {
         return "Ho gaya";
 //
     }
-
+//
     @GetMapping(value = "/searchmed")
     public ResponseEntity<?> getallmeds(@RequestParam(name = "search_med") String search_med){
 

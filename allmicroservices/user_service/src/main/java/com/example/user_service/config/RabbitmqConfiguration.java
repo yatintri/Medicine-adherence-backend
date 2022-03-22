@@ -37,7 +37,7 @@ public class RabbitmqConfiguration {
     public Queue getmailqueue(){
     return new Queue(queue_name);
 }
-
+//
     @Bean(name = "queue2")
     public Queue getnotificationqueue(){
         return new Queue(queue2_name);

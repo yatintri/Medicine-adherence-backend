@@ -4,7 +4,7 @@ import com.example.user_service.model.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//
 public class Userresponse {
 
     private String status;
