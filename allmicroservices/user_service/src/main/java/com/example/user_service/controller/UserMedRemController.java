@@ -32,13 +32,15 @@ public class UserMedRemController {
 //    }
 
     @GetMapping("/getUserMedRem")
-    public ResponseEntity<?> getMedRemById(@RequestParam String medicine_id) throws UserMedicineException, UserexceptionMessage {
+    public ResponseEntity<?> getMedRemById(@RequestParam String medicine_id)
+            throws UserMedicineException, UserexceptionMessage {
         return  new ResponseEntity<>(userMedicineService.getMedRemById(medicine_id),HttpStatus.OK);
     }
 
     @PostMapping(value = "/saveMedReminder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveMedReminders(@RequestBody UserMedReminder userMedReminder,
-                                              @RequestParam String medicine_id) throws UserMedicineException, UserexceptionMessage{
+                                              @RequestParam String medicine_id)
+                                              throws UserMedicineException, UserexceptionMessage{
         return  new ResponseEntity<>(userMedicineService.saveMedReminder(userMedReminder,medicine_id)
                 , HttpStatus.OK);
     }

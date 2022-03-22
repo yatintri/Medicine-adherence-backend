@@ -66,5 +66,22 @@ public class CareTakerServiceImpl implements CareTakerService{
         return userCaretakerRepository.getcaretakerrequestsp(user_id);
     }
 
+    @Override
+     public  Boolean delPatientReq(String c_id) {
+
+
+        try{
+            UserCaretaker userCaretaker = userCaretakerRepository.findById(c_id).get();
+            userCaretakerRepository.delete(userCaretaker);
+             return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        }
+
+
+
 
 }

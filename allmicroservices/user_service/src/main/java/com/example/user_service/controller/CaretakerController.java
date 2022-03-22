@@ -88,4 +88,11 @@ public class CaretakerController {
 
     }
 
+    @GetMapping(value = "/deletePatientRequest")
+    public ResponseEntity<?> delPatientReq(@RequestParam(name = "c_id") String c_id){
+        boolean b = careTakerService.delPatientReq(c_id);
+
+        return new ResponseEntity(b,HttpStatus.OK);
+    }
+
 }

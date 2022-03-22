@@ -25,4 +25,5 @@ public interface CareTakerService {
 
     public List<UserCaretaker> getCaretakerRequestsP(String user_id);
 
+    public Boolean delPatientReq(String c_id);
 }
