@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface UserService {
 
-    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity) throws UserexceptionMessage;
+    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity,String fcm_token,String pic_path) throws UserexceptionMessage;
 
     public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage;
 
@@ -22,3 +22,4 @@ public interface UserService {
 
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage;
 }
+/////
