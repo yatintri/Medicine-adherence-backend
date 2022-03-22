@@ -78,10 +78,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
             throw  new UserexceptionMessage("Please enter valid id");
         }
         List<UserMedicines> list =  user.getUserMedicines();
-        if(list.isEmpty())
-        {
-            throw new UserMedicineException("No Record Found");
-        }
+
         return CompletableFuture.completedFuture(list);
 
     }

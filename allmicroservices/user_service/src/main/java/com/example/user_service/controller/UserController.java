@@ -1,12 +1,16 @@
 package com.example.user_service.controller;
 
 
+import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.MedicineEntity;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.MailInfo;
+import com.example.user_service.pojos.UserProfileResponse;
 import com.example.user_service.pojos.Userresponse;
 import com.example.user_service.repository.Medrepo;
+import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -38,6 +43,8 @@ public class UserController {
     @Autowired
     Medrepo medrepo;
 
+    @Autowired
+    UserMedicineService userMedicineService;
     // saving the user when they signup
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestParam (name = "fcm_token")String fcm_token ,@RequestParam (name = "pic_path")String pic_path , @RequestBody UserEntity userEntity) throws UserexceptionMessage, ExecutionException, InterruptedException {
@@ -80,10 +87,16 @@ public class UserController {
 
     // fetching user by id
     @GetMapping(value = "/getuser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserById(@PathVariable("id") String user_id) throws UserexceptionMessage {
+    public ResponseEntity<?> getUserById(@PathVariable("id") String user_id) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
 
-        return new ResponseEntity<>(userService.getUserById(user_id), HttpStatus.OK);
+        List<UserEntity> user = Arrays.asList(userService.getUserById(user_id));
+        List<UserMedicines> list = userMedicineService.getallUserMedicines(user_id).get();
+
+        UserProfileResponse userProfileResponse = new UserProfileResponse("OK",user,list);
+        return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
+
+
 
     }
 

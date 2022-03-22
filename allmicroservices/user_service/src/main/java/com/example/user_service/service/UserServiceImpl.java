@@ -1,8 +1,10 @@
 package com.example.user_service.service;
 
+import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.model.UserMedicines;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -25,6 +28,10 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     @Autowired
     private UserDetailsRepository userDetailsRepository;
+
+
+    @Autowired
+    private UserMedicineService userMedicineService;
 
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -54,21 +61,23 @@ public class UserServiceImpl implements UserService{
     @Async
     public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage{
 
-
          List<UserEntity> list = userRepository.findAllusers();
          logger.info(Thread.currentThread().getName());
          return CompletableFuture.completedFuture(list);
+
     }
 
 
     @Override
     @Cacheable(value = "user" , key="#user_id")
-    public UserEntity getUserById(String user_id)throws UserexceptionMessage {
+    public UserEntity getUserById(String user_id) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
         Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getByid(user_id));
+
         logger.info(Thread.currentThread().getName());
         if(optionalUserEntity.isEmpty()){
             throw new UserexceptionMessage("Not present with this id");
         }
+
         return optionalUserEntity.get();
     }
 

@@ -1,11 +1,13 @@
 package com.example.user_service.service;
 
+import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 
 public interface UserService {
@@ -14,7 +16,7 @@ public interface UserService {
 
     public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage;
 
-    public UserEntity getUserById(String user_id) throws UserexceptionMessage;
+    public UserEntity getUserById(String user_id) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException;
 
     public UserEntity updateUser(String user_id, UserEntity userEntity)throws UserexceptionMessage;
 
