@@ -2,7 +2,9 @@ package com.example.user_service.controller;
 
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.UserCaretaker;
+import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.service.CareTakerService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,8 @@ public class CaretakerController {
     @Autowired
     private CareTakerService careTakerService;
 
+    @Autowired
+    RabbitTemplate rabbitTemplate;
     // save caretaker for a patients
     @PostMapping(value = "/savecaretaker" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveCaretaker(@RequestBody UserCaretaker userCaretaker){
@@ -95,4 +99,13 @@ public class CaretakerController {
         return new ResponseEntity(b,HttpStatus.OK);
     }
 
+    @GetMapping(value = "/notifyuser")
+    public ResponseEntity<?> notifyuserformed(@RequestParam(name = "fcm_token") String fcm_token){
+
+        rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcm_token,"Take medicine"));
+        return new ResponseEntity<>("Ok",HttpStatus.OK);
+
+    }
+
+//
 }
