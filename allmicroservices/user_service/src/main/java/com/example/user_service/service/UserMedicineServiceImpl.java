@@ -41,7 +41,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
             throw new UserexceptionMessage("Please enter valid id");
         }
         userMedicines.setUserEntity(user);
-     //   userMedicines.setCreate_time(Datehelper.getcurrentdate().toString());
+        //   userMedicines.setCreate_time(Datehelper.getcurrentdate().toString());
         UserMedicines userMedicines1 = userMedicineRepository.save(userMedicines);
         if(userMedicines1 == null)
         {
@@ -55,12 +55,12 @@ public class UserMedicineServiceImpl implements UserMedicineService{
 
 
         Optional<UserMedicines> userMedicines = userMedicineRepository
-                                     .findById(medicineId);
+                .findById(medicineId);
         if(userMedicines.isEmpty())
         {
             throw new UserMedicineException("Medicine not found");
         }
-      //  userMedicines.get().setActive_status(false);
+        //  userMedicines.get().setActive_status(false);
         userMedicineRepository.save(userMedicines.get());
 
         return true;

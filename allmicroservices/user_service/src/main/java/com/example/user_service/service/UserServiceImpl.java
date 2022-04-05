@@ -48,10 +48,10 @@ public class UserServiceImpl implements UserService{
         userDetailsRepository.save(userDetails);
 
         if(ue == null){
-           throw new UserexceptionMessage("Error try again!");
+            throw new UserexceptionMessage("Error try again!");
 
-       }
-       return CompletableFuture.completedFuture(ue);
+        }
+        return CompletableFuture.completedFuture(ue);
 
     }
 
@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService{
     @Async
     public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage{
 
-         List<UserEntity> list = userRepository.findAllusers();
-         logger.info(Thread.currentThread().getName());
-         return CompletableFuture.completedFuture(list);
+        List<UserEntity> list = userRepository.findAllusers();
+        logger.info(Thread.currentThread().getName());
+        return CompletableFuture.completedFuture(list);
 
     }
 

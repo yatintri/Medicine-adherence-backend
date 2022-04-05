@@ -79,7 +79,7 @@ public class CareTakerServiceImpl implements CareTakerService{
     }
 
     @Override
-     public  Boolean delPatientReq(String cId) {
+    public  Boolean delPatientReq(String cId) {
 
 
         try{
@@ -95,7 +95,7 @@ public class CareTakerServiceImpl implements CareTakerService{
         {
             return false;
         }
-        }
+    }
 
 
 //
