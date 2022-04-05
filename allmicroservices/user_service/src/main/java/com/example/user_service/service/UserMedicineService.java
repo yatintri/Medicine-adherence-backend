@@ -10,18 +10,18 @@ import java.util.concurrent.CompletableFuture;
 //
 public interface UserMedicineService {
 
-    public UserMedicines saveUserMedicine(String user_id, UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage;
+    public UserMedicines saveUserMedicine(String userId, UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage;
 
-    public boolean updateMedicineStatus(Integer medicine_id) throws UserMedicineException;
+    public boolean updateMedicineStatus(Integer medicineId) throws UserMedicineException;
 
-    public CompletableFuture<List<UserMedicines>> getallUserMedicines(String user_id) throws UserMedicineException, UserexceptionMessage;
+    public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserexceptionMessage;
 
-    public UserMedicines editMedicineDetails(Integer medicine_id , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage;
+    public UserMedicines editMedicineDetails(Integer medicineId , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage;
 
-    boolean syncdata(String user_id , List<UserMedicines> list);
+    boolean syncdata(String userId , List<UserMedicines> list);
 
-    public UserMedicines getMedRemById(Integer medicine_id)throws UserMedicineException, UserexceptionMessage ;
+    public UserMedicines getMedRemById(Integer medicineId)throws UserMedicineException, UserexceptionMessage ;
 
-    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder, Integer medicine_id)throws UserMedicineException, UserexceptionMessage ;
+    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder, Integer medicineId)throws UserMedicineException, UserexceptionMessage ;
 }
 ///

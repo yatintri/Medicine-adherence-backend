@@ -23,19 +23,19 @@ public class UserMedReminder {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String reminder_id;
+    private String reminderId;
 
     @Column(name = "reminder_title")
-    private String reminder_title;
+    private String reminderTitle;
 
     @Column(name = "created_at")
-    private String created_at;
+    private String createdAt;
 
     @Column(name = "start_date")
-    private String start_date;
+    private String startDate;
 
     @Column(name = "end_date")
-    private String end_date;
+    private String endDate;
 
     @Column(name = "everyday")
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -43,13 +43,13 @@ public class UserMedReminder {
 
     @Column(name = "reminder_status")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean reminder_status;
+    private boolean reminderStatus;
 
     @Column(name = "days")
     private String days;
 ///
     @Column(name = "reminder_time")
-    private String reminder_time;
+    private String reminderTime;
 
     @OneToOne(
             fetch = FetchType.LAZY
@@ -59,5 +59,5 @@ public class UserMedReminder {
             referencedColumnName = "medicine_id"
     )
     @JsonIgnore
-    private UserMedicines user_rem;
+    private UserMedicines userRem;
 }

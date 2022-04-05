@@ -2,26 +2,26 @@ package com.example.user_service.pojos;
 
 public class Notificationmessage {
 //
-    private String fcm_token;
+    private String fcmToken;
     private String message;
     private String title;
     private String body;
-    private String image_url;
+    private String imageUrl;
 
-    public String getImage_url() {
-        return image_url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public Notificationmessage(String fcm_token, String message , String title , String body , String image_url) {
-        this.fcm_token = fcm_token;
+    public Notificationmessage(String fcmToken, String message , String title , String body , String imageUrl) {
+        this.fcmToken = fcmToken;
         this.message = message;
         this.title = title;
         this.body = body;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
 
     }
 
@@ -41,12 +41,12 @@ public class Notificationmessage {
         this.body = body;
     }
 
-    public String getFcm_token() {
-        return fcm_token;
+    public String getFcmToken() {
+        return fcmToken;
     }
 
-    public void setFcm_token(String fcm_token) {
-        this.fcm_token = fcm_token;
+    public void setFcmToken(String fcm_token) {
+        this.fcmToken = fcm_token;
     }
 
     public String getMessage() {
