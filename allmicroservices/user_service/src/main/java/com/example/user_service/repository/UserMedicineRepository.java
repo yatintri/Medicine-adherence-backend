@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface UserMedicineRepository extends JpaRepository<UserMedicines,Integer> {
 
 
-    @Query("SELECT u from UserMedicines u where u.medicine_id = ?1")
+    @Query("SELECT u from UserMedicines u where u.medicineId = ?1")
     public UserMedicines getmedrembyid(Integer medicineId);
 
 // /   @Query()
