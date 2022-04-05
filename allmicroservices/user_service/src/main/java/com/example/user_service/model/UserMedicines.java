@@ -17,22 +17,22 @@ public class UserMedicines {
 
     @Id
     @Column(name = "medicine_id")
-    private int medicine_id;
+    private int medicineId;
 
     @Column(name = "start_date")
-    private String start_date;
+    private String startDate;
 
     @Column(name = "medicine_name")
-    private String medicine_name;
+    private String medicineName;
 
     @Column(name = "medicine_des")
-    private String medicine_des;
+    private String medicineDes;
 
     @Column(name = "days")
     private String days;
 
     @Column(name = "end_date")
-    private String end_date;
+    private String endDate;
 
     @Column(name = "time")
     private String time;
@@ -41,10 +41,10 @@ public class UserMedicines {
     private String title;
 
     @Column(name = "total_med_reminders")
-    private int total_med_reminders;
+    private int totalMedReminders;
 
     @Column(name = "current_count")
-    private int current_count;
+    private int currentCount;
 
 
 
@@ -59,12 +59,6 @@ public class UserMedicines {
     @JsonIgnore
     private UserEntity userEntity;
 
-    @OneToOne(
-            cascade = CascadeType.ALL,
-            mappedBy = "user_rem",
-            fetch = FetchType.LAZY
-    )
-    private UserMedReminder reminderEntity;
 
 }
 ///

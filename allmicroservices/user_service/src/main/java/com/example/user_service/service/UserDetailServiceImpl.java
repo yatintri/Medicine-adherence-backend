@@ -22,20 +22,17 @@ public class UserDetailServiceImpl implements UserDetailService{
     public UserDetails saveUserDetail(String id,UserDetails userDetails) throws UserexceptionMessage {
 
     Optional<UserEntity> user = Optional.ofNullable(userRepository.getuserbyid(id));
-System.out.println(user.get().getEmail());
     if (user.isEmpty()){
         throw new UserexceptionMessage("No user found");
     }
-System.out.println(userDetails.getGender());
     UserDetails userDetails1 = user.get().getUserDetails();
     userDetails1.setAge(userDetails.getAge());
-    userDetails1.setBlood_group(userDetails.getBlood_group());
+    userDetails1.setBloodGroup(userDetails.getBloodGroup());
     userDetails1.setBio(userDetails.getBio());
     userDetails1.setGender(userDetails.getGender());
     userDetails1.setGender(userDetails.getGender());
-    userDetails1.setMartial_status(userDetails.getMartial_status());
+    userDetails1.setMartialStatus(userDetails.getMartialStatus());
     userDetails1.setUsercontact(userDetails.getUsercontact());
-    System.out.println(userDetails1.getGender());
    return userDetailsRepository.save(userDetails1);
 
 

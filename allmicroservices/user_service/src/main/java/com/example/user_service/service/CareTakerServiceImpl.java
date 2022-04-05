@@ -17,73 +17,73 @@ public class CareTakerServiceImpl implements CareTakerService{
     @Autowired
     private UserCaretakerRepository userCaretakerRepository;
 
-    @Override
-    public List<UserCaretaker> getPatientCaretakerMap(){
-        return userCaretakerRepository.findAll();
-    }
+//    @Override
+//    public List<UserCaretaker> getPatientCaretakerMap(){
+//        return userCaretakerRepository.findAll();
+//    }
 
     @Override
     public UserCaretaker saveCareTaker(UserCaretakerpojo userCaretakerpojo) {
 
         UserCaretaker userCaretaker = new UserCaretaker();
 
-        userCaretaker.setCaretaker_username(userCaretakerpojo.getCaretaker_username());
-        userCaretaker.setReq_status(userCaretakerpojo.getReq_status());
-        userCaretaker.setPatient_name(userCaretakerpojo.getPatient_name());
-        userCaretaker.setCaretaker_id(userCaretakerpojo.getCaretaker_id());
-        userCaretaker.setPatient_id(userCaretakerpojo.getPatient_id());
-        userCaretaker.setCreated_at(Datehelper.getcurrentdatatime());
-        userCaretaker.setSent_by(userCaretakerpojo.getSent_by());
+        userCaretaker.setCaretakerUsername(userCaretakerpojo.getCaretakerUsername());
+        userCaretaker.setReqStatus(userCaretakerpojo.getReqStatus());
+        userCaretaker.setPatientName(userCaretakerpojo.getPatientName());
+        userCaretaker.setCaretakerId(userCaretakerpojo.getCaretakerId());
+        userCaretaker.setPatientId(userCaretakerpojo.getPatientId());
+        userCaretaker.setCreatedAt(Datehelper.getcurrentdatatime());
+        userCaretaker.setSentBy(userCaretakerpojo.getSentBy());
 
         return userCaretakerRepository.save(userCaretaker);
     }
 
     @Override
-    public UserCaretaker updateCaretakerStatus(String c_id) throws UserCaretakerException {
-        UserCaretaker uc = userCaretakerRepository.getById(c_id);
-        if(uc.getPatient_name() == null){
+    public UserCaretaker updateCaretakerStatus(String cId) throws UserCaretakerException {
+        UserCaretaker uc = userCaretakerRepository.getById(cId);
+        if(uc.getPatientName() == null){
             throw new UserCaretakerException("No user found with this id");
         }
-        uc.setReq_status(true);
+        uc.setReqStatus(true);
         return userCaretakerRepository.save(uc);
     }
 
     @Override
-    public List<UserCaretaker> getPatientsUnderMe(String user_id) {
-        return userCaretakerRepository.getpatientsunderme(user_id);
+    public List<UserCaretaker> getPatientsUnderMe(String userId) {
+        return userCaretakerRepository.getpatientsunderme(userId);
     }
 
     @Override
-    public List<UserCaretaker> getPatientRequests(String user_id) {
-        return userCaretakerRepository.getpatientrequests(user_id);
+    public List<UserCaretaker> getPatientRequests(String userId) {
+        return userCaretakerRepository.getpatientrequests(userId);
     }
 
     @Override
-    public List<UserCaretaker> getMyCaretakers(String user_id) {
-        return userCaretakerRepository.getmycaretakers(user_id);
+    public List<UserCaretaker> getMyCaretakers(String userId) {
+        return userCaretakerRepository.getmycaretakers(userId);
     }
 
     @Override
-    public List<UserCaretaker> getCaretakerRequestStatus(String user_id) {
-        return userCaretakerRepository.getcaretakerequeststatus(user_id);
+    public List<UserCaretaker> getCaretakerRequestStatus(String userId) {
+        return userCaretakerRepository.getcaretakerequeststatus(userId);
+    }
+
+//    @Override
+//    public List<UserCaretaker> getPatientRequestStatus(String user_id) {
+//        return userCaretakerRepository.getpatientrequeststatus(user_id);
+//    }
+
+    @Override
+    public List<UserCaretaker> getCaretakerRequestsP(String userId){
+        return userCaretakerRepository.getcaretakerrequestsp(userId);
     }
 
     @Override
-    public List<UserCaretaker> getPatientRequestStatus(String user_id) {
-        return userCaretakerRepository.getpatientrequeststatus(user_id);
-    }
-
-    @Override
-    public List<UserCaretaker> getCaretakerRequestsP(String user_id){
-        return userCaretakerRepository.getcaretakerrequestsp(user_id);
-    }
-
-    @Override
-     public  Boolean delPatientReq(String c_id) {
+     public  Boolean delPatientReq(String cId) {
 
 
         try{
-            Optional<UserCaretaker> userCaretaker = userCaretakerRepository.findById(c_id);
+            Optional<UserCaretaker> userCaretaker = userCaretakerRepository.findById(cId);
             if (userCaretaker.isPresent()){
                 userCaretakerRepository.delete(userCaretaker.get());
                 return true;

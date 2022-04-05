@@ -11,15 +11,15 @@ import java.util.concurrent.ExecutionException;
 
 public interface UserService {
 
-    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity,String fcm_token,String pic_path) throws UserexceptionMessage;
+    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity,String fcmToken,String picPath) throws UserexceptionMessage;
 
     public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage;
 
-    public UserEntity getUserById(String user_id) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException;
+    public UserEntity getUserById(String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException;
 
-    public UserEntity updateUser(String user_id, UserEntity userEntity)throws UserexceptionMessage;
+    public UserEntity updateUser(String userId, UserEntity userEntity)throws UserexceptionMessage;
 
-    public List<UserEntity> getUserByName(String user_name)throws UserexceptionMessage;
+    public List<UserEntity> getUserByName(String userName)throws UserexceptionMessage;
 
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage;
 }

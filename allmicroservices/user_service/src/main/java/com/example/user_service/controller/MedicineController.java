@@ -32,29 +32,29 @@ public class MedicineController {
 
     // save caretaker for a patients
     @PostMapping(value = "/savemedicine/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUserMedicine(@PathVariable("user_id") String id, @RequestBody UserMedicines userMedicines)throws UserMedicineException , UserexceptionMessage {
+    public ResponseEntity<?> saveUserMedicine(@PathVariable("userId") String id, @RequestBody UserMedicines userMedicines)throws UserMedicineException , UserexceptionMessage {
 
         return new ResponseEntity<>(userMedicineService.saveUserMedicine(id,userMedicines), HttpStatus.CREATED);
 
     }
 
     @PutMapping(value = "/updatestatus/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateMedicineStatus(@PathVariable("med_id") Integer med_id)throws UserMedicineException{
+    public ResponseEntity<?> updateMedicineStatus(@PathVariable("medId") Integer medId)throws UserMedicineException{
 
-        return new ResponseEntity<>(userMedicineService.updateMedicineStatus(med_id),HttpStatus.CREATED);
+        return new ResponseEntity<>(userMedicineService.updateMedicineStatus(medId),HttpStatus.CREATED);
 
     }
 
     @GetMapping(value = "/getusermedicine/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserMedicines(@PathVariable("user_id") String user_id) throws UserMedicineException,UserexceptionMessage,ExecutionException, InterruptedException {
+    public ResponseEntity<?> getUserMedicines(@PathVariable("userId") String userId) throws UserMedicineException,UserexceptionMessage,ExecutionException, InterruptedException {
 
 
-        return new ResponseEntity<>(userMedicineService.getallUserMedicines(user_id).get(), HttpStatus.OK);
+        return new ResponseEntity<>(userMedicineService.getallUserMedicines(userId).get(), HttpStatus.OK);
 
     }
 
     @PutMapping(value = "/editmedicine/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editMedicineDetails(@PathVariable("med_id") Integer id,
+    public ResponseEntity<?> editMedicineDetails(@PathVariable("medId") Integer id,
                                                @RequestBody UserMedicines userMedicines) throws UserMedicineException,UserexceptionMessage {
 
         return new ResponseEntity<>(userMedicineService.editMedicineDetails(id,userMedicines),HttpStatus.CREATED);
@@ -62,23 +62,23 @@ public class MedicineController {
     }
 
     @PostMapping(value = "/syncmedicines",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> syncdata(@RequestParam("user_id") String user_id , @RequestBody List<Medicinepojo> medicinepojo){
+    public ResponseEntity<?> syncdata(@RequestParam("userId") String userId , @RequestBody List<Medicinepojo> medicinepojo){
 
-       UserEntity userEntity = userRepository.getuserbyid(user_id);
+       UserEntity userEntity = userRepository.getuserbyid(userId);
        List<UserMedicines> userMedicinesList = new ArrayList<>();
        for(Medicinepojo medicinepojo1 : medicinepojo) {
 
        UserMedicines userMedicines = new UserMedicines();
 
-       userMedicines.setMedicine_des(medicinepojo1.getMedicine_des());
-       userMedicines.setMedicine_name(medicinepojo1.getMedicine_name());
+       userMedicines.setMedicineDes(medicinepojo1.getMedicineDes());
+       userMedicines.setMedicineName(medicinepojo1.getMedicineName());
        userMedicines.setDays(medicinepojo1.getDays());
-       userMedicines.setMedicine_id(medicinepojo1.getUser_id());
-       userMedicines.setEnd_date(medicinepojo1.getEnd_date());
+       userMedicines.setMedicineId(medicinepojo1.getUserId());
+       userMedicines.setEndDate(medicinepojo1.getEndDate());
        userMedicines.setTitle(medicinepojo1.getTitle());
-       userMedicines.setCurrent_count(medicinepojo1.getCurrent_count());
-       userMedicines.setTotal_med_reminders(medicinepojo1.getTotal_med_reminders());
-       userMedicines.setStart_date(medicinepojo1.getStart_date());
+       userMedicines.setCurrentCount(medicinepojo1.getCurrentCount());
+       userMedicines.setTotalMedReminders(medicinepojo1.getTotalMedReminders());
+       userMedicines.setStartDate(medicinepojo1.getStartDate());
        userMedicines.setTime(medicinepojo1.getTime());
        userMedicines.setUserEntity(userEntity);
 userMedicinesList.add(userMedicines);

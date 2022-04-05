@@ -28,16 +28,16 @@ public class UserMedRemController {
 //    }
 
     @GetMapping("/getUserMedRem")
-    public ResponseEntity<?> getMedRemById(@RequestParam Integer medicine_id)
+    public ResponseEntity<?> getMedRemById(@RequestParam Integer medicineId)
             throws UserMedicineException, UserexceptionMessage {
-        return  new ResponseEntity<>(userMedicineService.getMedRemById(medicine_id),HttpStatus.OK);
+        return  new ResponseEntity<>(userMedicineService.getMedRemById(medicineId),HttpStatus.OK);
     }
 
     @PostMapping(value = "/saveMedReminder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveMedReminders(@RequestBody UserMedReminder userMedReminder,
-                                              @RequestParam Integer medicine_id)
+                                              @RequestParam Integer medicineId)
                                               throws UserMedicineException, UserexceptionMessage{
-        return  new ResponseEntity<>(userMedicineService.saveMedReminder(userMedReminder,medicine_id)
+        return  new ResponseEntity<>(userMedicineService.saveMedReminder(userMedReminder,medicineId)
                 , HttpStatus.OK);
     }
 
