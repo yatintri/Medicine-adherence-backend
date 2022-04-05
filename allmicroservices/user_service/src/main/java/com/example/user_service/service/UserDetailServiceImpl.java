@@ -21,19 +21,19 @@ public class UserDetailServiceImpl implements UserDetailService{
     @Override
     public UserDetails saveUserDetail(String id,UserDetails userDetails) throws UserexceptionMessage {
 
-    Optional<UserEntity> user = Optional.ofNullable(userRepository.getuserbyid(id));
-    if (user.isEmpty()){
-        throw new UserexceptionMessage("No user found");
-    }
-    UserDetails userDetails1 = user.get().getUserDetails();
-    userDetails1.setAge(userDetails.getAge());
-    userDetails1.setBloodGroup(userDetails.getBloodGroup());
-    userDetails1.setBio(userDetails.getBio());
-    userDetails1.setGender(userDetails.getGender());
-    userDetails1.setGender(userDetails.getGender());
-    userDetails1.setMartialStatus(userDetails.getMartialStatus());
-    userDetails1.setUsercontact(userDetails.getUsercontact());
-   return userDetailsRepository.save(userDetails1);
+        Optional<UserEntity> user = Optional.ofNullable(userRepository.getuserbyid(id));
+        if (user.isEmpty()){
+            throw new UserexceptionMessage("No user found");
+        }
+        UserDetails userDetails1 = user.get().getUserDetails();
+        userDetails1.setAge(userDetails.getAge());
+        userDetails1.setBloodGroup(userDetails.getBloodGroup());
+        userDetails1.setBio(userDetails.getBio());
+        userDetails1.setGender(userDetails.getGender());
+        userDetails1.setGender(userDetails.getGender());
+        userDetails1.setMartialStatus(userDetails.getMartialStatus());
+        userDetails1.setUsercontact(userDetails.getUsercontact());
+        return userDetailsRepository.save(userDetails1);
 
 
 

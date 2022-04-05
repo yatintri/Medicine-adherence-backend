@@ -24,7 +24,7 @@ public class UserDetailController {
     public ResponseEntity<?> updateUserDetails(@PathVariable("id") String id,
                                                @RequestBody UserDetails userDetails) throws UserexceptionMessage {
 
-         return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetails),HttpStatus.OK);
+        return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetails),HttpStatus.OK);
 
     }
 

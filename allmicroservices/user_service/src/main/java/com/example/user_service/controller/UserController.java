@@ -109,16 +109,16 @@ public class UserController {
     // fetching the user with email if not present then sending to that email address
     @GetMapping(value = "/getbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<? extends Object> getUserByEmail(@RequestParam("email") String email
-                                        ,@RequestParam("sender") String sender)
-                                        throws UserexceptionMessage , SendFailedException {
+            ,@RequestParam("sender") String sender)
+            throws UserexceptionMessage , SendFailedException {
 
-       UserEntity userEntity = userService.getUserByEmail(email);
-       if(userEntity == null){
-         rabbitTemplate.convertAndSend("project_exchange",
-                 "mail_key",new MailInfo(email,"Please join","patient_request",sender));
-          return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);
+        UserEntity userEntity = userService.getUserByEmail(email);
+        if(userEntity == null){
+            rabbitTemplate.convertAndSend("project_exchange",
+                    "mail_key",new MailInfo(email,"Please join","patient_request",sender));
+            return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);
 
-       }
+        }
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
 
     }

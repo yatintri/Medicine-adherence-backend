@@ -45,7 +45,7 @@ public class CaretakerController {
     // update request status if request is accepted or rejected
     @PutMapping(value = "/updatestatus")
     public ResponseEntity<UserCaretaker> updatecaretakerStatus(@RequestParam(name = "cId") String cId)
-             throws UserCaretakerException {
+            throws UserCaretakerException {
 
         return  new ResponseEntity<>(careTakerService.updateCaretakerStatus(cId), HttpStatus.OK);
 
@@ -75,16 +75,6 @@ public class CaretakerController {
         return new ResponseEntity<>(careTakerService.getMyCaretakers(userId),HttpStatus.OK);
     }
 
-    // to fetch the caretaker request to a patients
-    @GetMapping(value = "/caretakerRequests(sentstatus)")
-    public ResponseEntity<List<UserCaretaker>> getCaretakerSentStatus(@RequestParam(name = "patientId") String  userId){
-
-        return new ResponseEntity<>(careTakerService.getCaretakerRequestStatus(userId),HttpStatus.OK);
-
-    }
-
-
-
     // to check the status of a request by caretaker
 
     @GetMapping(value = "/caretakerRequests(for patient)")
@@ -111,20 +101,20 @@ public class CaretakerController {
 
     @PostMapping(value = "/sendimage")
     public ResponseEntity<String> sendimagetocaretaker(@RequestParam(name = "image") MultipartFile multipartFile
-                                                , @RequestParam(name = "name") String filename ,
-                                                  @RequestParam(name = "id") String caretakerId) throws IOException, UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+            , @RequestParam(name = "name") String filename ,
+                                                       @RequestParam(name = "id") String caretakerId) throws IOException, UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
-         File file = new File(System.getProperty("user.dir")+"/src/main/upload/static/images");
-         if(!file.exists()){
-             file.mkdir();
-         }
+        File file = new File(System.getProperty("user.dir")+"/src/main/upload/static/images");
+        if(!file.exists()){
+            file.mkdir();
+        }
 
-         Path path = Paths.get(System.getProperty("user.dir")+"/src/main/upload/static/images",filename.concat(".").concat("jpg"));
-         Files.write(path,multipartFile.getBytes());
+        Path path = Paths.get(System.getProperty("user.dir")+"/src/main/upload/static/images",filename.concat(".").concat("jpg"));
+        Files.write(path,multipartFile.getBytes());
         // String fcm =   userService.getUserById(caretaker_id).getUserDetails().getFcm_token();
-      //   System.out.println(fcm);
-         String fcmToken = "c_nl_oj2S9S_HmPQjfvDSR:APA91bEYDLIGXU4jI4P26uVqAdoVaaJ378TtGjxrKaytbuqulXWZGs91Jx6_1mrLWEaGECufvZ512BWwQvCAQTnjg3OTh2GPn5E3DNOTh_ycy4Xi7-LZ39OFsGXYjiUm5UDJfRez0CV4";
-         rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","caretaker","",filename+".jpg"));
+        //   System.out.println(fcm);
+        String fcmToken = "c_nl_oj2S9S_HmPQjfvDSR:APA91bEYDLIGXU4jI4P26uVqAdoVaaJ378TtGjxrKaytbuqulXWZGs91Jx6_1mrLWEaGECufvZ512BWwQvCAQTnjg3OTh2GPn5E3DNOTh_ycy4Xi7-LZ39OFsGXYjiUm5UDJfRez0CV4";
+        rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","caretaker","",filename+".jpg"));
 
 
         return  new ResponseEntity<>("Ok",HttpStatus.OK);

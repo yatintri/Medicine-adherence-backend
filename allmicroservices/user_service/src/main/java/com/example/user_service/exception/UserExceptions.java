@@ -8,9 +8,15 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.HashMap;
 
+/**
+ * This class is used to send error response
+ */
 @ControllerAdvice
 public class UserExceptions {
 
+    /**
+     * Returns user exception response
+     */
  @ExceptionHandler({UserexceptionMessage.class})
  public ResponseEntity<?> getuserException(UserexceptionMessage uem , WebRequest webRequest){
      HashMap<String,String> map = new HashMap<>();
@@ -19,6 +25,9 @@ public class UserExceptions {
 
  }
 
+    /**
+     * Returns caretaker exception response
+     */
  @ExceptionHandler({UserCaretakerException.class})
     public ResponseEntity<?> getcaretakerexception(UserCaretakerException uce , WebRequest webRequest){
 
@@ -27,6 +36,9 @@ public class UserExceptions {
      return new ResponseEntity<>(map , HttpStatus.BAD_REQUEST);
 
  }
+    /**
+     * Returns user medicine exception response
+     */
     @ExceptionHandler({UserMedicineException.class})
     public ResponseEntity<?> getUserMedicineException(UserMedicineException udm , WebRequest webRequest){
 

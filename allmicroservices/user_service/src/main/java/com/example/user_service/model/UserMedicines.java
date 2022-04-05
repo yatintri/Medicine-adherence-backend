@@ -47,7 +47,6 @@ public class UserMedicines {
     private int currentCount;
 
 
-
     @ManyToOne(
             fetch = FetchType.LAZY
     )
