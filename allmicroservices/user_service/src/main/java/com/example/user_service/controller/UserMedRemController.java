@@ -4,17 +4,13 @@ package com.example.user_service.controller;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserMedReminder;
-import com.example.user_service.model.UserMedicines;
-import com.example.user_service.repository.UserMedicineRepository;
+
 import com.example.user_service.service.UserMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(path = "/api/user/medreminder")
@@ -32,14 +28,14 @@ public class UserMedRemController {
 //    }
 
     @GetMapping("/getUserMedRem")
-    public ResponseEntity<?> getMedRemById(@RequestParam String medicine_id)
+    public ResponseEntity<?> getMedRemById(@RequestParam Integer medicine_id)
             throws UserMedicineException, UserexceptionMessage {
         return  new ResponseEntity<>(userMedicineService.getMedRemById(medicine_id),HttpStatus.OK);
     }
 
     @PostMapping(value = "/saveMedReminder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveMedReminders(@RequestBody UserMedReminder userMedReminder,
-                                              @RequestParam String medicine_id)
+                                              @RequestParam Integer medicine_id)
                                               throws UserMedicineException, UserexceptionMessage{
         return  new ResponseEntity<>(userMedicineService.saveMedReminder(userMedReminder,medicine_id)
                 , HttpStatus.OK);

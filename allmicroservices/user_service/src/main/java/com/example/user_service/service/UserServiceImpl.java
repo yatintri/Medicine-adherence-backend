@@ -4,14 +4,12 @@ import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
-import com.example.user_service.model.UserMedicines;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -69,9 +67,9 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    @Cacheable(value = "user" , key="#user_id")
+
     public UserEntity getUserById(String user_id) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
-        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getByid(user_id));
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getuserbyid(user_id));
 
         logger.info(Thread.currentThread().getName());
         if(optionalUserEntity.isEmpty()){
@@ -84,7 +82,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserEntity updateUser(String user_id, UserEntity userEntity) {
-        UserEntity userDB = userRepository.getByid(user_id);
+        UserEntity userDB = userRepository.getuserbyid(user_id);
 
         if(Objects.nonNull(userEntity.getUser_name()) && !"".equalsIgnoreCase(userEntity.getUser_name())) {
             userDB.setUser_name(userEntity.getUser_name());

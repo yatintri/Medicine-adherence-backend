@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+
 
 import javax.persistence.*;
 
@@ -13,20 +12,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user_medicines")
+@Table(name = "user_medicine")
 public class UserMedicines {
 
     @Id
     @Column(name = "medicine_id")
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private String medicine_id;
+    private int medicine_id;
 
-    @Column(name = "create_time")
-    private String create_time;
+    @Column(name = "start_date")
+    private String start_date;
 
     @Column(name = "medicine_name")
     private String medicine_name;
@@ -34,9 +28,24 @@ public class UserMedicines {
     @Column(name = "medicine_des")
     private String medicine_des;
 
-    @Column(name = "active_status")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean active_status;
+    @Column(name = "days")
+    private String days;
+
+    @Column(name = "end_date")
+    private String end_date;
+
+    @Column(name = "time")
+    private String time;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "total_med_reminders")
+    private int total_med_reminders;
+
+    @Column(name = "current_count")
+    private int current_count;
+
 
 
     @ManyToOne(

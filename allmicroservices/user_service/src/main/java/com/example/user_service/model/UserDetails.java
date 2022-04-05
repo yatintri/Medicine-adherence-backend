@@ -41,7 +41,7 @@ public class UserDetails {
     private int pincode;
 
     @Column(name = "usercontact")
-    private int usercontact;
+    private Long usercontact;
 
     @Column(name = "lattitude")
     private float lattitude;
