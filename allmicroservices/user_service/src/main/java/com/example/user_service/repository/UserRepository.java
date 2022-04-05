@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     public UserEntity findBymail(String email);
 
     @Query("SELECT u from UserEntity u where u.user_id = ?1")
-    public UserEntity getByid(String user_id);
+    public UserEntity getuserbyid(String user_id);
 
     @Query("SELECT user from UserEntity user")
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userdetail_graph")

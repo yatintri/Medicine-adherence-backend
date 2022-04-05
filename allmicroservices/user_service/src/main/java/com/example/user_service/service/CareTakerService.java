@@ -2,12 +2,13 @@ package com.example.user_service.service;
 
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.UserCaretaker;
+import com.example.user_service.pojos.caretakerpojos.UserCaretakerpojo;
 
 import java.util.List;
 
 public interface CareTakerService {
 
-    public UserCaretaker saveCareTaker(UserCaretaker userCaretaker);
+    public UserCaretaker saveCareTaker(UserCaretakerpojo userCaretakerpojo);
 
     public UserCaretaker updateCaretakerStatus(String c_id) throws UserCaretakerException;
 

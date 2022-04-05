@@ -2,12 +2,14 @@ package com.example.user_service.service;
 
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.UserCaretaker;
+import com.example.user_service.pojos.caretakerpojos.UserCaretakerpojo;
 import com.example.user_service.repository.UserCaretakerRepository;
 import com.example.user_service.util.Datehelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CareTakerServiceImpl implements CareTakerService{
@@ -21,15 +23,25 @@ public class CareTakerServiceImpl implements CareTakerService{
     }
 
     @Override
-    public UserCaretaker saveCareTaker(UserCaretaker userCaretaker) {
+    public UserCaretaker saveCareTaker(UserCaretakerpojo userCaretakerpojo) {
+
+        UserCaretaker userCaretaker = new UserCaretaker();
+
+        userCaretaker.setCaretaker_username(userCaretakerpojo.getCaretaker_username());
+        userCaretaker.setReq_status(userCaretakerpojo.getReq_status());
+        userCaretaker.setPatient_name(userCaretakerpojo.getPatient_name());
+        userCaretaker.setCaretaker_id(userCaretakerpojo.getCaretaker_id());
+        userCaretaker.setPatient_id(userCaretakerpojo.getPatient_id());
         userCaretaker.setCreated_at(Datehelper.getcurrentdatatime());
+        userCaretaker.setSent_by(userCaretakerpojo.getSent_by());
+
         return userCaretakerRepository.save(userCaretaker);
     }
 
     @Override
     public UserCaretaker updateCaretakerStatus(String c_id) throws UserCaretakerException {
         UserCaretaker uc = userCaretakerRepository.getById(c_id);
-        if(uc == null){
+        if(uc.getPatient_name() == null){
             throw new UserCaretakerException("No user found with this id");
         }
         uc.setReq_status(true);
@@ -71,9 +83,13 @@ public class CareTakerServiceImpl implements CareTakerService{
 
 
         try{
-            UserCaretaker userCaretaker = userCaretakerRepository.findById(c_id).get();
-            userCaretakerRepository.delete(userCaretaker);
-             return true;
+            Optional<UserCaretaker> userCaretaker = userCaretakerRepository.findById(c_id);
+            if (userCaretaker.isPresent()){
+                userCaretakerRepository.delete(userCaretaker.get());
+                return true;
+
+            }
+            return false;
         }
         catch (Exception e)
         {

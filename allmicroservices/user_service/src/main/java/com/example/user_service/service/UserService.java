@@ -5,7 +5,6 @@ import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 

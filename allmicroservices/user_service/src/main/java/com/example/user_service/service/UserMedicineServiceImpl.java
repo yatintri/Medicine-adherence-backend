@@ -35,13 +35,13 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     @Override
     public UserMedicines saveUserMedicine( String user_id, UserMedicines userMedicines) throws UserMedicineException , UserexceptionMessage {
 
-        UserEntity user = userRepository.getByid(user_id);
+        UserEntity user = userRepository.getuserbyid(user_id);
         if(user==null)
         {
             throw new UserexceptionMessage("Please enter valid id");
         }
         userMedicines.setUserEntity(user);
-
+     //   userMedicines.setCreate_time(Datehelper.getcurrentdate().toString());
         UserMedicines userMedicines1 = userMedicineRepository.save(userMedicines);
         if(userMedicines1 == null)
         {
@@ -51,7 +51,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public boolean updateMedicineStatus(String medicine_id)  throws UserMedicineException{
+    public boolean updateMedicineStatus(Integer medicine_id)  throws UserMedicineException{
 
 
         Optional<UserMedicines> userMedicines = userMedicineRepository
@@ -60,7 +60,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         {
             throw new UserMedicineException("Medicine not found");
         }
-        userMedicines.get().setActive_status(false);
+      //  userMedicines.get().setActive_status(false);
         userMedicineRepository.save(userMedicines.get());
 
         return true;
@@ -72,7 +72,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String user_id)  throws UserMedicineException , UserexceptionMessage{
 
 
-        UserEntity user = userRepository.getByid(user_id);
+        UserEntity user = userRepository.getuserbyid(user_id);
         if(user == null)
         {
             throw  new UserexceptionMessage("Please enter valid id");
@@ -84,7 +84,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public UserMedicines editMedicineDetails(String medicine_id , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage {
+    public UserMedicines editMedicineDetails(Integer medicine_id , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage {
 
         Optional<UserMedicines> userMeds = userMedicineRepository.findById(medicine_id);
         if(userMeds.isEmpty())
@@ -101,17 +101,24 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         return userMeds1;
     }
 
-    //Implement following Methods
-//    and make query in usermed repo
+    @Override
+    public boolean syncdata(String user_id, List<UserMedicines> list) {
+
+        UserEntity user = userRepository.getuserbyid(user_id);
+        for(UserMedicines userMedicines : list){
+
+            userMedicines.setUserEntity(user);
+
+        }
 
 
-//    @Override
-//    public UserMedicines getMedReminders() {
-//        return userMedicineRepository.getmedreminders();
-//    }
+
+
+        return false;
+    }
 
     @Override
-    public UserMedicines getMedRemById(String medicine_id) throws UserMedicineException, UserexceptionMessage {
+    public UserMedicines getMedRemById(Integer medicine_id) throws UserMedicineException, UserexceptionMessage {
         UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicine_id);
         if(userMedicines2 == null)
         {
@@ -121,7 +128,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder,String medicine_id) throws UserMedicineException, UserexceptionMessage {
+    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder,Integer medicine_id) throws UserMedicineException, UserexceptionMessage {
         UserMedicines userMedicines =  userMedicineRepository.findById(medicine_id).get();
         userMedReminder.setUser_rem(userMedicines);
         UserMedReminder userMedReminder1 = userMedRemRepository.save(userMedReminder);
@@ -130,6 +137,8 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         }
         return userMedReminder1;
     }
+
+
 
 
 }
