@@ -47,7 +47,7 @@ public class UserMedReminder {
 
     @Column(name = "days")
     private String days;
-//
+///
     @Column(name = "reminder_time")
     private String reminder_time;
 

@@ -24,4 +24,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userdetail_graph")
     List<UserEntity> findAllusers();
 
-}//
+}///

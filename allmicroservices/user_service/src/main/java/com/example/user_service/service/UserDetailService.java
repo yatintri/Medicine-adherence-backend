@@ -8,3 +8,4 @@ public interface UserDetailService {
 
     public UserDetails saveUserDetail(String id,UserDetails userDetails) throws UserexceptionMessage;
 }
+//

@@ -52,3 +52,4 @@ public class MailInfo {
         return mail_subject;
     }
 }
+//

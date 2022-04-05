@@ -46,3 +46,4 @@ public class UserCaretaker {
     @Column(name = "sent_by")
     private String sent_by;
 }
+//

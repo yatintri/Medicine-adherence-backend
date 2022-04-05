@@ -10,6 +10,6 @@ public interface UserMedicineRepository extends JpaRepository<UserMedicines,Inte
     @Query("SELECT u from UserMedicines u where u.medicine_id = ?1")
     public UserMedicines getmedrembyid(Integer medicine_id);
 
-//    @Query()
+// /   @Query()
 //    public UserMedicines getmedreminders();
 }
