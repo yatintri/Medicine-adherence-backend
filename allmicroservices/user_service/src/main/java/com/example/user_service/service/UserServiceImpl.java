@@ -35,15 +35,15 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Async
-    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity,String fcm_token,String pic_path) throws UserexceptionMessage {
+    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity,String fcmToken,String picPath) throws UserexceptionMessage {
 //
         logger.info(Thread.currentThread().getName());
-        userEntity.setLast_login(Datehelper.getcurrentdatatime());
-        userEntity.setCreated_at(Datehelper.getcurrentdatatime());
+        userEntity.setLastLogin(Datehelper.getcurrentdatatime());
+        userEntity.setCreatedAt(Datehelper.getcurrentdatatime());
         UserEntity ue = userRepository.save(userEntity);
         UserDetails userDetails = new UserDetails();
-        userDetails.setFcm_token(fcm_token);
-        userDetails.setPic_path(pic_path);
+        userDetails.setFcmToken(fcmToken);
+        userDetails.setPicPath(picPath);
         userDetails.setUser(ue);
         userDetailsRepository.save(userDetails);
 
@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
 
-    public UserEntity getUserById(String user_id) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
-        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getuserbyid(user_id));
+    public UserEntity getUserById(String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getuserbyid(userId));
 
         logger.info(Thread.currentThread().getName());
         if(optionalUserEntity.isEmpty()){
@@ -81,11 +81,11 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public UserEntity updateUser(String user_id, UserEntity userEntity) {
-        UserEntity userDB = userRepository.getuserbyid(user_id);
+    public UserEntity updateUser(String userId, UserEntity userEntity) {
+        UserEntity userDB = userRepository.getuserbyid(userId);
 
-        if(Objects.nonNull(userEntity.getUser_name()) && !"".equalsIgnoreCase(userEntity.getUser_name())) {
-            userDB.setUser_name(userEntity.getUser_name());
+        if(Objects.nonNull(userEntity.getUserName()) && !"".equalsIgnoreCase(userEntity.getUserName())) {
+            userDB.setUserName(userEntity.getUserName());
         }
         if(Objects.nonNull(userEntity.getEmail()) && !"".equalsIgnoreCase(userEntity.getEmail())) {
             userDB.setEmail(userEntity.getEmail());
@@ -95,9 +95,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserEntity> getUserByName(String user_name) throws UserexceptionMessage,NullPointerException{
+    public List<UserEntity> getUserByName(String userName) throws UserexceptionMessage,NullPointerException{
 
-        List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(user_name);
+        List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
         if(userEntity.isEmpty()){
             throw new UserexceptionMessage("User not available with this name!");
         }

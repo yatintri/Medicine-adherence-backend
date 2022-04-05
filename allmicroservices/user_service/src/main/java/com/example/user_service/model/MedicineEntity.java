@@ -16,10 +16,10 @@ public class MedicineEntity {
     @Id
     @Column(name = "med_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     private int med_id;
+     private int medId;
 
     @Column(name = "med_name")
-    private String med_name;
+    private String medName;
 
 
 

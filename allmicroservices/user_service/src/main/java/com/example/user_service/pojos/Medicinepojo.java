@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Medicinepojo {
 
-    private int user_id;
+    private int userId;
     private String days;
-    private int current_count;
-    private String end_date;
-    private String medicine_des;
-    private int total_med_reminders;
-    private String medicine_name;
+    private int currentCount;
+    private String endDate;
+    private String medicineDes;
+    private int totalMedReminders;
+    private String medicineName;
     private String title;
-    private String start_date;
+    private String startDate;
     private int status;
     private String time;
 

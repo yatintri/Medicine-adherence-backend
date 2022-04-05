@@ -42,13 +42,13 @@ public class UserController {
     UserMedicineService userMedicineService;
     // saving the user when they signup
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Userresponse> saveUser(@RequestParam (name = "fcm_token")String fcm_token ,@RequestParam (name = "pic_path")String pic_path , @RequestBody UserEntity userEntity) throws UserexceptionMessage, ExecutionException, InterruptedException {
+    public ResponseEntity<Userresponse> saveUser(@RequestParam (name = "fcmToken")String fcmToken ,@RequestParam (name = "picPath")String picPath , @RequestBody UserEntity userEntity) throws UserexceptionMessage, ExecutionException, InterruptedException {
         UserEntity user = userService.getUserByEmail(userEntity.getEmail());
         if(user != null){
             Userresponse userresponse = new Userresponse("Already present",user);
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
-        user = userService.saveUser(userEntity,fcm_token,pic_path).get();
+        user = userService.saveUser(userEntity,fcmToken,picPath).get();
         Userresponse userresponse = new Userresponse("success",user);
 
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
@@ -82,11 +82,11 @@ public class UserController {
 
     // fetching user by id
     @GetMapping(value = "/getuser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable("id") String user_id) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable("id") String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
 
-        List<UserEntity> user = Arrays.asList(userService.getUserById(user_id));
-        List<UserMedicines> list = userMedicineService.getallUserMedicines(user_id).get();
+        List<UserEntity> user = Arrays.asList(userService.getUserById(userId));
+        List<UserMedicines> list = userMedicineService.getallUserMedicines(userId).get();
 
         UserProfileResponse userProfileResponse = new UserProfileResponse("OK",user,list);
         return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
@@ -97,10 +97,10 @@ public class UserController {
 
     // updating the user
     @PutMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserEntity> updateUser(@PathVariable("id") String user_id
+    public ResponseEntity<UserEntity> updateUser(@PathVariable("id") String userId
             , @RequestBody UserEntity userEntity) throws UserexceptionMessage {
 
-        return new ResponseEntity<>(userService.updateUser(user_id, userEntity), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(userId, userEntity), HttpStatus.OK);
 
 
     }

@@ -23,19 +23,19 @@ public class UserDetails {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String userdet_id;
+    private String userdetId;
 
     @Column(name = "bio")
     private String bio;
 
     @Column(name = "pic_path")
-    private String pic_path;
+    private String picPath;
 
     @Column(name = "age")
     private int age;
 
     @Column(name = "fcm_token")
-    private String fcm_token;
+    private String fcmToken;
 
     @Column(name = "pincode")
     private int pincode;
@@ -56,19 +56,19 @@ public class UserDetails {
     private String gender;
 
     @Column(name = "blood_group")
-    private String blood_group;
+    private String bloodGroup;
 
     @Column(name = "martial_status")
-    private String martial_status;
+    private String martialStatus;
 
     @Column(name = "weight")
     private int weight;
 
     @Column(name = "emergency_contact")
-    private int emergency_contact;
+    private int emergencyContact;
 
     @Column(name = "past_medication")
-    private String past_medication;
+    private String pastMedication;
 
     @OneToOne(
             fetch = FetchType.LAZY

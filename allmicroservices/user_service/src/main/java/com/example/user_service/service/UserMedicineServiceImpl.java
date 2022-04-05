@@ -33,9 +33,9 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     Logger logger = LoggerFactory.getLogger(UserMedicineServiceImpl.class);
 
     @Override
-    public UserMedicines saveUserMedicine( String user_id, UserMedicines userMedicines) throws UserMedicineException , UserexceptionMessage {
+    public UserMedicines saveUserMedicine( String userId, UserMedicines userMedicines) throws UserMedicineException , UserexceptionMessage {
 
-        UserEntity user = userRepository.getuserbyid(user_id);
+        UserEntity user = userRepository.getuserbyid(userId);
         if(user==null)
         {
             throw new UserexceptionMessage("Please enter valid id");
@@ -51,11 +51,11 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public boolean updateMedicineStatus(Integer medicine_id)  throws UserMedicineException{
+    public boolean updateMedicineStatus(Integer medicineId)  throws UserMedicineException{
 
 
         Optional<UserMedicines> userMedicines = userMedicineRepository
-                                     .findById(medicine_id);
+                                     .findById(medicineId);
         if(userMedicines.isEmpty())
         {
             throw new UserMedicineException("Medicine not found");
@@ -69,10 +69,10 @@ public class UserMedicineServiceImpl implements UserMedicineService{
 
     @Override
     @Async
-    public CompletableFuture<List<UserMedicines>> getallUserMedicines(String user_id)  throws UserMedicineException , UserexceptionMessage{
+    public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId)  throws UserMedicineException , UserexceptionMessage{
 
 
-        UserEntity user = userRepository.getuserbyid(user_id);
+        UserEntity user = userRepository.getuserbyid(userId);
         if(user == null)
         {
             throw  new UserexceptionMessage("Please enter valid id");
@@ -84,15 +84,15 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public UserMedicines editMedicineDetails(Integer medicine_id , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage {
+    public UserMedicines editMedicineDetails(Integer medicineId , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage {
 
-        Optional<UserMedicines> userMeds = userMedicineRepository.findById(medicine_id);
+        Optional<UserMedicines> userMeds = userMedicineRepository.findById(medicineId);
         if(userMeds.isEmpty())
         {
             throw  new UserexceptionMessage("Please enter valid id");
         }
-        userMeds.get().setMedicine_des(userMedicines.getMedicine_des());
-        userMeds.get().setMedicine_name(userMedicines.getMedicine_name());
+        userMeds.get().setMedicineDes(userMedicines.getMedicineDes());
+        userMeds.get().setMedicineName(userMedicines.getMedicineName());
         UserMedicines userMeds1 = userMedicineRepository.save(userMeds.get());
         if(userMeds1 == null)
         {
@@ -102,9 +102,9 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public boolean syncdata(String user_id, List<UserMedicines> list) {
+    public boolean syncdata(String userId, List<UserMedicines> list) {
 
-        UserEntity user = userRepository.getuserbyid(user_id);
+        UserEntity user = userRepository.getuserbyid(userId);
         for(UserMedicines userMedicines : list){
 
             userMedicines.setUserEntity(user);
@@ -118,8 +118,8 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public UserMedicines getMedRemById(Integer medicine_id) throws UserMedicineException, UserexceptionMessage {
-        UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicine_id);
+    public UserMedicines getMedRemById(Integer medicineId) throws UserMedicineException, UserexceptionMessage {
+        UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicineId);
         if(userMedicines2 == null)
         {
             throw new UserMedicineException("Please Enter Valid Id!!!");
@@ -128,9 +128,9 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder,Integer medicine_id) throws UserMedicineException, UserexceptionMessage {
-        UserMedicines userMedicines =  userMedicineRepository.findById(medicine_id).get();
-        userMedReminder.setUser_rem(userMedicines);
+    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder,Integer medicineId) throws UserMedicineException, UserexceptionMessage {
+        UserMedicines userMedicines =  userMedicineRepository.findById(medicineId).get();
+        userMedReminder.setUserRem(userMedicines);
         UserMedReminder userMedReminder1 = userMedRemRepository.save(userMedReminder);
         if(userMedReminder1 == null){
             throw new UserMedicineException("Error try again");

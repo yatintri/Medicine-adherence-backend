@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserCaretakerpojo {
 
-    private String patient_name;
-    private Boolean req_status;
-    private String caretaker_id;
-    private String patient_id;
-    private String caretaker_username;
-    private String created_at;
-    private String sent_by;
+    private String patientName;
+    private Boolean reqStatus;
+    private String caretakerId;
+    private String patientId;
+    private String caretakerUsername;
+    private String createdAt;
+    private String sentBy;
 
 
 }

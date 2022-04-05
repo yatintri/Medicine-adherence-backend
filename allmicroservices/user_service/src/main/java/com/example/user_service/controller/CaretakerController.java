@@ -44,10 +44,10 @@ public class CaretakerController {
 
     // update request status if request is accepted or rejected
     @PutMapping(value = "/updatestatus")
-    public ResponseEntity<UserCaretaker> updatecaretakerStatus(@RequestParam(name = "c_id") String c_id)
+    public ResponseEntity<UserCaretaker> updatecaretakerStatus(@RequestParam(name = "cId") String cId)
              throws UserCaretakerException {
 
-        return  new ResponseEntity<>(careTakerService.updateCaretakerStatus(c_id), HttpStatus.OK);
+        return  new ResponseEntity<>(careTakerService.updateCaretakerStatus(cId), HttpStatus.OK);
 
     }
 
@@ -55,31 +55,31 @@ public class CaretakerController {
 
     // fetch all the patients of a particular caretaker
     @GetMapping(value = "/myPatients(Caretaker)")
-    public ResponseEntity<List<UserCaretaker>> getPatientsUnderMe(@RequestParam(name = "caretaker_id") String  user_id){
+    public ResponseEntity<List<UserCaretaker>> getPatientsUnderMe(@RequestParam(name = "caretakerId") String  userId){
 
-        return new ResponseEntity<>(careTakerService.getPatientsUnderMe(user_id),HttpStatus.OK);
+        return new ResponseEntity<>(careTakerService.getPatientsUnderMe(userId),HttpStatus.OK);
     }
 
     // fetch all the request sent by a patients to a caretaker
     @GetMapping(value = "/patientRequests(Caretaker)")
-    public ResponseEntity<List<UserCaretaker>> getPatientRequests(@RequestParam(name = "caretaker_id") String  user_id){
+    public ResponseEntity<List<UserCaretaker>> getPatientRequests(@RequestParam(name = "caretakerId") String  userId){
 
-        return new ResponseEntity<>(careTakerService.getPatientRequests(user_id),HttpStatus.OK);
+        return new ResponseEntity<>(careTakerService.getPatientRequests(userId),HttpStatus.OK);
 
     }
 
     // where the patients can view all his caretakers
     @GetMapping(value = "/myCareTakers(Patient)")
-    public ResponseEntity<List<UserCaretaker>> getMyCaretakers(@RequestParam(name = "patient_id") String  user_id){
+    public ResponseEntity<List<UserCaretaker>> getMyCaretakers(@RequestParam(name = "patientId") String  userId){
 
-        return new ResponseEntity<>(careTakerService.getMyCaretakers(user_id),HttpStatus.OK);
+        return new ResponseEntity<>(careTakerService.getMyCaretakers(userId),HttpStatus.OK);
     }
 
     // to fetch the caretaker request to a patients
     @GetMapping(value = "/caretakerRequests(sentstatus)")
-    public ResponseEntity<List<UserCaretaker>> getCaretakerSentStatus(@RequestParam(name = "patient_id") String  user_id){
+    public ResponseEntity<List<UserCaretaker>> getCaretakerSentStatus(@RequestParam(name = "patientId") String  userId){
 
-        return new ResponseEntity<>(careTakerService.getCaretakerRequestStatus(user_id),HttpStatus.OK);
+        return new ResponseEntity<>(careTakerService.getCaretakerRequestStatus(userId),HttpStatus.OK);
 
     }
 
@@ -88,23 +88,23 @@ public class CaretakerController {
     // to check the status of a request by caretaker
 
     @GetMapping(value = "/caretakerRequests(for patient)")
-    public ResponseEntity<List<UserCaretaker>> getCaretakerRequestsP(@RequestParam(name = "patient_id") String  user_id){
+    public ResponseEntity<List<UserCaretaker>> getCaretakerRequestsP(@RequestParam(name = "patientId") String  userId){
 
-        return new ResponseEntity<>(careTakerService.getCaretakerRequestsP(user_id),HttpStatus.OK);
+        return new ResponseEntity<>(careTakerService.getCaretakerRequestsP(userId),HttpStatus.OK);
 
     }
 
     @GetMapping(value = "/deletePatientRequest")
-    public ResponseEntity<Boolean> delPatientReq(@RequestParam(name = "c_id") String c_id){
-        boolean b = careTakerService.delPatientReq(c_id);
+    public ResponseEntity<Boolean> delPatientReq(@RequestParam(name = "cId") String cId){
+        boolean b = careTakerService.delPatientReq(cId);
 
         return new ResponseEntity<>(b,HttpStatus.OK);
     }
 
     @GetMapping(value = "/notifyuser")
-    public ResponseEntity<String> notifyuserformed(@RequestParam(name = "fcm_token") String fcm_token , @RequestParam("medname") String body){
+    public ResponseEntity<String> notifyuserformed(@RequestParam(name = "fcmToken") String fcmToken , @RequestParam("medname") String body){
 
-        rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcm_token,"Take medicine","patient",body,""));
+        rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","patient",body,""));
         return new ResponseEntity<>("Ok",HttpStatus.OK);
 
     }
@@ -112,7 +112,7 @@ public class CaretakerController {
     @PostMapping(value = "/sendimage")
     public ResponseEntity<String> sendimagetocaretaker(@RequestParam(name = "image") MultipartFile multipartFile
                                                 , @RequestParam(name = "name") String filename ,
-                                                  @RequestParam(name = "id") String caretaker_id) throws IOException, UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+                                                  @RequestParam(name = "id") String caretakerId) throws IOException, UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
          File file = new File(System.getProperty("user.dir")+"/src/main/upload/static/images");
          if(!file.exists()){
@@ -123,8 +123,8 @@ public class CaretakerController {
          Files.write(path,multipartFile.getBytes());
         // String fcm =   userService.getUserById(caretaker_id).getUserDetails().getFcm_token();
       //   System.out.println(fcm);
-         String fcm_token = "c_nl_oj2S9S_HmPQjfvDSR:APA91bEYDLIGXU4jI4P26uVqAdoVaaJ378TtGjxrKaytbuqulXWZGs91Jx6_1mrLWEaGECufvZ512BWwQvCAQTnjg3OTh2GPn5E3DNOTh_ycy4Xi7-LZ39OFsGXYjiUm5UDJfRez0CV4";
-         rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcm_token,"Take medicine","caretaker","",filename+".jpg"));
+         String fcmToken = "c_nl_oj2S9S_HmPQjfvDSR:APA91bEYDLIGXU4jI4P26uVqAdoVaaJ378TtGjxrKaytbuqulXWZGs91Jx6_1mrLWEaGECufvZ512BWwQvCAQTnjg3OTh2GPn5E3DNOTh_ycy4Xi7-LZ39OFsGXYjiUm5UDJfRez0CV4";
+         rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","caretaker","",filename+".jpg"));
 
 
         return  new ResponseEntity<>("Ok",HttpStatus.OK);

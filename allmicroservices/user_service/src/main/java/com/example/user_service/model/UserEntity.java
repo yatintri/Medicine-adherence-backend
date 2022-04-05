@@ -25,19 +25,19 @@ public class UserEntity {
           name = "UUID",
           strategy = "org.hibernate.id.UUIDGenerator"
   )
-  private String user_id;
+  private String userId;
 
   @Column(name = "user_name")
-    private String user_name;
+    private String userName;
 
   @Column(name = "email")
     private String email;
 
   @Column(name = "last_login")
-  private String last_login;
+  private String lastLogin;
 
   @Column(name = "created_at")
-  private String created_at;
+  private String createdAt;
 
   @OneToOne(
           cascade = CascadeType.ALL,

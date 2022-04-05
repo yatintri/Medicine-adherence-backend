@@ -1,6 +1,5 @@
 package com.example.user_service.pojos;
 
-import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 

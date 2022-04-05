@@ -22,27 +22,27 @@ public class UserCaretaker {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String c_id;
+    private String cId;
 
     @Column(name = "patient_name")
-    private String patient_name;
+    private String patientName;
 
     @Column(name = "req_status")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean req_status;
+    private boolean reqStatus;
 
     @Column(name = "caretaker_id")
-    private String caretaker_id;
+    private String caretakerId;
 
     @Column(name = "patient_id")
-    private String patient_id;
+    private String patientId;
 
     @Column(name = "caretaker_username")
-    private String caretaker_username;
+    private String caretakerUsername;
 
     @Column(name = "created_at")
-    private String created_at;
+    private String createdAt;
 
     @Column(name = "sent_by")
-    private String sent_by;
+    private String sentBy;
 }
