@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Userresponse> login(@RequestParam String email) throws UserexceptionMessage, ExecutionException, InterruptedException {
+    public ResponseEntity<Userresponse> login(@RequestParam String email) throws UserexceptionMessage {
         UserEntity user = userService.getUserByEmail(email);
         if(user != null){
             Userresponse userresponse = new Userresponse("success",user);
@@ -110,7 +110,7 @@ public class UserController {
     @GetMapping(value = "/getbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<? extends Object> getUserByEmail(@RequestParam("email") String email
             ,@RequestParam("sender") String sender)
-            throws UserexceptionMessage , SendFailedException {
+            throws UserexceptionMessage {
 
         UserEntity userEntity = userService.getUserByEmail(email);
         if(userEntity == null){

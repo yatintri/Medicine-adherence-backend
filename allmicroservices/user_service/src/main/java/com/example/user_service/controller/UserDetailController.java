@@ -21,7 +21,7 @@ public class UserDetailController {
     private UserDetailService userDetailService;
 
     @PutMapping(value = "/updateuserdetails/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateUserDetails(@PathVariable("id") String id,
+    public ResponseEntity<UserDetails> updateUserDetails(@PathVariable("id") String id,
                                                @RequestBody UserDetails userDetails) throws UserexceptionMessage {
 
         return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetails),HttpStatus.OK);

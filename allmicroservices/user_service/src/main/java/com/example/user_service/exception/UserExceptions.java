@@ -18,7 +18,7 @@ public class UserExceptions {
      * Returns user exception response
      */
  @ExceptionHandler({UserexceptionMessage.class})
- public ResponseEntity<?> getuserException(UserexceptionMessage uem , WebRequest webRequest){
+ public ResponseEntity<HashMap<String,String>> getuserException(UserexceptionMessage uem , WebRequest webRequest){
      HashMap<String,String> map = new HashMap<>();
      map.put("error",uem.getMessage());
      return new ResponseEntity<>(map , HttpStatus.NOT_FOUND);
@@ -29,7 +29,7 @@ public class UserExceptions {
      * Returns caretaker exception response
      */
  @ExceptionHandler({UserCaretakerException.class})
-    public ResponseEntity<?> getcaretakerexception(UserCaretakerException uce , WebRequest webRequest){
+    public ResponseEntity<HashMap<String , String>> getcaretakerexception(UserCaretakerException uce , WebRequest webRequest){
 
      HashMap<String , String> map = new HashMap<>();
      map.put("error" , uce.getMessage());
@@ -40,7 +40,7 @@ public class UserExceptions {
      * Returns user medicine exception response
      */
     @ExceptionHandler({UserMedicineException.class})
-    public ResponseEntity<?> getUserMedicineException(UserMedicineException udm , WebRequest webRequest){
+    public ResponseEntity<HashMap<String , String>> getUserMedicineException(UserMedicineException udm , WebRequest webRequest){
 
         HashMap<String , String> map = new HashMap<>();
         map.put("error" , udm.getMessage());

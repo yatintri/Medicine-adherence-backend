@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService{
         userDetails.setUser(ue);
         userDetailsRepository.save(userDetails);
 
-        if(ue == null){
+        if(ue.getUserName() == null){
             throw new UserexceptionMessage("Error try again!");
 
         }
@@ -108,9 +108,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage {
 
-        UserEntity userEntity = userRepository.findBymail(email);
-
-        return userEntity;
+        return userRepository.findBymail(email);
     }
 }
 //////

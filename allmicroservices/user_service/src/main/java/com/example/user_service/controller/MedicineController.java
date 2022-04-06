@@ -1,7 +1,6 @@
 package com.example.user_service.controller;
 
-import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.exception.UserexceptionMessage;
+
 import com.example.user_service.model.*;
 import com.example.user_service.pojos.Medicinepojo;
 import com.example.user_service.repository.UserMedicineRepository;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(path = "/api/usermedicine")
@@ -31,7 +29,7 @@ public class MedicineController {
     UserMedicineRepository userMedicineRepository;
 
     @PostMapping(value = "/syncmedicines",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> syncdata(@RequestParam("userId") String userId , @RequestBody List<Medicinepojo> medicinepojo){
+    public ResponseEntity<String> syncdata(@RequestParam("userId") String userId , @RequestBody List<Medicinepojo> medicinepojo){
 
         UserEntity userEntity = userRepository.getuserbyid(userId);
         List<UserMedicines> userMedicinesList = new ArrayList<>();
@@ -55,11 +53,7 @@ public class MedicineController {
 
         userMedicineRepository.saveAll(userMedicinesList);
 
-
-        // userMedicineService.syncdata(user_id,userMedicines);
-
-
-        return new ResponseEntity<>("",HttpStatus.OK);
+        return new ResponseEntity<>("OK",HttpStatus.OK);
 
 
     }

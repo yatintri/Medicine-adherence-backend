@@ -3,7 +3,6 @@ package com.example.user_service.service;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
-import com.example.user_service.model.UserMedReminder;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.repository.UserMedRemRepository;
 import com.example.user_service.repository.UserMedicineRepository;
@@ -41,9 +40,8 @@ public class UserMedicineServiceImpl implements UserMedicineService{
             throw new UserexceptionMessage("Please enter valid id");
         }
         userMedicines.setUserEntity(user);
-        //   userMedicines.setCreate_time(Datehelper.getcurrentdate().toString());
         UserMedicines userMedicines1 = userMedicineRepository.save(userMedicines);
-        if(userMedicines1 == null)
+        if(userMedicines1.getMedicineName() == null)
         {
             throw new UserMedicineException("Error try again!");
         }
@@ -60,7 +58,6 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         {
             throw new UserMedicineException("Medicine not found");
         }
-        //  userMedicines.get().setActive_status(false);
         userMedicineRepository.save(userMedicines.get());
 
         return true;
@@ -94,7 +91,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         userMeds.get().setMedicineDes(userMedicines.getMedicineDes());
         userMeds.get().setMedicineName(userMedicines.getMedicineName());
         UserMedicines userMeds1 = userMedicineRepository.save(userMeds.get());
-        if(userMeds1 == null)
+        if(userMeds1.getMedicineName() == null)
         {
             throw new UserMedicineException("Error try again!");
         }
@@ -111,9 +108,6 @@ public class UserMedicineServiceImpl implements UserMedicineService{
 
         }
 
-
-
-
         return false;
     }
 
@@ -127,16 +121,6 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         return userMedicines2;
     }
 
-    @Override
-    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder,Integer medicineId) throws UserMedicineException, UserexceptionMessage {
-        UserMedicines userMedicines =  userMedicineRepository.findById(medicineId).get();
-        userMedReminder.setUserRem(userMedicines);
-        UserMedReminder userMedReminder1 = userMedRemRepository.save(userMedReminder);
-        if(userMedReminder1 == null){
-            throw new UserMedicineException("Error try again");
-        }
-        return userMedReminder1;
-    }
 
 
 

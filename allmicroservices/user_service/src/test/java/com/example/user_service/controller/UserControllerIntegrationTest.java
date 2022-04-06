@@ -32,7 +32,7 @@ public class UserControllerIntegrationTest {
     HttpHeaders headers = new HttpHeaders();
 
     @Test
-    public void saveUser() {
+     void saveUser() {
 
         UserEntity user = new UserEntity();
         user.setUserId("379dfb3b-4b78-4232-84af-110d406622a6");
@@ -59,7 +59,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void LoginUser() {
+     void LoginUser() {
         UserEntity user = new UserEntity();
         user.setUserId("e61ef901-e105-4636-bef6-f664c204a825");
         user.setUserName("Yatin");
@@ -120,7 +120,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void testRetrieveById() throws Exception {
+     void testRetrieveById() throws Exception {
 
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
@@ -134,7 +134,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void testUpdateUserById(){
+     void testUpdateUserById(){
         UserEntity user = new UserEntity();
         user.setUserId("4d3d1935-8b60-460e-9fee-6d0df35d8258");
         user.setUserName("Yatin Tri");
@@ -178,7 +178,7 @@ public class UserControllerIntegrationTest {
 
 
     @Test
-    public void testRetrieveByEmail() throws JSONException {
+     void testRetrieveByEmail() throws JSONException {
 
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 

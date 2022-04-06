@@ -128,21 +128,7 @@ class CaretakerControllerIntegrationTest {
         JSONAssert.assertEquals(expected,response.getBody(), false);
     }
 
-    @Test
-    void testGetCaretakerRequestsP() {
-    }
 
-    @Test
-    void testDelPatientReq() {
-    }
-
-    @Test
-    void testNotifyUserForMed() {
-    }
-
-    @Test
-    void testSendImageToCaretaker() {
-    }
     private String createURLWithPort(String uri) {
         return "http://localhost:" + port + uri;
     }
