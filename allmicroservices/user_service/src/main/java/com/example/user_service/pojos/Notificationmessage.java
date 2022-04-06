@@ -45,8 +45,8 @@ public class Notificationmessage {
         return fcmToken;
     }
 
-    public void setFcmToken(String fcm_token) {
-        this.fcmToken = fcm_token;
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public String getMessage() {

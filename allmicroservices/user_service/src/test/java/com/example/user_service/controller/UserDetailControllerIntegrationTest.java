@@ -26,7 +26,7 @@ class UserDetailControllerIntegrationTest {
     HttpHeaders headers = new HttpHeaders();
 
     @Test
-    public void updateUserDetailsById() throws JSONException {
+     void updateUserDetailsById() throws JSONException {
 
         UserDetails user = new UserDetails();
         user.setUserdetId("10cc0256-99a5-4f19-90d7-2c1deb74fb79");

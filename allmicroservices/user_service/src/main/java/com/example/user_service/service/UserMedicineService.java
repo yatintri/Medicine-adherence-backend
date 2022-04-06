@@ -2,7 +2,6 @@ package com.example.user_service.service;
 
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
-import com.example.user_service.model.UserMedReminder;
 import com.example.user_service.model.UserMedicines;
 
 import java.util.List;
@@ -22,6 +21,5 @@ public interface UserMedicineService {
 
     public UserMedicines getMedRemById(Integer medicineId)throws UserMedicineException, UserexceptionMessage ;
 
-    public UserMedReminder saveMedReminder(UserMedReminder userMedReminder, Integer medicineId)throws UserMedicineException, UserexceptionMessage ;
 }
 ///

@@ -12,8 +12,6 @@ public interface CareTakerService {
 
     public UserCaretaker updateCaretakerStatus(String cId) throws UserCaretakerException;
 
-//    public List<UserCaretaker> getPatientCaretakerMap();
-
     public List<UserCaretaker> getPatientsUnderMe(String userId);
 
     public List<UserCaretaker> getPatientRequests(String userId);
@@ -21,8 +19,6 @@ public interface CareTakerService {
     public List<UserCaretaker> getMyCaretakers(String userId);
 
     public List<UserCaretaker> getCaretakerRequestStatus(String userId);
-
-//    public List<UserCaretaker> getPatientRequestStatus(String user_id);
 
     public List<UserCaretaker> getCaretakerRequestsP(String userId);
 
