@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -100,20 +97,9 @@ public class CaretakerController {
     @PostMapping(value = "/sendimage")
     public ResponseEntity<String> sendimagetocaretaker(@RequestParam(name = "image") MultipartFile multipartFile
             , @RequestParam(name = "name") String filename ,
-                                                       @RequestParam(name = "id") String caretakerId) throws IOException {
+                                                       @RequestParam(name = "id") String caretakerId) throws IOException, UserCaretakerException {
 
-        File file = new File(System.getProperty("user.dir")+"/src/main/upload/static/images");
-        if(!file.exists()){
-            file.mkdir();
-        }
-
-        Path path = Paths.get(System.getProperty("user.dir")+"/src/main/upload/static/images",filename.concat(".").concat("jpg"));
-        Files.write(path,multipartFile.getBytes());
-
-        String fcmToken = "c_nl_oj2S9S_HmPQjfvDSR:APA91bEYDLIGXU4jI4P26uVqAdoVaaJ378TtGjxrKaytbuqulXWZGs91Jx6_1mrLWEaGECufvZ512BWwQvCAQTnjg3OTh2GPn5E3DNOTh_ycy4Xi7-LZ39OFsGXYjiUm5UDJfRez0CV4";
-        rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","caretaker","",filename+".jpg"));
-
-
+        careTakerService.sendimagetocaretaker(multipartFile , filename , caretakerId);
         return  new ResponseEntity<>("Ok",HttpStatus.OK);
 
     }

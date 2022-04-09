@@ -1,13 +1,22 @@
 package com.example.user_service.service;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.UserCaretaker;
+import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.caretakerpojos.UserCaretakerpojo;
 import com.example.user_service.repository.UserCaretakerRepository;
 import com.example.user_service.util.Datehelper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +26,9 @@ public class CareTakerServiceImpl implements CareTakerService{
     @Autowired
     private UserCaretakerRepository userCaretakerRepository;
 
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     @Override
     public UserCaretaker saveCareTaker(UserCaretakerpojo userCaretakerpojo) {
@@ -36,8 +48,12 @@ public class CareTakerServiceImpl implements CareTakerService{
 
     @Override
     public UserCaretaker updateCaretakerStatus(String cId) throws UserCaretakerException {
-        UserCaretaker uc = userCaretakerRepository.getById(cId);
-        if(uc.getPatientName() == null){
+        System.out.println(cId);
+
+        UserCaretaker uc = userCaretakerRepository.findById(cId).get();
+
+        System.out.println(uc);
+        if(uc == null){
             throw new UserCaretakerException("No user found with this id");
         }
         uc.setReqStatus(true);
@@ -88,6 +104,27 @@ public class CareTakerServiceImpl implements CareTakerService{
         {
             return false;
         }
+    }
+
+    @Override
+    public boolean sendimagetocaretaker(MultipartFile multipartFile, String filename, String caretakerid) throws IOException , UserCaretakerException {
+
+        try{
+            File file = new File(System.getProperty("user.dir")+"/src/main/upload/static/images");
+            if(!file.exists()){
+                file.mkdir();
+            }
+            Path path = Paths.get(System.getProperty("user.dir")+"/src/main/upload/static/images",filename.concat(".").concat("jpg"));
+            Files.write(path,multipartFile.getBytes());
+
+            String fcmToken = "c_nl_oj2S9S_HmPQjfvDSR:APA91bEYDLIGXU4jI4P26uVqAdoVaaJ378TtGjxrKaytbuqulXWZGs91Jx6_1mrLWEaGECufvZ512BWwQvCAQTnjg3OTh2GPn5E3DNOTh_ycy4Xi7-LZ39OFsGXYjiUm5UDJfRez0CV4";
+            rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","caretaker","",filename+".jpg"));
+
+        }catch (Exception e){
+            return false;
+        }
+
+        return true;
     }
 
 
