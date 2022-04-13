@@ -11,6 +11,7 @@ import com.example.user_service.pojos.Userresponse;
 import com.example.user_service.repository.Medrepo;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
+import com.example.user_service.util.JwtUtil;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,10 @@ public class UserController {
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    Medrepo medrepo;
+    private Medrepo medrepo;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     UserMedicineService userMedicineService;
@@ -45,12 +49,12 @@ public class UserController {
     public ResponseEntity<Userresponse> saveUser(@RequestParam (name = "fcmToken")String fcmToken ,@RequestParam (name = "picPath")String picPath , @RequestBody UserEntity userEntity) throws UserexceptionMessage, ExecutionException, InterruptedException {
         UserEntity user = userService.getUserByEmail(userEntity.getEmail());
         if(user != null){
-            Userresponse userresponse = new Userresponse("Already present",user);
+            Userresponse userresponse = new Userresponse("Already present",user,"");
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
         user = userService.saveUser(userEntity,fcmToken,picPath).get();
-        Userresponse userresponse = new Userresponse("success",user);
-
+        String jwtToken = jwtUtil.generateToken(user.getUserName());
+        Userresponse userresponse = new Userresponse("success",user,jwtToken);
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
 
 
@@ -60,10 +64,10 @@ public class UserController {
     public ResponseEntity<Userresponse> login(@RequestParam String email) throws UserexceptionMessage {
         UserEntity user = userService.getUserByEmail(email);
         if(user != null){
-            Userresponse userresponse = new Userresponse("success",user);
+            Userresponse userresponse = new Userresponse("success",user, jwtUtil.generateToken(user.getUserName()));
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
-        Userresponse userresponse = new Userresponse("Not found",null);
+        Userresponse userresponse = new Userresponse("Not found",null,"");
 
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
 

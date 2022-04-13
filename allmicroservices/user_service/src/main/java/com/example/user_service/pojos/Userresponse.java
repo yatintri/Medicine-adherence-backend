@@ -9,9 +9,20 @@ public class Userresponse {
     private String status;
     private List<UserEntity> userentity = new ArrayList<>();
 
-    public Userresponse(String status, UserEntity userentity) {
+    private String jwtToken;
+
+    public Userresponse(String status, UserEntity userentity , String jwtToken) {
         this.status = status;
         this.userentity.add(userentity);
+        this.jwtToken = jwtToken;
+    }
+
+    public String getJwtToken() {
+        return jwtToken;
+    }
+
+    public void setJwtToken(String jwtToken) {
+        this.jwtToken = jwtToken;
     }
 
     public String getStatus() {
