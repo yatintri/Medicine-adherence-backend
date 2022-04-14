@@ -4,9 +4,11 @@ import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -27,6 +29,8 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
+    @Autowired
+    private ModelMapper mapper;
 
     @Autowired
     private UserMedicineService userMedicineService;
@@ -35,9 +39,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Async
-    public CompletableFuture<UserEntity> saveUser(UserEntity userEntity,String fcmToken,String picPath) throws UserexceptionMessage {
+    public CompletableFuture<UserEntity> saveUser(UserEntityDTO userEntityDTO,String fcmToken,String picPath) throws UserexceptionMessage {
 //
         logger.info(Thread.currentThread().getName());
+        UserEntity userEntity= mapToEntity(userEntityDTO);
         userEntity.setLastLogin(Datehelper.getcurrentdatatime());
         userEntity.setCreatedAt(Datehelper.getcurrentdatatime());
         UserEntity ue = userRepository.save(userEntity);
@@ -68,7 +73,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
 
-    public UserEntity getUserById(String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    public UserEntity getUserById(String userId) throws UserexceptionMessage{
         Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getuserbyid(userId));
 
         logger.info(Thread.currentThread().getName());
@@ -81,9 +86,9 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public UserEntity updateUser(String userId, UserEntity userEntity) {
+    public UserEntity updateUser(String userId, UserEntityDTO userEntityDTO) {
         UserEntity userDB = userRepository.getuserbyid(userId);
-
+        UserEntity userEntity= mapToEntity(userEntityDTO);
         if(Objects.nonNull(userEntity.getUserName()) && !"".equalsIgnoreCase(userEntity.getUserName())) {
             userDB.setUserName(userEntity.getUserName());
         }
@@ -109,6 +114,10 @@ public class UserServiceImpl implements UserService{
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage {
 
         return userRepository.findBymail(email);
+    }
+
+    private UserEntity mapToEntity(UserEntityDTO userEntityDTO){
+        return  mapper.map(userEntityDTO, UserEntity.class);
     }
 }
 //////

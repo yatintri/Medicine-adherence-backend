@@ -4,7 +4,7 @@ import com.example.user_service.exception.UserCaretakerException;
 
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.pojos.Notificationmessage;
-import com.example.user_service.pojos.caretakerpojos.UserCaretakerpojo;
+import com.example.user_service.pojos.dto.UserCaretakerDTO;
 import com.example.user_service.service.CareTakerService;
 import com.example.user_service.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -30,9 +30,9 @@ public class CaretakerController {
     RabbitTemplate rabbitTemplate;
     // save caretaker for a patients
     @PostMapping(value = "/savecaretaker" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserCaretaker> saveCaretaker(@RequestBody UserCaretakerpojo userCaretakerpojo){
+    public ResponseEntity<UserCaretaker> saveCaretaker(@RequestBody UserCaretakerDTO userCaretakerDTO){
 
-        return new ResponseEntity<>(careTakerService.saveCareTaker(userCaretakerpojo), HttpStatus.CREATED);
+        return new ResponseEntity<>(careTakerService.saveCareTaker(userCaretakerDTO), HttpStatus.CREATED);
 
     }
 

@@ -4,7 +4,7 @@ package com.example.user_service.controller;
 
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserDetails;
-
+import com.example.user_service.pojos.dto.UserDetailsDTO;
 import com.example.user_service.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,9 @@ public class UserDetailController {
 
     @PutMapping(value = "/updateuserdetails/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDetails> updateUserDetails(@PathVariable("id") String id,
-                                               @RequestBody UserDetails userDetails) throws UserexceptionMessage {
+                                                         @RequestBody UserDetailsDTO userDetailsDTO) throws UserexceptionMessage {
 
-        return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetails),HttpStatus.OK);
+        return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetailsDTO),HttpStatus.OK);
 
     }
 

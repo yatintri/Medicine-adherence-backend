@@ -1,4 +1,4 @@
-package com.example.user_service.pojos.caretakerpojos;
+package com.example.user_service.pojos.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCaretakerpojo {
+public class UserCaretakerDTO {
 
     private String patientName;
     private Boolean reqStatus;
@@ -17,5 +17,4 @@ public class UserCaretakerpojo {
     private String createdAt;
     private String sentBy;
 
-//
 }

@@ -4,9 +4,11 @@ import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
+import com.example.user_service.pojos.Medicinepojo;
 import com.example.user_service.repository.UserMedRemRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +29,21 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     UserMedicineRepository userMedicineRepository;
 
     @Autowired
+    private ModelMapper mapper;
+    @Autowired
     UserMedRemRepository userMedRemRepository;
 
     Logger logger = LoggerFactory.getLogger(UserMedicineServiceImpl.class);
 
     @Override
-    public UserMedicines saveUserMedicine( String userId, UserMedicines userMedicines) throws UserMedicineException , UserexceptionMessage {
+    public UserMedicines saveUserMedicine(String userId, Medicinepojo medicinepojo) throws UserMedicineException , UserexceptionMessage {
 
         UserEntity user = userRepository.getuserbyid(userId);
         if(user==null)
         {
             throw new UserexceptionMessage("Please enter valid id");
         }
+        UserMedicines userMedicines= mapToEntity(medicinepojo);
         userMedicines.setUserEntity(user);
         UserMedicines userMedicines1 = userMedicineRepository.save(userMedicines);
         if(userMedicines1.getMedicineName() == null)
@@ -81,15 +86,14 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public UserMedicines editMedicineDetails(Integer medicineId , UserMedicines userMedicines)throws UserMedicineException, UserexceptionMessage {
+    public UserMedicines editMedicineDetails(Integer medicineId , Medicinepojo medicinepojo)throws UserMedicineException, UserexceptionMessage {
 
         Optional<UserMedicines> userMeds = userMedicineRepository.findById(medicineId);
         if(userMeds.isEmpty())
         {
             throw  new UserexceptionMessage("Please enter valid id");
         }
-        userMeds.get().setMedicineDes(userMedicines.getMedicineDes());
-        userMeds.get().setMedicineName(userMedicines.getMedicineName());
+        userMeds= Optional.ofNullable(mapToEntity(medicinepojo));
         UserMedicines userMeds1 = userMedicineRepository.save(userMeds.get());
         if(userMeds1.getMedicineName() == null)
         {
@@ -112,7 +116,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     }
 
     @Override
-    public UserMedicines getMedRemById(Integer medicineId) throws UserMedicineException, UserexceptionMessage {
+    public UserMedicines getMedRemById(Integer medicineId) throws UserMedicineException{
         UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicineId);
         if(userMedicines2 == null)
         {
@@ -121,7 +125,9 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         return userMedicines2;
     }
 
-
+    private UserMedicines mapToEntity(Medicinepojo medicinepojo){
+        return mapper.map(medicinepojo, UserMedicines.class);
+    }
 
 
 
