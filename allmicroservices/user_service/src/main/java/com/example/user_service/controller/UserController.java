@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.SendFailedException;
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,21 +86,21 @@ public class UserController {
     }
 
     // fetching user by id
-    @GetMapping(value = "/getuser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable("id") String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    @GetMapping(value = "/getuser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserProfileResponse> getUserById(@RequestParam("userId") String userId , @RequestParam("userId2") String userId2 , HttpServletResponse httpServletResponse) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
 
-        List<UserEntity> user = Arrays.asList(userService.getUserById(userId));
-        List<UserMedicines> list = userMedicineService.getallUserMedicines(userId).get();
+        List<UserEntity> user = Arrays.asList(userService.getUserById(userId2));
+        List<UserMedicines> list = userMedicineService.getallUserMedicines(userId2).get();
 
-        UserProfileResponse userProfileResponse = new UserProfileResponse("OK",user,list);
+        UserProfileResponse userProfileResponse = new UserProfileResponse("OK",user,list,httpServletResponse.getHeader("jwt"));
         return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
 
 
 
     }
 
-    // updating the user
+
     @PutMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserEntity> updateUser(@PathVariable("id") String userId
             , @RequestBody UserEntity userEntity) throws UserexceptionMessage {
@@ -132,4 +133,3 @@ public class UserController {
 
 
 }
-//////

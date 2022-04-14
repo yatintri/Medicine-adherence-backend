@@ -1,12 +1,13 @@
 package com.example.user_service.util;
-
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,13 @@ public class JwtUtil {
     @Value("${project.jwt.secretkey}")
     private String SECRET_KEY;
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        try {
+            return extractClaim(token, Claims::getSubject);
+
+        }catch (ExpiredJwtException expiredJwtException){
+            return null;
+        }
+
     }
 
     public Date extractExpiration(String token) {
@@ -49,8 +56,14 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token, UserDetails userDetails , HttpServletRequest httpServletRequest) {
+        try{
+            final String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        }catch (ExpiredJwtException expiredJwtException){
+            httpServletRequest.setAttribute("expired","true");
+            return false;
+        }
+
     }
 }

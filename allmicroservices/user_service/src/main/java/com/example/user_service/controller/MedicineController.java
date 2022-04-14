@@ -91,9 +91,6 @@ public class MedicineController {
        userMedicineRepository.saveAll(userMedicinesList);
 
 
-        // userMedicineService.syncdata(user_id,userMedicines);
-
-
        return new ResponseEntity<>("",HttpStatus.OK);
 
 

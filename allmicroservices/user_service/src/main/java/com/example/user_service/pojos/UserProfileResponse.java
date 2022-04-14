@@ -8,16 +8,25 @@ import java.util.List;
 public class UserProfileResponse {
 
      private String status;
-     private List<UserEntity> userEntityList;
-     private List<UserMedicines> medicinesList;
 
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
+    }
+
+    private List<UserEntity> userEntityList;
+     private List<UserMedicines> medicinesList;
+     private String jwt;
      public UserProfileResponse(String status , List<UserEntity> userDetailsList ,
-                                List<UserMedicines> medicinesList){
+                                List<UserMedicines> medicinesList , String jwt){
 
           this.status = status;
           this.userEntityList = userDetailsList;
           this.medicinesList = medicinesList;
-
+          this.jwt = jwt;
      }
 
     public String getStatus() {
