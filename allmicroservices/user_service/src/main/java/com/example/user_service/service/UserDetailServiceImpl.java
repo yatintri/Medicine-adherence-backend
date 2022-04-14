@@ -36,7 +36,7 @@ public class UserDetailServiceImpl implements UserDetailService{
         userDetails1.setBloodGroup(userDetailsDTO.getBloodGroup());
         userDetails1.setBio(userDetailsDTO.getBio());
         userDetails1.setGender(userDetailsDTO.getGender());
-        userDetails1.setGender(userDetailsDTO.getGender());
+        userDetails1.setWeight(userDetailsDTO.getWeight());
         userDetails1.setMartialStatus(userDetailsDTO.getMartialStatus());
         userDetails1.setUsercontact(userDetailsDTO.getUsercontact());
         return userDetailsRepository.save(userDetails1);
