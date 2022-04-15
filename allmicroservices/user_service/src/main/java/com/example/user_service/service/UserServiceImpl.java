@@ -1,13 +1,16 @@
 package com.example.user_service.service;
 
 
+import com.example.user_service.config.PdfMailSender;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
+import com.itextpdf.text.DocumentException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,6 +36,10 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private ModelMapper mapper;
+
+
+    @Autowired
+    private PdfMailSender pdfMailSender;
 
     @Autowired
     private UserMedicineService userMedicineService;
@@ -114,6 +123,15 @@ public class UserServiceImpl implements UserService{
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage {
 
         return userRepository.findBymail(email);
+    }
+
+    @Override
+    public String sendUserMedicines(String userId) throws MessagingException, DocumentException, FileNotFoundException {
+        List<UserMedicines> userMedicinesList = userRepository.getuserbyid(userId)
+                .getUserMedicines();
+        pdfMailSender.send("vinay.kumar@nineleaps.com",userMedicinesList);
+
+        return "Sent";
     }
 
     private UserEntity mapToEntity(UserEntityDTO userEntityDTO){
