@@ -1,6 +1,5 @@
 package com.example.user_service.config.filter;
 
-import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = this.userDetailService.loadUserByUsername(id);
 
-            if (jwtUtil.validateToken(jwt, userDetails,request)) {
+            if (jwtUtil.validateToken(jwt, userDetails, request)) {
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

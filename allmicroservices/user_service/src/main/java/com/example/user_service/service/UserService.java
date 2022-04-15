@@ -3,7 +3,11 @@ package com.example.user_service.service;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.model.UserMedicines;
+import com.itextpdf.text.DocumentException;
 
+import javax.mail.MessagingException;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -22,5 +26,7 @@ public interface UserService {
     public List<UserEntity> getUserByName(String userName)throws UserexceptionMessage;
 
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage;
+
+    public String sendUserMedicines(String userId) throws MessagingException, DocumentException, FileNotFoundException;
+
 }
-//////

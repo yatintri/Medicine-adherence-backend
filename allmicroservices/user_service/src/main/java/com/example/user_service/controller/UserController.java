@@ -1,6 +1,7 @@
 package com.example.user_service.controller;
 
 
+import com.example.user_service.config.PdfMailSender;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
@@ -12,6 +13,7 @@ import com.example.user_service.repository.Medrepo;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
+import com.itextpdf.text.DocumentException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -87,7 +91,7 @@ public class UserController {
 
     // fetching user by id
     @GetMapping(value = "/getuser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserProfileResponse> getUserById(@RequestParam("userId") String userId , @RequestParam("userId2") String userId2 , HttpServletResponse httpServletResponse) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    public ResponseEntity<UserProfileResponse> getUserById(@RequestParam("userId2") String userId2 , HttpServletResponse httpServletResponse) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
 
         List<UserEntity> user = Arrays.asList(userService.getUserById(userId2));
@@ -125,6 +129,14 @@ public class UserController {
 
         }
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/sendpdf")
+    public ResponseEntity sendpdf(@RequestParam(name = "userId") String userId) throws MessagingException, DocumentException, FileNotFoundException {
+
+        userService.sendUserMedicines(userId);
+        return new ResponseEntity("Sent" , HttpStatus.OK);
 
     }
 

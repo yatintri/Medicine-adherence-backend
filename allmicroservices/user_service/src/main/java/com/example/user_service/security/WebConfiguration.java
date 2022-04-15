@@ -11,14 +11,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfiguration implements WebMvcConfigurer {
 
     @Bean
-    public AuthenticationHandler authenticationHandler(){
+    public AuthenticationHandler authenticationHandler() {
         return new AuthenticationHandler();
     }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(authenticationHandler())
-                .addPathPatterns("/api/user/getusers","/api/user/getbyemail","/api/user/getuser");
+                .addPathPatterns("/api/user/getusers"
+                        , "/api/user/getbyemail",
+                        "/api/user/getuser",
+                        "/api/caretaker/savecaretaker",
+                        "/api/caretaker/updatestatus");
 
     }
 }

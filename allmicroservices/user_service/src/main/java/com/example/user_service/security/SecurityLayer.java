@@ -15,13 +15,10 @@ public class SecurityLayer extends WebSecurityConfigurerAdapter {
     private UserDetailService userDetailService;
 
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
     }
-
-
 
 
 }
