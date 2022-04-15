@@ -6,8 +6,9 @@ import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.MailInfo;
-import com.example.user_service.pojos.UserProfileResponse;
 import com.example.user_service.pojos.Userresponse;
+import com.example.user_service.pojos.dto.UserEntityDTO;
+import com.example.user_service.pojos.response.UserProfileResponse;
 import com.example.user_service.repository.Medrepo;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
@@ -42,13 +43,13 @@ public class UserController {
     UserMedicineService userMedicineService;
     // saving the user when they signup
     @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Userresponse> saveUser(@RequestParam (name = "fcmToken")String fcmToken ,@RequestParam (name = "picPath")String picPath , @RequestBody UserEntity userEntity) throws UserexceptionMessage, ExecutionException, InterruptedException {
-        UserEntity user = userService.getUserByEmail(userEntity.getEmail());
+    public ResponseEntity<Userresponse> saveUser(@RequestParam (name = "fcmToken")String fcmToken ,@RequestParam (name = "picPath")String picPath , @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage, ExecutionException, InterruptedException {
+        UserEntity user = userService.getUserByEmail(userEntityDTO.getEmail());
         if(user != null){
             Userresponse userresponse = new Userresponse("Already present",user);
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
-        user = userService.saveUser(userEntity,fcmToken,picPath).get();
+        user = userService.saveUser(userEntityDTO,fcmToken,picPath).get();
         Userresponse userresponse = new Userresponse("success",user);
 
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
@@ -98,7 +99,7 @@ public class UserController {
     // updating the user
     @PutMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserEntity> updateUser(@PathVariable("id") String userId
-            , @RequestBody UserEntity userEntity) throws UserexceptionMessage {
+            , @RequestBody UserEntityDTO userEntity) throws UserexceptionMessage {
 
         return new ResponseEntity<>(userService.updateUser(userId, userEntity), HttpStatus.OK);
 
