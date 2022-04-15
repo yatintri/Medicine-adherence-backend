@@ -16,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -26,11 +27,16 @@ public class PdfMailSender {
     Logger logger = LoggerFactory.getLogger(PdfMailSender.class);
 
     @Async
-    public void send(String receiver , List<UserMedicines> userMedicinesList) throws  FileNotFoundException, DocumentException {
+    public void send(String receiver , List<UserMedicines> userMedicinesList) throws IOException, DocumentException {
 
         logger.info(Thread.currentThread().getName());
         Document document = new Document();
-        PdfWriter.getInstance(document , new FileOutputStream(System.getProperty("user.dir")+"/src/main/upload/static/pdf/sample.pdf"));
+        File file = new File(System.getProperty("user.dir")+"/src/main/upload/static/pdf");
+        file.mkdir();
+        FileOutputStream fileOutputStream = new FileOutputStream(System.getProperty("user.dir")+"/src/main/upload/static/pdf/sample.pdf");
+
+
+        PdfWriter.getInstance(document , fileOutputStream);
         document.open();
         Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
 

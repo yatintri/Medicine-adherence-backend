@@ -8,6 +8,7 @@ import com.itextpdf.text.DocumentException;
 
 import javax.mail.MessagingException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -27,7 +28,7 @@ public interface UserService {
 
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage;
 
-    public String sendUserMedicines(String userId) throws MessagingException, DocumentException, FileNotFoundException;
+    public String sendUserMedicines(String userId) throws MessagingException, DocumentException, IOException;
 
 }
 //////

@@ -26,6 +26,7 @@ import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -136,7 +137,7 @@ public class UserController {
 
 
     @GetMapping(value = "/sendpdf")
-    public ResponseEntity sendpdf(@RequestParam(name = "userId") String userId) throws MessagingException, DocumentException, FileNotFoundException, MessagingException, DocumentException, FileNotFoundException {
+    public ResponseEntity sendpdf(@RequestParam(name = "userId") String userId) throws MessagingException, DocumentException, IOException, MessagingException, DocumentException {
 
         userService.sendUserMedicines(userId);
         return new ResponseEntity("Sent" , HttpStatus.OK);
