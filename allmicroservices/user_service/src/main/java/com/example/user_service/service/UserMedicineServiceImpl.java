@@ -4,7 +4,7 @@ import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
-import com.example.user_service.pojos.Medicinepojo;
+import com.example.user_service.pojos.dto.Medicinepojo;
 import com.example.user_service.repository.UserMedRemRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
@@ -25,6 +25,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
     @Autowired
     UserRepository userRepository;
 
+    public static  final String ERROR= "Please enter valid id";
     @Autowired
     UserMedicineRepository userMedicineRepository;
 
@@ -41,7 +42,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         UserEntity user = userRepository.getuserbyid(userId);
         if(user==null)
         {
-            throw new UserexceptionMessage("Please enter valid id");
+            throw new UserexceptionMessage(ERROR);
         }
         UserMedicines userMedicines= mapToEntity(medicinepojo);
         userMedicines.setUserEntity(user);
@@ -77,7 +78,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         UserEntity user = userRepository.getuserbyid(userId);
         if(user == null)
         {
-            throw  new UserexceptionMessage("Please enter valid id");
+            throw  new UserexceptionMessage(ERROR);
         }
         List<UserMedicines> list =  user.getUserMedicines();
 
@@ -91,7 +92,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         Optional<UserMedicines> userMeds = userMedicineRepository.findById(medicineId);
         if(userMeds.isEmpty())
         {
-            throw  new UserexceptionMessage("Please enter valid id");
+            throw  new UserexceptionMessage(ERROR);
         }
         userMeds= Optional.ofNullable(mapToEntity(medicinepojo));
         UserMedicines userMeds1 = userMedicineRepository.save(userMeds.get());
@@ -120,7 +121,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
         UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicineId);
         if(userMedicines2 == null)
         {
-            throw new UserMedicineException("Please Enter Valid Id!!!");
+            throw new UserMedicineException(ERROR);
         }
         return userMedicines2;
     }

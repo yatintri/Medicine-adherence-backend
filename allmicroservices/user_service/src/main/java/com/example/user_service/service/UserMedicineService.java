@@ -3,7 +3,7 @@ package com.example.user_service.service;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserMedicines;
-import com.example.user_service.pojos.Medicinepojo;
+import com.example.user_service.pojos.dto.Medicinepojo;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

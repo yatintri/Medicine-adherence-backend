@@ -5,6 +5,7 @@ package com.example.user_service.controller;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.pojos.dto.UserDetailsDTO;
+import com.example.user_service.pojos.response.UserDetailResponse;
 import com.example.user_service.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,11 @@ public class UserDetailController {
     private UserDetailService userDetailService;
 
     @PutMapping(value = "/userdetails" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetails> updateUserDetails(@RequestParam("id") String id,
-                                                         @RequestBody UserDetailsDTO userDetailsDTO) throws UserexceptionMessage {
-
-        return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetailsDTO),HttpStatus.OK);
+    public ResponseEntity<UserDetailResponse> updateUserDetails(@RequestParam("userId") String id,
+                                                                @RequestBody UserDetailsDTO userDetailsDTO) throws UserexceptionMessage {
+        UserDetails userDetails = userDetailService.saveUserDetail(id,userDetailsDTO);
+        UserDetailResponse userDetailResponse= new UserDetailResponse("Success","Saved user details",userDetails);
+        return new ResponseEntity<>(userDetailResponse,HttpStatus.OK);
 
     }
 

@@ -4,7 +4,7 @@ package com.example.user_service.controller;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.*;
-import com.example.user_service.pojos.Medicinepojo;
+import com.example.user_service.pojos.dto.Medicinepojo;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.service.UserMedicineService;
