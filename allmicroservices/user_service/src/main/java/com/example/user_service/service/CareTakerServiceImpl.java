@@ -1,12 +1,13 @@
 package com.example.user_service.service;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
+
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.pojos.Notificationmessage;
-import com.example.user_service.pojos.caretakerpojos.UserCaretakerpojo;
+import com.example.user_service.pojos.dto.UserCaretakerDTO;
 import com.example.user_service.repository.UserCaretakerRepository;
 import com.example.user_service.util.Datehelper;
+import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,34 +27,24 @@ public class CareTakerServiceImpl implements CareTakerService{
     @Autowired
     private UserCaretakerRepository userCaretakerRepository;
 
-
+    @Autowired
+    private ModelMapper mapper;
     @Autowired
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public UserCaretaker saveCareTaker(UserCaretakerpojo userCaretakerpojo) {
+    public UserCaretaker saveCareTaker(UserCaretakerDTO userCaretakerDTO) {
 
-        UserCaretaker userCaretaker = new UserCaretaker();
-
-        userCaretaker.setCaretakerUsername(userCaretakerpojo.getCaretakerUsername());
-        userCaretaker.setReqStatus(userCaretakerpojo.getReqStatus());
-        userCaretaker.setPatientName(userCaretakerpojo.getPatientName());
-        userCaretaker.setCaretakerId(userCaretakerpojo.getCaretakerId());
-        userCaretaker.setPatientId(userCaretakerpojo.getPatientId());
+        UserCaretaker userCaretaker = mapToEntity(userCaretakerDTO);
         userCaretaker.setCreatedAt(Datehelper.getcurrentdatatime());
-        userCaretaker.setSentBy(userCaretakerpojo.getSentBy());
 
         return userCaretakerRepository.save(userCaretaker);
     }
 
     @Override
     public UserCaretaker updateCaretakerStatus(String cId) throws UserCaretakerException {
-        System.out.println(cId);
-
         UserCaretaker uc = userCaretakerRepository.findById(cId).get();
-
-        System.out.println(uc);
-        if(uc == null){
+        if(uc.getCaretakerId() == null){
             throw new UserCaretakerException("No user found with this id");
         }
         uc.setReqStatus(true);
@@ -127,6 +118,10 @@ public class CareTakerServiceImpl implements CareTakerService{
         return true;
     }
 
+    private UserCaretaker mapToEntity(UserCaretakerDTO userCaretakerDTO){
+        return mapper.map(userCaretakerDTO, UserCaretaker.class);
+
+    }
 
 //
 

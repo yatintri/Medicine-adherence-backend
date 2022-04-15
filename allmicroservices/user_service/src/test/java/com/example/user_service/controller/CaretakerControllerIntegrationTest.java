@@ -1,7 +1,7 @@
 package com.example.user_service.controller;
 
 import com.example.user_service.model.UserDetails;
-import com.example.user_service.pojos.caretakerpojos.UserCaretakerpojo;
+import com.example.user_service.pojos.dto.UserCaretakerDTO;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -28,7 +28,7 @@ class CaretakerControllerIntegrationTest {
 
     @Test
     void testSaveCaretaker() {
-        UserCaretakerpojo user = new UserCaretakerpojo();
+        UserCaretakerDTO user = new UserCaretakerDTO();
 
         user.setCaretakerId("string");
         user.setPatientId("string");
@@ -38,7 +38,7 @@ class CaretakerControllerIntegrationTest {
         user.setSentBy("Shubham");
 
 
-        HttpEntity<UserCaretakerpojo> request = new HttpEntity<>(user);
+        HttpEntity<UserCaretakerDTO> request = new HttpEntity<>(user);
         try {
             ResponseEntity<String> response = testRestTemplate
                     .exchange("http://localhost:" + port +
@@ -61,10 +61,10 @@ class CaretakerControllerIntegrationTest {
 
     @Test
     void testIUpdateCaretakerStatus() {
-        UserCaretakerpojo user = new UserCaretakerpojo();
+        UserCaretakerDTO user = new UserCaretakerDTO();
         user.setCaretakerId("string");
 
-        HttpEntity<UserCaretakerpojo> entity = new HttpEntity<>(user);
+        HttpEntity<UserCaretakerDTO> entity = new HttpEntity<>(user);
         try{
             ResponseEntity<UserDetails> response = testRestTemplate.exchange(
                     createURLWithPort("/api/caretaker/updatestatus")
