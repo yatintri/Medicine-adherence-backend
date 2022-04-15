@@ -13,15 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/userdetails")
+@RequestMapping("/api/v1")
 public class UserDetailController {
 
 
     @Autowired
     private UserDetailService userDetailService;
 
-    @PutMapping(value = "/updateuserdetails/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetails> updateUserDetails(@PathVariable("id") String id,
+    @PutMapping(value = "/userdetails" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDetails> updateUserDetails(@RequestParam("id") String id,
                                                          @RequestBody UserDetailsDTO userDetailsDTO) throws UserexceptionMessage {
 
         return new ResponseEntity<>(userDetailService.saveUserDetail(id,userDetailsDTO),HttpStatus.OK);

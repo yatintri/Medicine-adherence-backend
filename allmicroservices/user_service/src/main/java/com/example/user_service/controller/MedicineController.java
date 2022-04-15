@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/api/usermedicine")
+@RequestMapping(path = "/api/v1/")
 public class MedicineController {
 
     @Autowired
@@ -33,37 +33,37 @@ public class MedicineController {
     UserMedicineRepository userMedicineRepository;
 
     // save caretaker for a patients
-    @PostMapping(value = "/savemedicine/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUserMedicine(@PathVariable("userId") String id, @RequestBody Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
+    @PostMapping(value = "/medicine" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> saveUserMedicine(@RequestParam("userId") String id, @RequestBody Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
 
         return new ResponseEntity<>(userMedicineService.saveUserMedicine(id,medicinepojo), HttpStatus.CREATED);
 
     }
 
-    @PutMapping(value = "/updatestatus/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateMedicineStatus(@PathVariable("medId") Integer medId) throws UserMedicineException {
+    @PutMapping(value = "/medicine/status" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateMedicineStatus(@RequestParam("medId") Integer medId) throws UserMedicineException {
 
         return new ResponseEntity<>(userMedicineService.updateMedicineStatus(medId),HttpStatus.CREATED);
 
     }
 
-    @GetMapping(value = "/getusermedicine/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserMedicines(@PathVariable("userId") String userId) throws InterruptedException, UserMedicineException, UserexceptionMessage, ExecutionException {
+    @GetMapping(value = "/medicine", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserMedicines(@RequestParam("userId") String userId) throws InterruptedException, UserMedicineException, UserexceptionMessage, ExecutionException {
 
 
         return new ResponseEntity<>(userMedicineService.getallUserMedicines(userId).get(), HttpStatus.OK);
 
     }
 
-    @PutMapping(value = "/editmedicine/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editMedicineDetails(@PathVariable("medId") Integer id,
+    @PutMapping(value = "/medicineDetails" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> editMedicineDetails(@RequestParam("medId") Integer id,
                                                @RequestBody Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
 
         return new ResponseEntity<>(userMedicineService.editMedicineDetails(id,medicinepojo),HttpStatus.CREATED);
 
     }
 
-    @PostMapping(value = "/syncmedicines",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/medicines/sync",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> syncdata(@RequestParam("userId") String userId , @RequestBody List<Medicinepojo> medicinepojo){
 
        UserEntity userEntity = userRepository.getuserbyid(userId);

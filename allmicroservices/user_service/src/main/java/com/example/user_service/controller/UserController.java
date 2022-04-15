@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 
 @RestController
-@RequestMapping(path = "/api/user")
+@RequestMapping(path = "/api/v1")
 public class UserController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class UserController {
     @Autowired
     UserMedicineService userMedicineService;
     // saving the user when they signup
-    @PostMapping(value = "/saveuser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Userresponse> saveUser(@RequestParam (name = "fcmToken")String fcmToken , @RequestParam (name = "picPath")String picPath , @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage, ExecutionException, InterruptedException {
         UserEntity user = userService.getUserByEmail(userEntityDTO.getEmail());
         if(user != null){
@@ -72,7 +72,7 @@ public class UserController {
 
 
     // fetching all the users along with details
-    @GetMapping(value = "/getusers", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage, ExecutionException, InterruptedException {
 
         return new ResponseEntity<>(userService.getUsers().get(), HttpStatus.OK);
@@ -81,8 +81,8 @@ public class UserController {
     }
 
     // fetching user by id
-    @GetMapping(value = "/getuser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserProfileResponse> getUserById(@PathVariable("id") String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserProfileResponse> getUserById(@RequestParam("id") String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
 
         List<UserEntity> user = Arrays.asList(userService.getUserById(userId));
@@ -96,8 +96,8 @@ public class UserController {
     }
 
     // updating the user
-    @PutMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserEntity> updateUser(@PathVariable("id") String userId
+    @PutMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserEntity> updateUser(@RequestParam("id") String userId
             , @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage {
 
         return new ResponseEntity<>(userService.updateUser(userId, userEntityDTO), HttpStatus.OK);
@@ -107,7 +107,7 @@ public class UserController {
 
 
     // fetching the user with email if not present then sending to that email address
-    @GetMapping(value = "/getbyemail", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/user/email", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<? extends Object> getUserByEmail(@RequestParam("email") String email
             ,@RequestParam("sender") String sender)
             throws UserexceptionMessage {
@@ -128,4 +128,3 @@ public class UserController {
 
 
 }
-//////
