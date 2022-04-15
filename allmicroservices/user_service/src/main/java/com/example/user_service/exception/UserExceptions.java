@@ -1,5 +1,8 @@
 package com.example.user_service.exception;
 
+import com.example.user_service.pojos.response.CaretakerResponse;
+import com.example.user_service.pojos.response.MedicineResponse;
+import com.example.user_service.pojos.response.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,10 +21,9 @@ public class UserExceptions {
      * Returns user exception response
      */
  @ExceptionHandler({UserexceptionMessage.class})
- public ResponseEntity<HashMap<String,String>> getuserException(UserexceptionMessage uem , WebRequest webRequest){
-     HashMap<String,String> map = new HashMap<>();
-     map.put("error",uem.getMessage());
-     return new ResponseEntity<>(map , HttpStatus.NOT_FOUND);
+ public ResponseEntity<UserResponse> getuserException(UserexceptionMessage uem , WebRequest webRequest){
+     UserResponse userResponse= new UserResponse("failed",uem.getMessage(),null);
+     return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
 
  }
 
@@ -29,22 +31,19 @@ public class UserExceptions {
      * Returns caretaker exception response
      */
  @ExceptionHandler({UserCaretakerException.class})
-    public ResponseEntity<HashMap<String , String>> getcaretakerexception(UserCaretakerException uce , WebRequest webRequest){
-
-     HashMap<String , String> map = new HashMap<>();
-     map.put("error" , uce.getMessage());
-     return new ResponseEntity<>(map , HttpStatus.BAD_REQUEST);
+    public ResponseEntity<CaretakerResponse> getcaretakerexception(UserCaretakerException uce , WebRequest webRequest){
+     CaretakerResponse caretakerResponse= new CaretakerResponse("failed",uce.getMessage(),null);
+     return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 
  }
     /**
      * Returns user medicine exception response
      */
     @ExceptionHandler({UserMedicineException.class})
-    public ResponseEntity<HashMap<String , String>> getUserMedicineException(UserMedicineException udm , WebRequest webRequest){
+    public ResponseEntity<MedicineResponse> getUserMedicineException(UserMedicineException udm , WebRequest webRequest){
 
-        HashMap<String , String> map = new HashMap<>();
-        map.put("error" , udm.getMessage());
-        return new ResponseEntity<>(map , HttpStatus.BAD_REQUEST);
+        MedicineResponse medicineResponse= new MedicineResponse("failed", udm.getMessage(),null);
+        return new ResponseEntity<>(medicineResponse, HttpStatus.NOT_FOUND);
 
     }
 

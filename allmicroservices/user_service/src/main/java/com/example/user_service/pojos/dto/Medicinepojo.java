@@ -1,4 +1,4 @@
-package com.example.user_service.pojos;
+package com.example.user_service.pojos.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
