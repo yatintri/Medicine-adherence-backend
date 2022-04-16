@@ -118,12 +118,12 @@ public class UserMedicineServiceImpl implements UserMedicineService{
 
     @Override
     public UserMedicines getMedRemById(Integer medicineId) throws UserMedicineException{
-        UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicineId);
-        if(userMedicines2 == null)
-        {
-            throw new UserMedicineException(ERROR);
-        }
-        return userMedicines2;
+//        UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicineId);
+//        if(userMedicines2 == null)
+//        {
+//            throw new UserMedicineException(ERROR);
+//        }
+        return null;
     }
 
     private UserMedicines mapToEntity(Medicinepojo medicinepojo){

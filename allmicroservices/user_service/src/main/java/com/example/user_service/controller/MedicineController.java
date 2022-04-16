@@ -93,6 +93,16 @@ public class MedicineController {
 
     }
 
+    @PostMapping(value = "/medicinehistory/sync")
+    public ResponseEntity<?> syncmedicinehistory(@RequestParam(name = "medId") Integer medId){
+
+       UserMedicines userMedicines =  userMedicineRepository.getmedbyid(medId);
+        System.out.println(userMedicines.getMedicineName());
+      return null;
+
+    }
+
+
 
 }
 ///
