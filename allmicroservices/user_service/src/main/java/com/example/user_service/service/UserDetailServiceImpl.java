@@ -28,7 +28,7 @@ public class UserDetailServiceImpl implements UserDetailService{
 
         Optional<UserEntity> user = Optional.ofNullable(userRepository.getuserbyid(id));
         if (user.isEmpty()){
-            throw new UserexceptionMessage("No user found");
+            throw new UserexceptionMessage("User not found");
         }
         UserDetails userDetails1 = user.get().getUserDetails();
 

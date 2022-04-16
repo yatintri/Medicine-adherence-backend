@@ -45,7 +45,7 @@ public class CareTakerServiceImpl implements CareTakerService{
     public UserCaretaker updateCaretakerStatus(String cId) throws UserCaretakerException {
         UserCaretaker uc = userCaretakerRepository.findById(cId).get();
         if(uc.getCaretakerId() == null){
-            throw new UserCaretakerException("No user found with this id");
+            throw new UserCaretakerException("User not found");
         }
         uc.setReqStatus(true);
         return userCaretakerRepository.save(uc);

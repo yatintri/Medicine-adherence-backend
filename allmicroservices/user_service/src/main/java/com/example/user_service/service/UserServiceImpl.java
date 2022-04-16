@@ -19,7 +19,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -88,7 +87,7 @@ public class UserServiceImpl implements UserService{
 
         logger.info(Thread.currentThread().getName());
         if(optionalUserEntity.isEmpty()){
-            throw new UserexceptionMessage("Not present with this id");
+            throw new UserexceptionMessage("Data not found");
         }
 
         return optionalUserEntity.get();
@@ -114,7 +113,7 @@ public class UserServiceImpl implements UserService{
 
         List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
         if(userEntity.isEmpty()){
-            throw new UserexceptionMessage("User not available with this name!");
+            throw new UserexceptionMessage("Data not found");
         }
         return userEntity;
 
@@ -130,7 +129,7 @@ public class UserServiceImpl implements UserService{
     public String sendUserMedicines(String userId) throws MessagingException, DocumentException, IOException {
         List<UserMedicines> userMedicinesList = userRepository.getuserbyid(userId)
                 .getUserMedicines();
-        pdfMailSender.send("nikkubisht12@gmail.com",userMedicinesList);
+        pdfMailSender.send("vinaykumarsoni2001@gmail.com",userMedicinesList);
 
         return "Sent";
     }

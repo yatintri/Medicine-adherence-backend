@@ -10,7 +10,6 @@ import com.example.user_service.pojos.Userresponse;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserProfileResponse;
 import com.example.user_service.pojos.response.UserResponse;
-import com.example.user_service.repository.Medrepo;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
@@ -23,9 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import javax.mail.SendFailedException;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +33,7 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping(path = "/api/v1")
 public class UserController {
 
-    private String msg="Success";
+    private static final String MSG="Success";
 
     @Autowired
     private UserService userService;
@@ -55,13 +51,13 @@ public class UserController {
     public ResponseEntity<UserResponse> saveUser(@RequestParam (name = "fcmToken")String fcmToken ,@RequestParam (name = "picPath")String picPath , @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage, ExecutionException, InterruptedException {
         UserEntity user = userService.getUserByEmail(userEntityDTO.getEmail());
         if(user != null){
-            UserResponse userresponse = new UserResponse(msg,"User is already present",new ArrayList<>(Arrays.asList(user)),"");
+            UserResponse userresponse = new UserResponse(MSG,"User is already present",new ArrayList<>(Arrays.asList(user)),"");
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
         user = userService.saveUser(userEntityDTO,fcmToken,picPath).get();
         String jwtToken = jwtUtil.generateToken(user.getUserName());
 
-        UserResponse userresponse = new UserResponse(msg,"Saved user successfully",new ArrayList<>(Arrays.asList(user)),jwtToken);
+        UserResponse userresponse = new UserResponse(MSG,"Saved user successfully",new ArrayList<>(Arrays.asList(user)),jwtToken);
 
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
 
@@ -72,7 +68,7 @@ public class UserController {
     public ResponseEntity<Userresponse> login(@RequestParam String email) throws UserexceptionMessage {
         UserEntity user = userService.getUserByEmail(email);
         if(user != null){
-            Userresponse userresponse = new Userresponse("success",user);
+            Userresponse userresponse = new Userresponse(MSG,user);
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
         Userresponse userresponse = new Userresponse("Not found",null);
@@ -137,7 +133,7 @@ public class UserController {
 
 
     @GetMapping(value = "/sendpdf")
-    public ResponseEntity sendpdf(@RequestParam(name = "userId") String userId) throws MessagingException, DocumentException, IOException, MessagingException, DocumentException {
+    public ResponseEntity sendpdf(@RequestParam(name = "userId") String userId) throws IOException, MessagingException, DocumentException {
 
         userService.sendUserMedicines(userId);
         return new ResponseEntity("Sent" , HttpStatus.OK);

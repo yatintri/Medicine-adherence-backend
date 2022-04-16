@@ -62,7 +62,7 @@ public class UserMedicineServiceImpl implements UserMedicineService{
                 .findById(medicineId);
         if(userMedicines.isEmpty())
         {
-            throw new UserMedicineException("Medicine not found");
+            throw new UserMedicineException("Data not found");
         }
         userMedicineRepository.save(userMedicines.get());
 
