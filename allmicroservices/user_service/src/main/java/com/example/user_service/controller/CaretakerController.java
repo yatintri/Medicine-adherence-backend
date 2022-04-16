@@ -25,7 +25,7 @@ import java.util.List;
 public class CaretakerController {
 
     private static final String MSG="Success";
-    private static final String MSG1="Success";
+    private static final String MSG1="Data found";
     @Autowired
     private CareTakerService careTakerService;
     @Autowired

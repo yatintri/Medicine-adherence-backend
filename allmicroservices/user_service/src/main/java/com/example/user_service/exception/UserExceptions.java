@@ -20,9 +20,10 @@ public class UserExceptions {
     /**
      * Returns user exception response
      */
+    private static final String ERROR="failed";
  @ExceptionHandler({UserexceptionMessage.class})
  public ResponseEntity<UserResponse> getuserException(UserexceptionMessage uem , WebRequest webRequest){
-     UserResponse userResponse= new UserResponse("failed",uem.getMessage(),null,"");
+     UserResponse userResponse= new UserResponse(ERROR,uem.getMessage(),null,"");
      return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
 
  }
@@ -32,7 +33,7 @@ public class UserExceptions {
      */
  @ExceptionHandler({UserCaretakerException.class})
     public ResponseEntity<CaretakerResponse> getcaretakerexception(UserCaretakerException uce , WebRequest webRequest){
-     CaretakerResponse caretakerResponse= new CaretakerResponse("failed",uce.getMessage(),null);
+     CaretakerResponse caretakerResponse= new CaretakerResponse(ERROR,uce.getMessage(),null);
      return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 
  }
@@ -42,7 +43,7 @@ public class UserExceptions {
     @ExceptionHandler({UserMedicineException.class})
     public ResponseEntity<MedicineResponse> getUserMedicineException(UserMedicineException udm , WebRequest webRequest){
 
-        MedicineResponse medicineResponse= new MedicineResponse("failed", udm.getMessage(),null);
+        MedicineResponse medicineResponse= new MedicineResponse(ERROR, udm.getMessage(),null);
         return new ResponseEntity<>(medicineResponse, HttpStatus.NOT_FOUND);
 
     }
