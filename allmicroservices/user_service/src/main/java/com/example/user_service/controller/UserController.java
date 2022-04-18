@@ -14,7 +14,6 @@ import com.example.user_service.pojos.response.UserResponse;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
-import com.itextpdf.text.DocumentException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -154,7 +153,7 @@ public class UserController {
 
 
     @GetMapping(value = "/sendpdf")
-    public ResponseEntity sendpdf(@RequestParam(name = "userId") String userId) throws IOException, MessagingException, DocumentException {
+    public ResponseEntity sendpdf(@RequestParam(name = "userId") String userId) throws IOException, MessagingException {
 
         userService.sendUserMedicines(userId);
         return new ResponseEntity("Sent" , HttpStatus.OK);

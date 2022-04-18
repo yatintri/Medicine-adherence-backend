@@ -10,7 +10,7 @@ import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
-import com.itextpdf.text.DocumentException;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String sendUserMedicines(String userId) throws MessagingException, DocumentException, IOException {
+    public String sendUserMedicines(String userId) throws MessagingException, IOException {
         List<UserMedicines> userMedicinesList = userRepository.getuserbyid(userId)
                 .getUserMedicines();
         pdfMailSender.send("vinaykumarsoni2001@gmail.com",userMedicinesList);
