@@ -7,18 +7,25 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import io.jsonwebtoken.*;
 
 @Service
 public class JwtUtil {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+
     @Value("${project.jwt.secretkey}")
     private String SECRET_KEY;
+
+    @Value("${project.jwt.jwtExpirationMs}")
+    private int jwtExpirationMs;
 
     public String extractUsername(String token) {
         try {
@@ -47,9 +54,9 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String userId) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        return createToken(claims, userId);
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -65,8 +72,18 @@ public class JwtUtil {
             return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
         } catch (ExpiredJwtException expiredJwtException) {
             httpServletRequest.setAttribute("expired", "true");
-            return false;
+           // return false;
         }
+        catch (SignatureException e) {
+            logger.error("Invalid JWT signature: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            logger.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT claims string is empty: {}", e.getMessage());
+        }
+        return false;
 
     }
 }

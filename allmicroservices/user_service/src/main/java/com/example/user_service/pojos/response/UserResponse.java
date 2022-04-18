@@ -17,5 +17,6 @@ public class UserResponse {
     private String message;
     private List<UserEntity> userentity = new ArrayList<>();
     private String jwt;
+    private String refreshToken;
 }
 //

@@ -19,11 +19,17 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(authenticationHandler())
-                .addPathPatterns("/api/user/getusers"
-                        , "/api/user/getbyemail",
-                        "/api/user/getuser",
-                        "/api/caretaker/savecaretaker",
-                        "/api/caretaker/updatestatus");
+                .addPathPatterns("/api/v1/email",
+                        "/api/v1/users",
+                        "/api/v1/request",
+                        "/api/v1/accept",
+                        "/api/v1/patients",
+                        "/api/v1/patient/requests",
+                        "/api/v1/caretakers",
+                        "/api/v1/caretaker/requests",
+                        "/api/v1/delete",
+                        "/api/v1/medicines/sync",
+                        "/api/v1/userdetails");
 
     }
 }

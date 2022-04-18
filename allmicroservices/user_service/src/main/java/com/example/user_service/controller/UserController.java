@@ -10,6 +10,9 @@ import com.example.user_service.pojos.Userresponse;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserProfileResponse;
 import com.example.user_service.pojos.response.UserResponse;
+import com.example.user_service.security.JwtResponse;
+import com.example.user_service.security.TokenRefreshRequest;
+import com.example.user_service.security.TokenRefreshResponse;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
@@ -19,13 +22,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 
@@ -45,22 +53,37 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     UserMedicineService userMedicineService;
     // saving the user when they signup
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> saveUser(@RequestParam (name = "fcmToken")String fcmToken ,@RequestParam (name = "picPath")String picPath , @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage, ExecutionException, InterruptedException {
         UserEntity user = userService.getUserByEmail(userEntityDTO.getEmail());
         if(user != null){
-            UserResponse userresponse = new UserResponse(MSG,"User is already present",new ArrayList<>(Arrays.asList(user)),"");
+            UserResponse userresponse = new UserResponse(MSG,"User is already present",new ArrayList<>(Arrays.asList(user)),"","");
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
         user = userService.saveUser(userEntityDTO,fcmToken,picPath).get();
         String jwtToken = jwtUtil.generateToken(user.getUserName());
+        String refreshToken = passwordEncoder.encode(user.getUserId());
 
-        UserResponse userresponse = new UserResponse(MSG,"Saved user successfully",new ArrayList<>(Arrays.asList(user)),jwtToken);
+        UserResponse userresponse = new UserResponse(MSG,"Saved user successfully",new ArrayList<>(Arrays.asList(user)),jwtToken,refreshToken);
 
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
 
+
+    }
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@Valid @RequestParam (name= "uid")String uid, HttpServletRequest httpServletRequest) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+        //String requestRefreshToken = request.getRefreshToken();
+        String token =  httpServletRequest.getHeader("Authorization");
+        token = token.substring(7);
+        System.out.println(passwordEncoder.matches(uid, token));
+        String jwtToken = jwtUtil.generateToken(userService.getUserById(uid).getUserName());
+
+        return new ResponseEntity<>(jwtToken, HttpStatus.CREATED);
 
     }
 
