@@ -129,9 +129,7 @@ public class UserServiceImpl implements UserService{
     public String sendUserMedicines(String userId) throws MessagingException, IOException {
         List<UserMedicines> userMedicinesList = userRepository.getuserbyid(userId)
                 .getUserMedicines();
-        pdfMailSender.send("vinaykumarsoni2001@gmail.com",userMedicinesList);
-
-        return "Sent";
+        return pdfMailSender.send("vinaykumarsoni2001@gmail.com",userMedicinesList);
     }
 
     private UserEntity mapToEntity(UserEntityDTO userEntityDTO){

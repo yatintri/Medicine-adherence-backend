@@ -153,10 +153,10 @@ public class UserController {
 
 
     @GetMapping(value = "/sendpdf")
-    public ResponseEntity sendpdf(@RequestParam(name = "userId") String userId) throws IOException, MessagingException {
-
-        userService.sendUserMedicines(userId);
-        return new ResponseEntity("Sent" , HttpStatus.OK);
+    public ResponseEntity<UserResponse> sendpdf(@RequestParam(name = "userId") String userId) throws IOException, MessagingException {
+        String filePath= userService.sendUserMedicines(userId);
+        UserResponse userResponse= new UserResponse("Success",filePath,null,"","");
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
 
     }
 

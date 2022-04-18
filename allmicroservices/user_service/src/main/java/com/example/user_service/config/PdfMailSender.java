@@ -21,11 +21,13 @@ public class PdfMailSender {
     private JavaMailSender javaMailSender;
     Logger logger = LoggerFactory.getLogger(PdfMailSender.class);
 
-    @Async
-    public void send(String receiver , List<UserMedicines> userMedicinesList){
 
+    public String send(String receiver , List<UserMedicines> userMedicinesList){
+
+        final String[] filepath = new String[1];
+        final String[] HTML= new String[1];
         userMedicinesList.forEach(userMedicines -> {
-            final String HTML="<div style='padding:10px;height: 100%; border-color: #3743ab; border-width: 3px;border-style: solid;border-radius: 10px;padding-left: 20px;padding-right: 20px;'>\n" +
+            HTML[0]="<div style='padding:10px;height: 100%; border-color: #3743ab; border-width: 3px;border-style: solid;border-radius: 10px;padding-left: 20px;padding-right: 20px;'>\n" +
                     "            <div style='text-align: right;'><img src='MEdstick.png' style='width:150px; height:60px'></div>\n" +
                     "            <div style='background-color: #3743ab;border-radius: 15px; margin-bottom: 30px;height: 110px;'>\n" +
                     "                <div style='font-size: 60px;text-align: center;color: white;'>Patient Report</div>\n" +
@@ -72,14 +74,16 @@ public class PdfMailSender {
                     "            </div>\n" +
                     "            </div>";
 
-            try {
-                String filepath = UUID.randomUUID().toString();
-                HtmlConverter.convertToPdf(HTML, new FileOutputStream(System.getProperty("user.dir")+"/src/main/upload/static/pdf/"+filepath+".pdf"));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
 
         });
+        try {
+            filepath[0] = UUID.randomUUID().toString();
+            HtmlConverter.convertToPdf(HTML[0], new FileOutputStream(System.getProperty("user.dir")+"/src/main/upload/static/pdf/"+ filepath[0] +".pdf"));
+            return filepath[0];
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
