@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -57,6 +58,14 @@ public class UserMedicines {
 
     @JsonIgnore
     private UserEntity userEntity;
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "userMedicines"
+
+    )
+    @JsonIgnore
+    private List<MedicineHistory> medicineHistories;
 
 
 }
