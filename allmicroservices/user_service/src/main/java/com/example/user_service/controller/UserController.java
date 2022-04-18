@@ -10,9 +10,7 @@ import com.example.user_service.pojos.Userresponse;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserProfileResponse;
 import com.example.user_service.pojos.response.UserResponse;
-import com.example.user_service.security.JwtResponse;
-import com.example.user_service.security.TokenRefreshRequest;
-import com.example.user_service.security.TokenRefreshResponse;
+
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
