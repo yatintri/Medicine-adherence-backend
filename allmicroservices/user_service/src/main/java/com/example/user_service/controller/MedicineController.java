@@ -6,7 +6,7 @@ import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.*;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
 import com.example.user_service.pojos.dto.Medicinepojo;
-import com.example.user_service.repository.UserMedHistoryRepository;
+import com.example.user_service.pojos.response.MedicineResponse;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.service.UserMedicineService;
@@ -36,21 +36,21 @@ public class MedicineController {
 
     // save caretaker for a patients
     @PostMapping(value = "/medicine", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUserMedicine(@RequestParam("userId") String id, @RequestBody Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
+    public ResponseEntity<UserMedicines> saveUserMedicine(@RequestParam("userId") String id, @RequestBody Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
 
         return new ResponseEntity<>(userMedicineService.saveUserMedicine(id, medicinepojo), HttpStatus.CREATED);
 
     }
 
     @PutMapping(value = "/medicine/status", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateMedicineStatus(@RequestParam("medId") Integer medId) throws UserMedicineException {
+    public ResponseEntity<Boolean> updateMedicineStatus(@RequestParam("medId") Integer medId) throws UserMedicineException {
 
         return new ResponseEntity<>(userMedicineService.updateMedicineStatus(medId), HttpStatus.CREATED);
 
     }
 
     @GetMapping(value = "/medicine", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserMedicines(@RequestParam("userId") String userId) throws InterruptedException, UserMedicineException, UserexceptionMessage, ExecutionException {
+    public ResponseEntity<List<UserMedicines>> getUserMedicines(@RequestParam("userId") String userId) throws InterruptedException, UserMedicineException, UserexceptionMessage, ExecutionException {
 
 
         return new ResponseEntity<>(userMedicineService.getallUserMedicines(userId).get(), HttpStatus.OK);
@@ -58,7 +58,7 @@ public class MedicineController {
     }
 
     @PutMapping(value = "/medicineDetails", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editMedicineDetails(@RequestParam("medId") Integer id,
+    public ResponseEntity<UserMedicines> editMedicineDetails(@RequestParam("medId") Integer id,
                                                  @RequestBody Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
 
         return new ResponseEntity<>(userMedicineService.editMedicineDetails(id, medicinepojo), HttpStatus.CREATED);
@@ -66,7 +66,7 @@ public class MedicineController {
     }
 
     @PostMapping(value = "/medicines/sync", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> syncdata(@RequestParam("userId") String userId, @RequestBody List<Medicinepojo> medicinepojo) {
+    public ResponseEntity<String> syncdata(@RequestParam("userId") String userId, @RequestBody List<Medicinepojo> medicinepojo) {
 
         UserEntity userEntity = userRepository.getuserbyid(userId);
 
@@ -96,16 +96,16 @@ public class MedicineController {
     }
 
     @PostMapping(value = "/medicinehistory/sync")
-    public ResponseEntity<?> syncmedicinehistory(@RequestParam(name = "medId") Integer medId,
+    public ResponseEntity<String> syncmedicinehistory(@RequestParam(name = "medId") Integer medId,
                                                  @RequestBody List<MedicineHistoryDTO> medicineHistory) {
 
         userMedicineService.syncmedicineHistory(medId , medicineHistory);
-        return null;
+        return new ResponseEntity<>("OK",HttpStatus.OK);
 
     }
 
     @GetMapping(value = "/getmedicinehistories")
-    public ResponseEntity<?> getmedicinehistories(@RequestParam(name = "medId") Integer medId){
+    public ResponseEntity<MedicineResponse> getmedicinehistories(@RequestParam(name = "medId") Integer medId){
 
      return new ResponseEntity<>(userMedicineService.getmedicineHistory(medId),HttpStatus.OK);
 
