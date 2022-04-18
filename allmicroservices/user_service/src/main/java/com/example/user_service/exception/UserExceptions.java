@@ -23,7 +23,7 @@ public class UserExceptions {
     private static final String ERROR="failed";
  @ExceptionHandler({UserexceptionMessage.class})
  public ResponseEntity<UserResponse> getuserException(UserexceptionMessage uem , WebRequest webRequest){
-     UserResponse userResponse= new UserResponse(ERROR,uem.getMessage(),null,"");
+     UserResponse userResponse= new UserResponse(ERROR,uem.getMessage(),null,"","");
      return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
 
  }
