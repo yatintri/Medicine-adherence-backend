@@ -27,7 +27,7 @@ public interface UserService {
 
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage;
 
-    public String sendUserMedicines(String userId) throws MessagingException, IOException;
+    public String sendUserMedicines(Integer userId) throws MessagingException, IOException;
 
 }
 //////
