@@ -56,16 +56,18 @@ The secret key is stored in `application.properties`.
 
 It uses MySql database, can be changed easily in the `application.properties` for any other database.
 
-![img.png](img.png)
+![image](https://user-images.githubusercontent.com/87442611/163925477-0577d74c-bb94-4cea-8272-78ac08511dba.png)
 
 # System Design
 
-![img_2.png](img_2.png)
+![image](https://user-images.githubusercontent.com/87442611/163925548-f720f455-d59c-43c3-be05-97508feae6e2.png)
 
 # Swimlane Diagram
 
 Flowchart that show both process from start to finish and who is responsible for each step in the process.
-![img_3.png](img_3.png)
+
+![image](https://user-images.githubusercontent.com/87442611/163925587-7b97d4f6-18a5-4c12-92fd-f7bea19992f9.png)
+
 
 Working with the IDE
 ====================
