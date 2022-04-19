@@ -89,8 +89,8 @@
 
 		<dependency>
 			<groupId>com.itextpdf</groupId>
-			<artifactId>itextpdf</artifactId>
-			<version>5.5.10</version>
+			<artifactId>html2pdf</artifactId>
+			<version>4.0.2</version>
 		</dependency>
 
 	</dependencies>
