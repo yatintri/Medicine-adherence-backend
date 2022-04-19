@@ -18,7 +18,7 @@ public class MedicineHistory {
     @Column(name = "history_id")
     private int historyId;
 
-    @Column(name = "date")
+    @Column(name = "meddate")
     private String date;
 
     @Column(name = "taken")

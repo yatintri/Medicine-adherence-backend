@@ -38,7 +38,7 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping(path = "/api/v1")
 public class UserController {
 
-    private static final String MSG="Success";
+    private static final String MSG = "Success";
 
     @Autowired
     private UserService userService;
@@ -54,28 +54,30 @@ public class UserController {
 
     @Autowired
     UserMedicineService userMedicineService;
+
     // saving the user when they signup
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> saveUser(@RequestParam (name = "fcmToken")String fcmToken ,@RequestParam (name = "picPath")String picPath , @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage, ExecutionException, InterruptedException {
+    public ResponseEntity<UserResponse> saveUser(@RequestParam(name = "fcmToken") String fcmToken, @RequestParam(name = "picPath") String picPath, @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage, ExecutionException, InterruptedException {
         UserEntity user = userService.getUserByEmail(userEntityDTO.getEmail());
-        if(user != null){
-            UserResponse userresponse = new UserResponse(MSG,"User is already present",new ArrayList<>(Arrays.asList(user)),"","");
+        if (user != null) {
+            UserResponse userresponse = new UserResponse(MSG, "User is already present", new ArrayList<>(Arrays.asList(user)), "", "");
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
-        user = userService.saveUser(userEntityDTO,fcmToken,picPath).get();
+        user = userService.saveUser(userEntityDTO, fcmToken, picPath).get();
         String jwtToken = jwtUtil.generateToken(user.getUserName());
         String refreshToken = passwordEncoder.encode(user.getUserId());
 
-        UserResponse userresponse = new UserResponse(MSG,"Saved user successfully",new ArrayList<>(Arrays.asList(user)),jwtToken,refreshToken);
+        UserResponse userresponse = new UserResponse(MSG, "Saved user successfully", new ArrayList<>(Arrays.asList(user)), jwtToken, refreshToken);
 
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
 
 
     }
+
     @PostMapping("/refreshtoken")
-    public ResponseEntity<?> refreshtoken(@Valid @RequestParam (name= "uid")String uid, HttpServletRequest httpServletRequest) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    public ResponseEntity<?> refreshtoken(@Valid @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
         //String requestRefreshToken = request.getRefreshToken();
-        String token =  httpServletRequest.getHeader("Authorization");
+        String token = httpServletRequest.getHeader("Authorization");
         token = token.substring(7);
         System.out.println(passwordEncoder.matches(uid, token));
         String jwtToken = jwtUtil.generateToken(userService.getUserById(uid).getUserName());
@@ -87,11 +89,11 @@ public class UserController {
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Userresponse> login(@RequestParam String email) throws UserexceptionMessage {
         UserEntity user = userService.getUserByEmail(email);
-        if(user != null){
-            Userresponse userresponse = new Userresponse(MSG,user);
+        if (user != null) {
+            Userresponse userresponse = new Userresponse(MSG, user);
             return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
         }
-        Userresponse userresponse = new Userresponse("Not found",null);
+        Userresponse userresponse = new Userresponse("Not found", null);
 
         return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
 
@@ -116,9 +118,8 @@ public class UserController {
         List<UserEntity> user = Arrays.asList(userService.getUserById(userId));
         List<UserMedicines> list = userMedicineService.getallUserMedicines(userId).get();
 
-        UserProfileResponse userProfileResponse = new UserProfileResponse("OK",user,list);
+        UserProfileResponse userProfileResponse = new UserProfileResponse("OK", user, list);
         return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
-
 
 
     }
@@ -137,14 +138,14 @@ public class UserController {
     // fetching the user with email if not present then sending to that email address
     @GetMapping(value = "/email", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<? extends Object> getUserByEmail(@RequestParam("email") String email
-            ,@RequestParam("sender") String sender)
+            , @RequestParam("sender") String sender)
             throws UserexceptionMessage {
 
         UserEntity userEntity = userService.getUserByEmail(email);
-        if(userEntity == null){
+        if (userEntity == null) {
             rabbitTemplate.convertAndSend("project_exchange",
-                    "mail_key",new MailInfo(email,"Please join","patient_request",sender));
-            return new ResponseEntity<>("Invitation sent to user with given email id!" , HttpStatus.OK);
+                    "mail_key", new MailInfo(email, "Please join", "patient_request", sender));
+            return new ResponseEntity<>("Invitation sent to user with given email id!", HttpStatus.OK);
 
         }
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
@@ -152,15 +153,13 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/sendpdf")
-    public ResponseEntity<UserResponse> sendpdf(@RequestParam(name = "userId") String userId) throws IOException, MessagingException {
-        String filePath= userService.sendUserMedicines(userId);
-        UserResponse userResponse= new UserResponse("Success",filePath,null,"","");
+    @GetMapping(value = "/pdf")
+    public ResponseEntity<UserResponse> sendpdf(@RequestParam(name = "medId") Integer medId) throws IOException, MessagingException {
+        String filePath = userService.sendUserMedicines(medId);
+        UserResponse userResponse = new UserResponse("Success", filePath, null, "", "");
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
 
     }
-
-
 
 
 }

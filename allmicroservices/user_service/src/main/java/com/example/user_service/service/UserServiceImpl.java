@@ -3,11 +3,13 @@ package com.example.user_service.service;
 
 import com.example.user_service.config.PdfMailSender;
 import com.example.user_service.exception.UserexceptionMessage;
+import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.repository.UserDetailsRepository;
+import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
 
@@ -43,6 +45,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserMedicineService userMedicineService;
+
+    @Autowired
+    UserMedicineRepository userMedicineRepository;
 
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -126,10 +131,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String sendUserMedicines(String userId) throws MessagingException, IOException {
-        List<UserMedicines> userMedicinesList = userRepository.getuserbyid(userId)
-                .getUserMedicines();
-        return pdfMailSender.send("vinaykumarsoni2001@gmail.com",userMedicinesList);
+    public String sendUserMedicines(Integer medId) throws MessagingException, IOException {
+        UserMedicines userMedicines = userMedicineRepository.findById(medId).get();
+        UserEntity entity = userMedicines.getUserEntity();
+        List<MedicineHistory> medicineHistories = userMedicines.getMedicineHistories();
+        return pdfMailSender.send(entity,userMedicines,medicineHistories);
     }
 
     private UserEntity mapToEntity(UserEntityDTO userEntityDTO){
