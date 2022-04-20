@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService{
     @Async
     public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage{
 
-        List<UserEntity> list = userRepository.findAllusers();
+        List<UserEntity> list = userRepository.findAllUsers();
         logger.info(Thread.currentThread().getName());
         return CompletableFuture.completedFuture(list);
 
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService{
     @Override
 
     public UserEntity getUserById(String userId) throws UserexceptionMessage{
-        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getuserbyid(userId));
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getUserById(userId));
 
         logger.info(Thread.currentThread().getName());
         if(optionalUserEntity.isEmpty()){
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserEntity updateUser(String userId, UserEntityDTO userEntityDTO) {
-        UserEntity userDB = userRepository.getuserbyid(userId);
+        UserEntity userDB = userRepository.getUserById(userId);
         UserEntity userEntity= mapToEntity(userEntityDTO);
         if(Objects.nonNull(userEntity.getUserName()) && !"".equalsIgnoreCase(userEntity.getUserName())) {
             userDB.setUserName(userEntity.getUserName());
@@ -127,7 +127,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity getUserByEmail(String email) throws UserexceptionMessage {
 
-        return userRepository.findBymail(email);
+        return userRepository.findByMail(email);
+
     }
 
     @Override

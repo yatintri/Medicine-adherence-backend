@@ -44,7 +44,7 @@ public class CaretakerController {
 
     // update request status if request is accepted or rejected
     @PutMapping(value = "/accept")
-    public ResponseEntity<CaretakerResponse> updatecaretakerStatus(@RequestParam(name = "cId") String cId)
+    public ResponseEntity<CaretakerResponse> updateCaretakerStatus(@RequestParam(name = "cId") String cId)
             throws UserCaretakerException {
         UserCaretaker userCaretaker = careTakerService.updateCaretakerStatus(cId);
         CaretakerResponse caretakerResponse= new CaretakerResponse(MSG,"Status updated",userCaretaker);
@@ -56,7 +56,8 @@ public class CaretakerController {
 
     // fetch all the patients of a particular caretaker
     @GetMapping(value = "/patients")
-    public ResponseEntity<CaretakerResponse1> getPatientsUnderMe(@RequestParam(name = "caretakerId") String  userId){
+    public ResponseEntity<CaretakerResponse1> getPatientsUnderMe(@RequestParam(name = "caretakerId") String  userId)
+            throws UserCaretakerException{
         List<UserCaretaker> userCaretakerList= careTakerService.getPatientsUnderMe(userId);
         CaretakerResponse1 caretakerResponse1= new CaretakerResponse1(MSG,MSG1,userCaretakerList);
         return new ResponseEntity<>(caretakerResponse1,HttpStatus.OK);
@@ -64,7 +65,7 @@ public class CaretakerController {
 
     // fetch all the request sent by a patients to a caretaker
     @GetMapping(value = "/patient/requests")
-    public ResponseEntity<CaretakerResponse1> getPatientRequestsC(@RequestParam(name = "caretakerId") String  userId){
+    public ResponseEntity<CaretakerResponse1> getPatientRequestsC(@RequestParam(name = "caretakerId") String  userId) throws UserCaretakerException {
         List<UserCaretaker> userCaretakerList= careTakerService.getPatientRequests(userId);
         CaretakerResponse1 caretakerResponse1= new CaretakerResponse1(MSG,MSG1,userCaretakerList);
         return new ResponseEntity<>(caretakerResponse1,HttpStatus.OK);
@@ -73,7 +74,7 @@ public class CaretakerController {
 
     // where the patients can view all his caretakers
     @GetMapping(value = "/caretakers")
-    public ResponseEntity<CaretakerResponse1> getMyCaretakers(@RequestParam(name = "patientId") String  userId){
+    public ResponseEntity<CaretakerResponse1> getMyCaretakers(@RequestParam(name = "patientId") String  userId) throws UserCaretakerException {
         List<UserCaretaker> userCaretakerList= careTakerService.getMyCaretakers(userId);
         CaretakerResponse1 caretakerResponse1= new CaretakerResponse1(MSG,MSG1, userCaretakerList);
         return new ResponseEntity<>(caretakerResponse1,HttpStatus.OK);
@@ -82,7 +83,7 @@ public class CaretakerController {
     // to check the status of a request by caretaker
 
     @GetMapping(value = "/caretaker/requests")
-    public ResponseEntity<CaretakerResponse1> getCaretakerRequestsP(@RequestParam(name = "patientId") String  userId){
+    public ResponseEntity<CaretakerResponse1> getCaretakerRequestsP(@RequestParam(name = "patientId") String  userId) throws UserCaretakerException {
         List<UserCaretaker> userCaretakerList= careTakerService.getCaretakerRequestsP(userId);
         CaretakerResponse1 caretakerResponse1= new CaretakerResponse1(MSG,MSG1,userCaretakerList);
         return new ResponseEntity<>(caretakerResponse1,HttpStatus.OK);
@@ -97,7 +98,7 @@ public class CaretakerController {
     }
 
     @GetMapping(value = "/notifyuser")
-    public ResponseEntity<String> notifyuserformed(@RequestParam(name = "fcmToken") String fcmToken , @RequestParam("medname") String body){
+    public ResponseEntity<String> notifyUserForMed(@RequestParam(name = "fcmToken") String fcmToken , @RequestParam("medname") String body){
 
         rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","patient",body,""));
         return new ResponseEntity<>("Ok",HttpStatus.OK);
@@ -105,11 +106,11 @@ public class CaretakerController {
     }
 
     @PostMapping(value = "/image")
-    public ResponseEntity<String> sendimagetocaretaker(@RequestParam(name = "image") MultipartFile multipartFile
+    public ResponseEntity<String> sendImageToCaretaker(@RequestParam(name = "image") MultipartFile multipartFile
             , @RequestParam(name = "name") String filename ,
                                                        @RequestParam(name = "id") String caretakerId) throws IOException, UserCaretakerException {
 
-        careTakerService.sendimagetocaretaker(multipartFile , filename , caretakerId);
+        careTakerService.sendImageToCaretaker(multipartFile , filename , caretakerId);
         return  new ResponseEntity<>("Ok",HttpStatus.OK);
 
     }

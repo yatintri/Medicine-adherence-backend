@@ -44,7 +44,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
     public UserMedicines saveUserMedicine(String userId, Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
 
-        UserEntity user = userRepository.getuserbyid(userId);
+        UserEntity user = userRepository.getUserById(userId);
         if (user == null) {
             throw new UserexceptionMessage(ERROR);
         }
@@ -77,7 +77,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserexceptionMessage {
 
 
-        UserEntity user = userRepository.getuserbyid(userId);
+        UserEntity user = userRepository.getUserById(userId);
         if (user == null) {
             throw new UserexceptionMessage(ERROR);
         }
@@ -103,9 +103,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     }
 
     @Override
-    public boolean syncdata(String userId, List<UserMedicines> list) {
+    public boolean syncData(String userId, List<UserMedicines> list) throws UserMedicineException {
 
-        UserEntity user = userRepository.getuserbyid(userId);
+        UserEntity user = userRepository.getUserById(userId);
+        if(user.getUserMedicines().isEmpty()){
+            throw new UserMedicineException("Unable to sync");
+        }
         for (UserMedicines userMedicines : list) {
 
             userMedicines.setUserEntity(user);
@@ -127,9 +130,13 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     @Override
     @Async
-    public MedicineResponse syncmedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS) {
+    public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS) throws UserMedicineException {
 
-        UserMedicines userMedicines = userMedicineRepository.getmedbyid(medId);
+        UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
+        if(userMedicines == null){
+            throw new UserMedicineException("Unable to sync");
+
+        }
 
         List<MedicineHistory> medicineHistories = medicineHistoryDTOS.stream().map(medHid -> {
             MedicineHistory medicineHistory1 = new MedicineHistory();
@@ -147,9 +154,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     }
 
     @Override
-    public MedicineResponse getmedicineHistory(Integer medId) {
+    public MedicineResponse getMedicineHistory(Integer medId) throws UserMedicineException {
 
-      List<MedicineHistory> medicineHistories =  userMedicineRepository.getmedbyid(medId).getMedicineHistories();
+      List<MedicineHistory> medicineHistories =  userMedicineRepository.getMedById(medId).getMedicineHistories();
+      if(medicineHistories.isEmpty()){
+          throw new UserMedicineException("No record found!!");
+      }
         return new MedicineResponse("OK" , "Medicine History" , medicineHistories);
     }
 
