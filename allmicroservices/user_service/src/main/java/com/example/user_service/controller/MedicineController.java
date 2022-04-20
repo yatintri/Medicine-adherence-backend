@@ -66,9 +66,9 @@ public class MedicineController {
     }
 
     @PostMapping(value = "/medicines/sync", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> syncdata(@RequestParam("userId") String userId, @RequestBody List<Medicinepojo> medicinepojo) {
+    public ResponseEntity<String> syncData(@RequestParam("userId") String userId, @RequestBody List<Medicinepojo> medicinepojo) {
 
-        UserEntity userEntity = userRepository.getuserbyid(userId);
+        UserEntity userEntity = userRepository.getUserById(userId);
 
         List<UserMedicines> userMedicinesList = medicinepojo.stream().map(medicinepojo1 -> {
                     UserMedicines userMedicines = new UserMedicines();
@@ -95,19 +95,19 @@ public class MedicineController {
 
     }
 
-    @PostMapping(value = "/medicinehistory/sync")
-    public ResponseEntity<String> syncmedicinehistory(@RequestParam(name = "medId") Integer medId,
-                                                 @RequestBody List<MedicineHistoryDTO> medicineHistory) {
+    @PostMapping(value = "/medicineHistory/sync")
+    public ResponseEntity<String> syncMedicineHistory(@RequestParam(name = "medId") Integer medId,
+                                                 @RequestBody List<MedicineHistoryDTO> medicineHistory) throws UserMedicineException {
 
-        userMedicineService.syncmedicineHistory(medId , medicineHistory);
+        userMedicineService.syncMedicineHistory(medId , medicineHistory);
         return new ResponseEntity<>("OK",HttpStatus.OK);
 
     }
 
-    @GetMapping(value = "/getmedicinehistories")
-    public ResponseEntity<MedicineResponse> getmedicinehistories(@RequestParam(name = "medId") Integer medId){
+    @GetMapping(value = "/getMedicineHistories")
+    public ResponseEntity<MedicineResponse> getMedicineHistories(@RequestParam(name = "medId") Integer medId) throws UserMedicineException {
 
-     return new ResponseEntity<>(userMedicineService.getmedicineHistory(medId),HttpStatus.OK);
+     return new ResponseEntity<>(userMedicineService.getMedicineHistory(medId),HttpStatus.OK);
 
 
     }

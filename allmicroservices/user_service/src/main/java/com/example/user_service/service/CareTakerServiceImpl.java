@@ -2,6 +2,7 @@ package com.example.user_service.service;
 
 
 import com.example.user_service.exception.UserCaretakerException;
+import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
@@ -43,39 +44,56 @@ public class CareTakerServiceImpl implements CareTakerService{
 
     @Override
     public UserCaretaker updateCaretakerStatus(String cId) throws UserCaretakerException {
-        UserCaretaker uc = userCaretakerRepository.findById(cId).get();
-        if(uc.getCaretakerId() == null){
+        Optional<UserCaretaker> uc = userCaretakerRepository.findById(cId);
+        if(uc.isEmpty()){
             throw new UserCaretakerException("User not found");
         }
-        uc.setReqStatus(true);
-        return userCaretakerRepository.save(uc);
+        uc.get().setReqStatus(true);
+        return userCaretakerRepository.save(uc.get());
     }
 
     @Override
-    public List<UserCaretaker> getPatientsUnderMe(String userId) {
-        return userCaretakerRepository.getpatientsunderme(userId);
+    public List<UserCaretaker> getPatientsUnderMe(String userId) throws UserCaretakerException{
+
+        List<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientsUnderMe(userId);
+        if(userCaretaker.isEmpty()){
+            throw new UserCaretakerException("Data not found");
+        }
+        return userCaretaker;
     }
 
     @Override
-    public List<UserCaretaker> getPatientRequests(String userId) {
-        return userCaretakerRepository.getpatientrequests(userId);
+    public List<UserCaretaker> getPatientRequests(String userId) throws UserCaretakerException {
+        List<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientRequests(userId);
+        if(userCaretaker.isEmpty()){
+            throw new UserCaretakerException("Data not found");
+        }
+        return userCaretaker;
     }
 
     @Override
-    public List<UserCaretaker> getMyCaretakers(String userId) {
-        return userCaretakerRepository.getmycaretakers(userId);
+    public List<UserCaretaker> getMyCaretakers(String userId) throws UserCaretakerException {
+        List<UserCaretaker> userCaretaker = userCaretakerRepository.getMyCaretakers(userId);
+        if(userCaretaker.isEmpty()){
+            throw new UserCaretakerException("Data not found");
+        }
+        return userCaretaker;
     }
 
     @Override
     public List<UserCaretaker> getCaretakerRequestStatus(String userId) {
-        return userCaretakerRepository.getcaretakerequeststatus(userId);
+        return userCaretakerRepository.getCaretakerRequestStatus(userId);
     }
 
 
 
     @Override
-    public List<UserCaretaker> getCaretakerRequestsP(String userId){
-        return userCaretakerRepository.getcaretakerrequestsp(userId);
+    public List<UserCaretaker> getCaretakerRequestsP(String userId) throws UserCaretakerException {
+        List<UserCaretaker> userCaretaker = userCaretakerRepository.getCaretakerRequestsP(userId);
+        if(userCaretaker.isEmpty()){
+            throw new UserCaretakerException("Data not found");
+        }
+        return userCaretaker;
     }
 
     @Override
@@ -98,7 +116,7 @@ public class CareTakerServiceImpl implements CareTakerService{
     }
 
     @Override
-    public boolean sendimagetocaretaker(MultipartFile multipartFile, String filename, String caretakerid) throws IOException , UserCaretakerException {
+    public boolean sendImageToCaretaker(MultipartFile multipartFile, String filename, String caretakerid) throws IOException , UserCaretakerException {
 
         try{
             File file = new File(System.getProperty("user.dir")+"/src/main/upload/static/images");

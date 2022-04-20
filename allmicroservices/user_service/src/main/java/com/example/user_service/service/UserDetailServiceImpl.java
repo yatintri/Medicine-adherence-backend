@@ -26,7 +26,7 @@ public class UserDetailServiceImpl implements UserDetailService{
     @Override
     public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO) throws UserexceptionMessage {
 
-        Optional<UserEntity> user = Optional.ofNullable(userRepository.getuserbyid(id));
+        Optional<UserEntity> user = Optional.ofNullable(userRepository.getUserById(id));
         if (user.isEmpty()){
             throw new UserexceptionMessage("User not found");
         }

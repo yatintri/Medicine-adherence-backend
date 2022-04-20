@@ -42,15 +42,15 @@ class CaretakerControllerIntegrationTest {
         try {
             ResponseEntity<String> response = testRestTemplate
                     .exchange("http://localhost:" + port +
-                                    "/api/caretaker/savecaretaker",
+                                    "/api/v1/request",
                             HttpMethod.POST, request, new ParameterizedTypeReference<String>() {
                             });
-            String expected = "{\"patientName\":\"Shubham\"," +
-                    "\"reqStatus\":true," +
-                    "\"caretakerId\":\"string\"," +
-                    "\"patientId\":\"string\"," +
-                    "\"caretakerUsername\":\"Piyush\"," +
-                    "\"sentBy\":\"Shubham\"}\n";
+            String expected = "{\"status\":\"Success\"," +
+                    "\"message\":\"Request sent successfully\"," +
+                    "\"userCaretaker\":{\"patientName\":\"Shubham\"," +
+                    "\"reqStatus\":true,\"caretakerId\":\"string\"," +
+                    "\"patientId\":\"string\",\"caretakerUsername\":\"Piyush\"," +
+                    "\"sentBy\":\"Shubham\"}}\n";
             System.out.println(response.getBody());
             JSONAssert.assertEquals(expected, String.valueOf(response.getBody()), false);
         }
@@ -67,7 +67,7 @@ class CaretakerControllerIntegrationTest {
         HttpEntity<UserCaretakerDTO> entity = new HttpEntity<>(user);
         try{
             ResponseEntity<UserDetails> response = testRestTemplate.exchange(
-                    createURLWithPort("/api/caretaker/updatestatus")
+                    createURLWithPort("/api/v1/accept?cId=09c27d37-5c41-46fc-b3a0-7d48142fa86e")
                     , HttpMethod.PUT, entity,UserDetails.class);
 
             String expected = "{\n" +
@@ -91,25 +91,25 @@ class CaretakerControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
         ResponseEntity<String> response = testRestTemplate.exchange(
-                createURLWithPort("/api/caretaker/myPatients(Caretaker)?caretakerId=d0aba7ce-1e7f-458e-8090-8cc62c00c3c5")
+                createURLWithPort("/api/v1/patients?caretakerId=d0aba7ce-1e7f-458e-8090-8cc62c00c3c5")
                 , HttpMethod.GET, entity,String.class);
 
-        String expected
-                ="[{\"patientName\":\"Yatin\",\"reqStatus\":true,\"caretakerId\":\"d0aba7ce-1e7f-458e-8090-8cc62c00c3c5\",\"patientId\":\"5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca\",\"caretakerUsername\":\"Vinay\",\"createdAt\":\"2022-03-20\",\"sentBy\":\"P\",\"cid\":\"f757a544-1eb6-4765-b47b-8bb70c0ecb41\"}]\n";
+        String expected =
+                "{\"status\":\"Success\",\"message\":\"Data found\",\"userCaretakerList\":[{\"patientName\":\"Yatin\",\"reqStatus\":true,\"caretakerId\":\"d0aba7ce-1e7f-458e-8090-8cc62c00c3c5\",\"patientId\":\"5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca\",\"caretakerUsername\":\"Vinay\",\"createdAt\":\"2022-03-20\",\"sentBy\":\"P\",\"cid\":\"f757a544-1eb6-4765-b47b-8bb70c0ecb41\"}]}\n";
         System.out.println(response.getBody());
         JSONAssert.assertEquals(expected,response.getBody(), false);
     }
 
     @Test
-    void testgetPatientRequests() throws JSONException {
+    void testGetPatientRequests() throws JSONException {
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
         ResponseEntity<String> response = testRestTemplate.exchange(
-                createURLWithPort("/api/caretaker/patientRequests(Caretaker)?caretakerId=sdahggsjdsk")
+                createURLWithPort("/api/v1/patient/requests?caretakerId=sdahggsjdsk")
                 , HttpMethod.GET, entity,String.class);
 
-        String expected
-                ="[{\"patientName\":\"Adiy\",\"reqStatus\":false,\"caretakerId\":\"sdahggsjdsk\",\"patientId\":\"GASKJHSj\",\"caretakerUsername\":\"Yas\",\"createdAt\":\"2022-03-24\",\"sentBy\":\"Adiy\",\"cid\":\"50fcefb4-a09c-4dba-b8fb-323cad335ed7\"}]\n";
+        String expected =
+                "{\"status\":\"Success\",\"message\":\"Data found\",\"userCaretakerList\":[{\"patientName\":\"Adiy\",\"reqStatus\":false,\"caretakerId\":\"sdahggsjdsk\",\"patientId\":\"GASKJHSj\",\"caretakerUsername\":\"Yas\",\"createdAt\":\"2022-03-24\",\"sentBy\":\"Adiy\",\"cid\":\"50fcefb4-a09c-4dba-b8fb-323cad335ed7\"}]}\n";
         System.out.println(response.getBody());
         JSONAssert.assertEquals(expected,response.getBody(), false);
     }
@@ -119,11 +119,11 @@ class CaretakerControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
         ResponseEntity<String> response = testRestTemplate.exchange(
-                createURLWithPort("/api/caretaker/myCareTakers(Patient)?patientId=5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca")
+                createURLWithPort("/api/v1/caretakers?patientId=5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca")
                 , HttpMethod.GET, entity,String.class);
 
-        String expected
-                = "[{\"patientName\":\"Yatin\",\"reqStatus\":true,\"caretakerId\":\"379dfb3b-4b78-4232-84af-110d406622a6\",\"patientId\":\"5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca\",\"caretakerUsername\":\"Soni\",\"createdAt\":\"2022-03-26\",\"sentBy\":\"P\",\"cid\":\"680b6fb8-c674-4d92-989b-35dff3b9a1dc\"},{\"patientName\":\"Yatin\",\"reqStatus\":true,\"caretakerId\":\"d0aba7ce-1e7f-458e-8090-8cc62c00c3c5\",\"patientId\":\"5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca\",\"caretakerUsername\":\"Vinay\",\"createdAt\":\"2022-03-20\",\"sentBy\":\"P\",\"cid\":\"f757a544-1eb6-4765-b47b-8bb70c0ecb41\"}]\n";
+        String expected =
+                "{\"status\":\"Success\",\"message\":\"Data found\",\"userCaretakerList\":[{\"patientName\":\"Yatin\",\"reqStatus\":true,\"caretakerId\":\"379dfb3b-4b78-4232-84af-110d406622a6\",\"patientId\":\"5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca\",\"caretakerUsername\":\"Soni\",\"createdAt\":\"2022-03-26\",\"sentBy\":\"P\",\"cid\":\"09c27d37-5c41-46fc-b3a0-7d48142fa86e\"},{\"patientName\":\"Yatin\",\"reqStatus\":true,\"caretakerId\":\"379dfb3b-4b78-4232-84af-110d406622a6\",\"patientId\":\"5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca\",\"caretakerUsername\":\"Soni\",\"createdAt\":\"2022-03-26\",\"sentBy\":\"P\",\"cid\":\"680b6fb8-c674-4d92-989b-35dff3b9a1dc\"},{\"patientName\":\"Yatin\",\"reqStatus\":true,\"caretakerId\":\"d0aba7ce-1e7f-458e-8090-8cc62c00c3c5\",\"patientId\":\"5ecab2c4-eb9a-47c2-b23c-3b129d3bd9ca\",\"caretakerUsername\":\"Vinay\",\"createdAt\":\"2022-03-20\",\"sentBy\":\"P\",\"cid\":\"f757a544-1eb6-4765-b47b-8bb70c0ecb41\"}]}\n";
         System.out.println(response.getBody());
         JSONAssert.assertEquals(expected,response.getBody(), false);
     }

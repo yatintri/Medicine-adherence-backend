@@ -15,13 +15,13 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     public List<UserEntity> findByNameIgnoreCase(String userName);
 
     @Query("select u from UserEntity u where lower(u.email) like lower(?1)")
-    public UserEntity findBymail(String email);
+    public UserEntity findByMail(String email);
 
     @Query("SELECT u from UserEntity u where u.userId = ?1")
-    public UserEntity getuserbyid(String userId);
+    public UserEntity getUserById(String userId);
 
     @Query("SELECT user from UserEntity user")
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userdetail_graph")
-    List<UserEntity> findAllusers();
+    List<UserEntity> findAllUsers();
 
 }///

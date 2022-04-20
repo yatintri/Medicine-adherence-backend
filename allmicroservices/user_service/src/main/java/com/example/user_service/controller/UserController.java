@@ -74,9 +74,9 @@ public class UserController {
 
     }
 
-    @PostMapping("/refreshtoken")
-    public ResponseEntity<?> refreshtoken(@Valid @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
-        //String requestRefreshToken = request.getRefreshToken();
+    @PostMapping("/refreshToken")
+    public ResponseEntity<?> refreshToken(@Valid @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+
         String token = httpServletRequest.getHeader("Authorization");
         token = token.substring(7);
         System.out.println(passwordEncoder.matches(uid, token));

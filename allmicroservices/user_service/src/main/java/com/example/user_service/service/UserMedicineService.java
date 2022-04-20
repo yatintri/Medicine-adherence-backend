@@ -20,12 +20,12 @@ public interface UserMedicineService {
 
     public UserMedicines editMedicineDetails(Integer medicineId , Medicinepojo medicinepojo)throws UserMedicineException, UserexceptionMessage;
 
-    boolean syncdata(String userId , List<UserMedicines> list);
+    boolean syncData(String userId , List<UserMedicines> list) throws UserMedicineException;
 
     public UserMedicines getMedRemById(Integer medicineId)throws UserMedicineException, UserexceptionMessage ;
 
-    public MedicineResponse syncmedicineHistory(Integer medId , List<MedicineHistoryDTO> medicineHistoryDTOS);
+    public MedicineResponse syncMedicineHistory(Integer medId , List<MedicineHistoryDTO> medicineHistoryDTOS) throws UserMedicineException;
 
-    public MedicineResponse getmedicineHistory(Integer medId);
+    public MedicineResponse getMedicineHistory(Integer medId) throws UserMedicineException;
 }
 ///
