@@ -6,7 +6,6 @@ import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 
 import javax.mail.MessagingException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

@@ -2,7 +2,6 @@ package com.example.user_service.service;
 
 
 import com.example.user_service.exception.UserCaretakerException;
-import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
@@ -33,6 +32,8 @@ public class CareTakerServiceImpl implements CareTakerService{
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    private static final String MSG = "Data not found";
+
     @Override
     public UserCaretaker saveCareTaker(UserCaretakerDTO userCaretakerDTO) {
 
@@ -57,7 +58,7 @@ public class CareTakerServiceImpl implements CareTakerService{
 
         List<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientsUnderMe(userId);
         if(userCaretaker.isEmpty()){
-            throw new UserCaretakerException("Data not found");
+            throw new UserCaretakerException(MSG);
         }
         return userCaretaker;
     }
@@ -66,7 +67,7 @@ public class CareTakerServiceImpl implements CareTakerService{
     public List<UserCaretaker> getPatientRequests(String userId) throws UserCaretakerException {
         List<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientRequests(userId);
         if(userCaretaker.isEmpty()){
-            throw new UserCaretakerException("Data not found");
+            throw new UserCaretakerException(MSG);
         }
         return userCaretaker;
     }
@@ -75,7 +76,7 @@ public class CareTakerServiceImpl implements CareTakerService{
     public List<UserCaretaker> getMyCaretakers(String userId) throws UserCaretakerException {
         List<UserCaretaker> userCaretaker = userCaretakerRepository.getMyCaretakers(userId);
         if(userCaretaker.isEmpty()){
-            throw new UserCaretakerException("Data not found");
+            throw new UserCaretakerException(MSG);
         }
         return userCaretaker;
     }
@@ -91,7 +92,7 @@ public class CareTakerServiceImpl implements CareTakerService{
     public List<UserCaretaker> getCaretakerRequestsP(String userId) throws UserCaretakerException {
         List<UserCaretaker> userCaretaker = userCaretakerRepository.getCaretakerRequestsP(userId);
         if(userCaretaker.isEmpty()){
-            throw new UserCaretakerException("Data not found");
+            throw new UserCaretakerException(MSG);
         }
         return userCaretaker;
     }

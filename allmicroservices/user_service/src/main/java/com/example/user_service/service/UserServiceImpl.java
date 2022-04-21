@@ -133,10 +133,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String sendUserMedicines(Integer medId) throws MessagingException, IOException {
-        UserMedicines userMedicines = userMedicineRepository.findById(medId).get();
-        UserEntity entity = userMedicines.getUserEntity();
-        List<MedicineHistory> medicineHistories = userMedicines.getMedicineHistories();
-        return pdfMailSender.send(entity,userMedicines,medicineHistories);
+        Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
+        if(userMedicines.isEmpty()){
+            return "Failed";
+        }
+        UserEntity entity = userMedicines.get().getUserEntity();
+        List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
+        return pdfMailSender.send(entity,userMedicines.get(),medicineHistories);
     }
 
     private UserEntity mapToEntity(UserEntityDTO userEntityDTO){

@@ -19,7 +19,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -93,7 +92,6 @@ public class UserMedicineServiceImpl implements UserMedicineService {
             medicineHistory1.setUserMedicines(userMedicines);
             return medicineHistory1;
         }).collect(Collectors.toList());
-        System.out.println(medicineHistories.get(0).getHistoryId());
         CompletableFuture.completedFuture(userMedHistoryRepository.saveAll(medicineHistories));
 
         return null;
@@ -109,9 +107,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
         return new MedicineResponse("OK" , "Medicine History" , medicineHistories);
     }
 
-    private UserMedicines mapToEntity(Medicinepojo medicinepojo) {
-        return mapper.map(medicinepojo, UserMedicines.class);
-    }
+
 
 
 }

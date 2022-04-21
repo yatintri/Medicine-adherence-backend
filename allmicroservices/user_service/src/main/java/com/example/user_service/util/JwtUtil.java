@@ -22,7 +22,7 @@ public class JwtUtil {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     @Value("${project.jwt.secretkey}")
-    private String SECRET_KEY;
+    private String secretKey;
 
     @Value("${project.jwt.jwtExpirationMs}")
     private int jwtExpirationMs;
@@ -47,7 +47,7 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -63,7 +63,7 @@ public class JwtUtil {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails, HttpServletRequest httpServletRequest) {
@@ -72,7 +72,7 @@ public class JwtUtil {
             return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
         } catch (ExpiredJwtException expiredJwtException) {
             httpServletRequest.setAttribute("expired", "true");
-           // return false;
+
         }
         catch (SignatureException e) {
             logger.error("Invalid JWT signature: {}", e.getMessage());

@@ -4,7 +4,6 @@ import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.Medicinepojo;
 import com.example.user_service.pojos.response.MedicineResponse;
 
 import java.util.List;
