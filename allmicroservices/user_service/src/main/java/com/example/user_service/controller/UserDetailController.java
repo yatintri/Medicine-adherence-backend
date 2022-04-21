@@ -21,7 +21,7 @@ public class UserDetailController {
     @Autowired
     private UserDetailService userDetailService;
 
-    @PutMapping(value = "/userDetails" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/user-details" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDetailResponse> updateUserDetails(@RequestParam("userId") String id,
                                                                 @RequestBody UserDetailsDTO userDetailsDTO) throws UserexceptionMessage {
         UserDetails userDetails = userDetailService.saveUserDetail(id,userDetailsDTO);

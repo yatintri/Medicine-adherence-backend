@@ -12,17 +12,10 @@ import java.util.concurrent.CompletableFuture;
 //
 public interface UserMedicineService {
 
-    public UserMedicines saveUserMedicine(String userId, Medicinepojo medicinepojo)throws UserMedicineException, UserexceptionMessage;
-
-    public boolean updateMedicineStatus(Integer medicineId) throws UserMedicineException;
 
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserexceptionMessage;
 
-    public UserMedicines editMedicineDetails(Integer medicineId , Medicinepojo medicinepojo)throws UserMedicineException, UserexceptionMessage;
-
     boolean syncData(String userId , List<UserMedicines> list) throws UserMedicineException;
-
-    public UserMedicines getMedRemById(Integer medicineId)throws UserMedicineException, UserexceptionMessage ;
 
     public MedicineResponse syncMedicineHistory(Integer medId , List<MedicineHistoryDTO> medicineHistoryDTOS) throws UserMedicineException;
 

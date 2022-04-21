@@ -35,35 +35,7 @@ public class MedicineController {
     UserMedicineRepository userMedicineRepository;
 
     // save caretaker for a patients
-    @PostMapping(value = "/medicine", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserMedicines> saveUserMedicine(@RequestParam("userId") String id, @RequestBody Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
 
-        return new ResponseEntity<>(userMedicineService.saveUserMedicine(id, medicinepojo), HttpStatus.CREATED);
-
-    }
-
-    @PutMapping(value = "/medicine/status", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> updateMedicineStatus(@RequestParam("medId") Integer medId) throws UserMedicineException {
-
-        return new ResponseEntity<>(userMedicineService.updateMedicineStatus(medId), HttpStatus.CREATED);
-
-    }
-
-    @GetMapping(value = "/medicine", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserMedicines>> getUserMedicines(@RequestParam("userId") String userId) throws InterruptedException, UserMedicineException, UserexceptionMessage, ExecutionException {
-
-
-        return new ResponseEntity<>(userMedicineService.getallUserMedicines(userId).get(), HttpStatus.OK);
-
-    }
-
-    @PutMapping(value = "/medicineDetails", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserMedicines> editMedicineDetails(@RequestParam("medId") Integer id,
-                                                 @RequestBody Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
-
-        return new ResponseEntity<>(userMedicineService.editMedicineDetails(id, medicinepojo), HttpStatus.CREATED);
-
-    }
 
     @PostMapping(value = "/medicines/sync", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> syncData(@RequestParam("userId") String userId, @RequestBody List<Medicinepojo> medicinepojo) {
@@ -95,7 +67,7 @@ public class MedicineController {
 
     }
 
-    @PostMapping(value = "/medicineHistory/sync")
+    @PostMapping(value = "/medicine-history/sync")
     public ResponseEntity<String> syncMedicineHistory(@RequestParam(name = "medId") Integer medId,
                                                  @RequestBody List<MedicineHistoryDTO> medicineHistory) throws UserMedicineException {
 
@@ -104,7 +76,7 @@ public class MedicineController {
 
     }
 
-    @GetMapping(value = "/getMedicineHistories")
+    @GetMapping(value = "/medicine-histories")
     public ResponseEntity<MedicineResponse> getMedicineHistories(@RequestParam(name = "medId") Integer medId) throws UserMedicineException {
 
      return new ResponseEntity<>(userMedicineService.getMedicineHistory(medId),HttpStatus.OK);

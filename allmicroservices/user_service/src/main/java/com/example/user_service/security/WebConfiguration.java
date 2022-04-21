@@ -27,8 +27,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 //                        "/api/v1/patients",
 //                        "/api/v1/patient/requests",
 //                        "/api/v1/caretakers",
-                        "/api/v1/caretaker/requests"
-//                        "/api/v1/delete",
+  //                      "/api/v1/caretaker/requests"
+                        "/api/v1/delete"
 //                        "/api/v1/medicines/sync",
 //                        "/api/v1/userdetails"
                 );

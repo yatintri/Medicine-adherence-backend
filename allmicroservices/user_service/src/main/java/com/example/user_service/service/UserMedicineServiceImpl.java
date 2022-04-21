@@ -42,37 +42,6 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     Logger logger = LoggerFactory.getLogger(UserMedicineServiceImpl.class);
 
     @Override
-    public UserMedicines saveUserMedicine(String userId, Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
-
-        UserEntity user = userRepository.getUserById(userId);
-        if (user == null) {
-            throw new UserexceptionMessage(ERROR);
-        }
-        UserMedicines userMedicines = mapToEntity(medicinepojo);
-        userMedicines.setUserEntity(user);
-        UserMedicines userMedicines1 = userMedicineRepository.save(userMedicines);
-        if (userMedicines1.getMedicineName() == null) {
-            throw new UserMedicineException("Error try again!");
-        }
-        return userMedicines1;
-    }
-
-    @Override
-    public boolean updateMedicineStatus(Integer medicineId) throws UserMedicineException {
-
-
-        Optional<UserMedicines> userMedicines = userMedicineRepository
-                .findById(medicineId);
-        if (userMedicines.isEmpty()) {
-            throw new UserMedicineException("Data not found");
-        }
-        userMedicineRepository.save(userMedicines.get());
-
-        return true;
-
-    }
-
-    @Override
     @Async
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserexceptionMessage {
 
@@ -87,20 +56,6 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     }
 
-    @Override
-    public UserMedicines editMedicineDetails(Integer medicineId, Medicinepojo medicinepojo) throws UserMedicineException, UserexceptionMessage {
-
-        Optional<UserMedicines> userMeds = userMedicineRepository.findById(medicineId);
-        if (userMeds.isEmpty()) {
-            throw new UserexceptionMessage(ERROR);
-        }
-        userMeds = Optional.ofNullable(mapToEntity(medicinepojo));
-        UserMedicines userMeds1 = userMedicineRepository.save(userMeds.get());
-        if (userMeds1.getMedicineName() == null) {
-            throw new UserMedicineException("Error try again!");
-        }
-        return userMeds1;
-    }
 
     @Override
     public boolean syncData(String userId, List<UserMedicines> list) throws UserMedicineException {
@@ -118,15 +73,6 @@ public class UserMedicineServiceImpl implements UserMedicineService {
         return false;
     }
 
-    @Override
-    public UserMedicines getMedRemById(Integer medicineId) throws UserMedicineException {
-//        UserMedicines userMedicines2 = userMedicineRepository.getmedrembyid(medicineId);
-//        if(userMedicines2 == null)
-//        {
-//            throw new UserMedicineException(ERROR);
-//        }
-        return null;
-    }
 
     @Override
     @Async
