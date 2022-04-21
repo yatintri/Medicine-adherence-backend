@@ -2,7 +2,6 @@ package com.example.user_service.controller;
 
 
 import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.*;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
 import com.example.user_service.pojos.dto.Medicinepojo;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @RestController

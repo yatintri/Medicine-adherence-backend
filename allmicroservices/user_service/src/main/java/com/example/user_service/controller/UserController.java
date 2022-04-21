@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 
@@ -79,7 +77,6 @@ public class UserController {
 
         String token = httpServletRequest.getHeader("Authorization");
         token = token.substring(7);
-        System.out.println(passwordEncoder.matches(uid, token));
         String jwtToken = jwtUtil.generateToken(userService.getUserById(uid).getUserName());
 
         return new ResponseEntity<>(jwtToken, HttpStatus.CREATED);
@@ -145,7 +142,7 @@ public class UserController {
     @GetMapping(value = "/pdf")
     public ResponseEntity<UserResponse> sendpdf(@RequestParam(name = "medId") Integer medId) throws IOException, MessagingException {
         String filePath = userService.sendUserMedicines(medId);
-        UserResponse userResponse = new UserResponse("Success", filePath, null, "", "");
+        UserResponse userResponse = new UserResponse(MSG, filePath, null, "", "");
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
 
     }

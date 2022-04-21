@@ -22,7 +22,7 @@ import java.util.List;
  * This is a test Class
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerIntegrationTest {
+ class UserControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
