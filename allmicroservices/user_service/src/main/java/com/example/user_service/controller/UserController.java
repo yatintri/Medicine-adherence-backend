@@ -124,17 +124,6 @@ public class UserController {
 
     }
 
-    // updating the user
-    @PutMapping(value = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserEntity> updateUser(@PathVariable("id") String userId
-            , @RequestBody UserEntityDTO userEntity) throws UserexceptionMessage {
-
-        return new ResponseEntity<>(userService.updateUser(userId, userEntity), HttpStatus.OK);
-
-
-    }
-
-
     // fetching the user with email if not present then sending to that email address
     @GetMapping(value = "/email", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<? extends Object> getUserByEmail(@RequestParam("email") String email

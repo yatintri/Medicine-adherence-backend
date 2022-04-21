@@ -78,7 +78,7 @@ class MedicineControllerIntegrationTest {
         try {
             ResponseEntity<String> response = testRestTemplate
                     .exchange("http://localhost:" + port +
-                                    "/api/v1/medicineHistory/sync?medId=12345",
+                                    "/api/v1/medicine-history/sync?medId=12345",
                             HttpMethod.POST, request, new ParameterizedTypeReference<String>() {
                             });
             String expected = "OK";
@@ -96,7 +96,7 @@ class MedicineControllerIntegrationTest {
 
         try {
             ResponseEntity<String> response = testRestTemplate.exchange(
-                    createURLWithPort("/api/v1/getMedicineHistories?medId=12345")
+                    createURLWithPort("/api/v1/medicine-histories?medId=12345")
                     , HttpMethod.GET, entity, String.class);
 
             String expected
