@@ -2,6 +2,7 @@ package com.example.user_service.controller;
 
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
+import com.example.user_service.pojos.response.UserResponse;
 import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -65,6 +66,39 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    void saveNewUser() {
+
+        UserEntity user = new UserEntity();
+        user.setUserId("768753");
+        user.setUserName("karan");
+        user.setEmail("karan@gmail.com");
+        user.setCreatedAt("13/02");
+        user.setLastLogin("03/02");
+        user.setUserDetails(null);
+
+        HttpEntity<UserEntity> request = new HttpEntity<>(user);
+        try {
+            ResponseEntity<String> response = testRestTemplate
+                    .exchange("http://localhost:" + port +
+                                    "/api/v1/user?fcmToken=hsagderjg&picPath=falkdda",
+                            HttpMethod.POST, request, new ParameterizedTypeReference<String>() {
+                            });
+            String expected =
+                    "{\"status\":\"Success\",\"message\":\"Saved user successfully\"," +
+                            "\"userentity\":[{," +
+                            "\"userName\":\"karan\",\"email\":\"karan@gmail.com\"," +
+                            "," +
+                            "\"userDetails\":null}],," +
+                            "}\n";
+            System.out.println(response.getBody());
+            JSONAssert.assertEquals(expected, String.valueOf(response.getBody()), false);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
      void LoginUser() {
         UserEntity user = new UserEntity();
         user.setUserId("e61ef901-e105-4636-bef6-f664c204a825");
@@ -100,7 +134,7 @@ public class UserControllerIntegrationTest {
                         port + "/api/v1/users",
                 List.class);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals(12,user.size());
+        Assertions.assertEquals(21,user.size());
     }
 
     @Test
@@ -138,6 +172,44 @@ public class UserControllerIntegrationTest {
         catch (Exception e){
 
         }
+    }
+    @Test
+    void testNewEmail() throws JSONException {
+
+        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+        try {
+            ResponseEntity<String> response = testRestTemplate.exchange(
+                    createURLWithPort("/api/v1/email?email=niitya@gmail.com&sender=VinaySoni@gmail.com")
+                    , HttpMethod.GET, entity, String.class);
+
+            String expected
+                    = "Invitation sent to user with given email id!\n";
+            System.out.println(response.getBody());
+            JSONAssert.assertEquals(expected, response.getBody(), false);
+        }
+        catch (Exception e){
+
+        }
+    }
+
+    @Test
+    void testSendPdf() throws Exception {
+
+        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+        ResponseEntity<String> response = testRestTemplate.exchange(
+                createURLWithPort("/api/v1/pdf?medId=12345")
+                , HttpMethod.GET, entity,String.class);
+
+        String expected = "{\n" +
+                "    \"status\": \"Success\",\n" +
+                "    \"userentity\": null,\n" +
+                "    \"jwt\": \"\",\n" +
+                "    \"refreshToken\": \"\"\n" +
+                "}";
+        System.out.println(response.getBody());
+        JSONAssert.assertEquals(expected, String.valueOf(response.getBody()), false);
     }
 
     private String createURLWithPort(String uri) {

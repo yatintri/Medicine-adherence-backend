@@ -43,7 +43,7 @@ class UserDetailControllerIntegrationTest {
         HttpEntity<UserDetailsDTO> entity = new HttpEntity<>(user);
      try{
         ResponseEntity<UserDetailResponse> response = testRestTemplate.exchange(
-                createURLWithPort("/api/v1/userDetails?userId=60b9929b-f72d-4c5b-b0b9-328289a2e426")
+                createURLWithPort("/api/v1/user-details?userId=60b9929b-f72d-4c5b-b0b9-328289a2e426")
                 , HttpMethod.PUT, entity,UserDetailResponse.class);
 
         String expected
