@@ -10,8 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableCaching
-@EnableSwagger2
-
 public class UserServiceApplication {
 
 	public static void main(String[] args) {

@@ -14,6 +14,8 @@ import com.example.user_service.pojos.response.UserResponse;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -99,7 +101,13 @@ public class UserController {
 
 
     // fetching all the users along with details
+
+    public String fallbackRL(Throwable t) {
+        System.out.println("in fallback");
+        return "bye";
+    }
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RateLimiter(name = "serviceA")
     public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage, ExecutionException, InterruptedException {
 
         return new ResponseEntity<>(userService.getUsers().get(), HttpStatus.OK);
