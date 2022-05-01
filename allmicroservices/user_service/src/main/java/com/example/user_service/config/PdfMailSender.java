@@ -34,7 +34,7 @@ public class PdfMailSender {
                 "            <div style='text-align: right;'><img src='MEdstick.png' style='width:150px; height:60px'></div>\n" +
                 "            <div style='background-color: #3743ab;border-radius: 15px; margin-bottom: 30px;height: 110px;'>\n" +
                 "                <div style='font-size: 60px;text-align: center;color: white;'>Patient Report</div>\n" +
-                "                <div style='font-size: 30px;text-align: center; color:white;'>Adherence Rate - 75%</div>\n" +
+                "                <div style='font-size: 30px;text-align: center; color:white;'>Adherence Rate - "+ String.valueOf(Math.ceil(((double)userMedicines.getCurrentCount()/userMedicines.getTotalMedReminders())*100)) + "%" +"</div>\n" +
                 "            </div>\n" +
                 "           <div style='font-size:24px; margin-bottom: 8px; font-weight: 600; color: gray;'>Patient Details </div>\n" +
                 "            <div align='left'>\n" +

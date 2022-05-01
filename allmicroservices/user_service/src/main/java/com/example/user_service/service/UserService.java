@@ -4,6 +4,7 @@ import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.dto.UserEntityDTO;
+import com.example.user_service.pojos.response.UserResponse;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 public interface UserService {
 
-    public CompletableFuture<UserEntity> saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserexceptionMessage;
+    public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserexceptionMessage;
 
     public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage;
 

@@ -117,7 +117,7 @@ public class CareTakerServiceImpl implements CareTakerService{
     }
 
     @Override
-    public boolean sendImageToCaretaker(MultipartFile multipartFile, String filename, String caretakerid) throws IOException , UserCaretakerException {
+    public boolean sendImageToCaretaker(MultipartFile multipartFile, String filename, String caretakerid , String medName) throws IOException , UserCaretakerException {
 
         try{
             File file = new File(System.getProperty("user.dir")+"/src/main/upload/static/images");
@@ -127,8 +127,8 @@ public class CareTakerServiceImpl implements CareTakerService{
             Path path = Paths.get(System.getProperty("user.dir")+"/src/main/upload/static/images",filename.concat(".").concat("jpg"));
             Files.write(path,multipartFile.getBytes());
 
-            String fcmToken = "c_nl_oj2S9S_HmPQjfvDSR:APA91bEYDLIGXU4jI4P26uVqAdoVaaJ378TtGjxrKaytbuqulXWZGs91Jx6_1mrLWEaGECufvZ512BWwQvCAQTnjg3OTh2GPn5E3DNOTh_ycy4Xi7-LZ39OFsGXYjiUm5UDJfRez0CV4";
-            rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","caretaker","",filename+".jpg"));
+            String fcmToken = "eSopD9D5TsOozFw3yILXCL:APA91bEd0g-Uu4Ho1yx6Ye0akuhoFJ4pWP7ZZ_ZVKV4bpGL5tF7uPYDer84TyBD_k0Uzqdjdtue9_FU383WjReFqi611QqcJ_5KdADy3CYXk2FxAY88yk-pN5YjPwYEJz8QWD_EFDEOh";
+            rabbitTemplate.convertAndSend("project_exchange","notification_key",new Notificationmessage(fcmToken,"Take medicine","caretaker",medName,filename+".jpg"));
 
         }catch (Exception e){
             return false;

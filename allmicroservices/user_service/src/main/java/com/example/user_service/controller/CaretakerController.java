@@ -107,10 +107,10 @@ public class CaretakerController {
 
     @PostMapping(value = "/image")
     public ResponseEntity<String> sendImageToCaretaker(@RequestParam(name = "image") MultipartFile multipartFile
-            , @RequestParam(name = "name") String filename ,
+            , @RequestParam(name = "name") String filename , @RequestParam("medName") String medName,
                                                        @RequestParam(name = "id") String caretakerId) throws IOException, UserCaretakerException {
 
-        careTakerService.sendImageToCaretaker(multipartFile , filename , caretakerId);
+        careTakerService.sendImageToCaretaker(multipartFile , filename , caretakerId , medName);
         return  new ResponseEntity<>("Ok",HttpStatus.OK);
 
     }

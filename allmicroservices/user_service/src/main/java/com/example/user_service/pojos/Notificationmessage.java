@@ -7,7 +7,6 @@ public class Notificationmessage {
     private String title;
     private String body;
     private String imageUrl;
-
     public String getImageUrl() {
         return imageUrl;
     }

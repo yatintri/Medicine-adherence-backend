@@ -8,28 +8,32 @@ import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.dto.UserEntityDTO;
+import com.example.user_service.pojos.response.UserResponse;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
 
+import com.example.user_service.util.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.config.provisioning.UserDetailsManagerResourceFactoryBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -48,15 +52,25 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserMedicineRepository userMedicineRepository;
+    private static final String MSG = "Success";
+    private static final String MSG2 = "failed";
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
-    @Async
-    public CompletableFuture<UserEntity> saveUser(UserEntityDTO userEntityDTO,String fcmToken,String picPath) throws UserexceptionMessage {
+    public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserexceptionMessage {
 //
+        UserEntity user = getUserByEmail(userEntityDTO.getEmail());
+        if (user != null) {
+            return new UserResponse(MSG2, "User is already present", new ArrayList<>(Arrays.asList(user)), "", "");
+        }
+
         logger.info(Thread.currentThread().getName());
-        UserEntity userEntity= mapToEntity(userEntityDTO);
+        UserEntity userEntity = mapToEntity(userEntityDTO);
         userEntity.setLastLogin(Datehelper.getcurrentdatatime());
         userEntity.setCreatedAt(Datehelper.getcurrentdatatime());
         UserEntity ue = userRepository.save(userEntity);
@@ -66,17 +80,20 @@ public class UserServiceImpl implements UserService{
         userDetails.setUser(ue);
         userDetailsRepository.save(userDetails);
 
-        if(ue.getUserName() == null){
+        if (ue.getUserName() == null) {
             throw new UserexceptionMessage("Error try again!");
 
         }
-        return CompletableFuture.completedFuture(ue);
+        String jwtToken = jwtUtil.generateToken(ue.getUserName());
+        String refreshToken = passwordEncoder.encode(ue.getUserId());
+
+        return new UserResponse(MSG, "Saved user successfully", new ArrayList<>(Arrays.asList(ue)), jwtToken, refreshToken);
 
     }
 
     @Override
     @Async
-    public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage{
+    public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage {
 
         List<UserEntity> list = userRepository.findAllUsers();
         logger.info(Thread.currentThread().getName());
@@ -87,11 +104,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
 
-    public UserEntity getUserById(String userId) throws UserexceptionMessage{
+    public UserEntity getUserById(String userId) throws UserexceptionMessage {
         Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getUserById(userId));
 
         logger.info(Thread.currentThread().getName());
-        if(optionalUserEntity.isEmpty()){
+        if (optionalUserEntity.isEmpty()) {
             throw new UserexceptionMessage("Data not found");
         }
 
@@ -102,11 +119,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity updateUser(String userId, UserEntityDTO userEntityDTO) {
         UserEntity userDB = userRepository.getUserById(userId);
-        UserEntity userEntity= mapToEntity(userEntityDTO);
-        if(Objects.nonNull(userEntity.getUserName()) && !"".equalsIgnoreCase(userEntity.getUserName())) {
+        UserEntity userEntity = mapToEntity(userEntityDTO);
+        if (Objects.nonNull(userEntity.getUserName()) && !"".equalsIgnoreCase(userEntity.getUserName())) {
             userDB.setUserName(userEntity.getUserName());
         }
-        if(Objects.nonNull(userEntity.getEmail()) && !"".equalsIgnoreCase(userEntity.getEmail())) {
+        if (Objects.nonNull(userEntity.getEmail()) && !"".equalsIgnoreCase(userEntity.getEmail())) {
             userDB.setEmail(userEntity.getEmail());
         }
 
@@ -114,10 +131,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserEntity> getUserByName(String userName) throws UserexceptionMessage,NullPointerException{
+    public List<UserEntity> getUserByName(String userName) throws UserexceptionMessage, NullPointerException {
 
         List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
-        if(userEntity.isEmpty()){
+        if (userEntity.isEmpty()) {
             throw new UserexceptionMessage("Data not found");
         }
         return userEntity;
@@ -134,16 +151,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public String sendUserMedicines(Integer medId) throws MessagingException, IOException {
         Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
-        if(userMedicines.isEmpty()){
+        if (userMedicines.isEmpty()) {
             return "Failed";
         }
         UserEntity entity = userMedicines.get().getUserEntity();
         List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
-        return pdfMailSender.send(entity,userMedicines.get(),medicineHistories);
+        return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
     }
 
-    private UserEntity mapToEntity(UserEntityDTO userEntityDTO){
-        return  mapper.map(userEntityDTO, UserEntity.class);
+    private UserEntity mapToEntity(UserEntityDTO userEntityDTO) {
+        return mapper.map(userEntityDTO, UserEntity.class);
     }
 }
 //////

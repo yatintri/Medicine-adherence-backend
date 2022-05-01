@@ -2,6 +2,7 @@ package com.example.user_service.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Datehelper {
 
@@ -12,6 +13,13 @@ public class Datehelper {
 
     }
 
+    public static String getDay(){
+
+        String[] days = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+        return days[new Date().getDay()];
+
+
+    }
     public static String getcurrentdatatime(){
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");

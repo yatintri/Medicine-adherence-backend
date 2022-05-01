@@ -48,9 +48,7 @@ public class UserMedicines {
     private int currentCount;
 
 
-    @ManyToOne(
-            fetch = FetchType.LAZY
-    )
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(
             name = "user_med_id",
             referencedColumnName = "user_id"

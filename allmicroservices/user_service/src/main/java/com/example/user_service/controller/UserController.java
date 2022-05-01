@@ -10,11 +10,9 @@ import com.example.user_service.pojos.Userresponse;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserProfileResponse;
 import com.example.user_service.pojos.response.UserResponse;
-
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,18 +56,8 @@ public class UserController {
     // saving the user when they signup
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> saveUser(@RequestParam(name = "fcmToken") String fcmToken, @RequestParam(name = "picPath") String picPath, @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage, ExecutionException, InterruptedException {
-        UserEntity user = userService.getUserByEmail(userEntityDTO.getEmail());
-        if (user != null) {
-            UserResponse userresponse = new UserResponse(MSG, "User is already present", new ArrayList<>(Arrays.asList(user)), "", "");
-            return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
-        }
-        user = userService.saveUser(userEntityDTO, fcmToken, picPath).get();
-        String jwtToken = jwtUtil.generateToken(user.getUserName());
-        String refreshToken = passwordEncoder.encode(user.getUserId());
 
-        UserResponse userresponse = new UserResponse(MSG, "Saved user successfully", new ArrayList<>(Arrays.asList(user)), jwtToken, refreshToken);
-
-        return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.saveUser(userEntityDTO, fcmToken, picPath), HttpStatus.CREATED);
 
 
     }
@@ -101,11 +89,6 @@ public class UserController {
 
 
     // fetching all the users along with details
-
-    public String fallbackRL(Throwable t) {
-        System.out.println("in fallback");
-        return "bye";
-    }
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     @RateLimiter(name = "serviceA")
     public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage, ExecutionException, InterruptedException {
@@ -121,7 +104,7 @@ public class UserController {
 
 
         List<UserEntity> user = Arrays.asList(userService.getUserById(userId));
-        List<UserMedicines> list = userMedicineService.getallUserMedicines(userId).get();
+        List<UserMedicines> list = user.get(0).getUserMedicines();
 
         UserProfileResponse userProfileResponse = new UserProfileResponse("OK", user, list);
         return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
