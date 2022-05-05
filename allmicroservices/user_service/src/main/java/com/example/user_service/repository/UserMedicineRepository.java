@@ -15,4 +15,6 @@ public interface UserMedicineRepository extends JpaRepository<UserMedicines,Inte
     @Query("SELECT U FROM UserMedicines U WHERE U.days like (%?1%)")
     List<UserMedicines> getMedicinesforToday(String day);
 
+
+
 }

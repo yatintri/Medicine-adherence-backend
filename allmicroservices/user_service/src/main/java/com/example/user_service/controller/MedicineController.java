@@ -82,6 +82,15 @@ public class MedicineController {
 
     }
 
+    @GetMapping(value = "/medicine-images")
+    public ResponseEntity<List<Image>> getMedicineImages(@RequestParam(name = "medId") Integer medId){
+
+
+        return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medId),HttpStatus.OK);
+
+
+    }
+
 
 }
 ///

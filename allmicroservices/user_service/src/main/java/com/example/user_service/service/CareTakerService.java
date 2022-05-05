@@ -26,6 +26,6 @@ public interface CareTakerService {
 
     public Boolean delPatientReq(String cId);
 
-    boolean sendImageToCaretaker(MultipartFile multipartFile , String filename , String caretakerId , String medName) throws IOException , UserCaretakerException;
+    boolean sendImageToCaretaker(MultipartFile multipartFile , String filename , String caretakerId , String medName, Integer medId) throws IOException , UserCaretakerException;
 }
 //

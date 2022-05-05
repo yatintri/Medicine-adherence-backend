@@ -46,6 +46,7 @@ public class UserEntity {
   )
   private UserDetails userDetails;
 
+
   @OneToMany(
           cascade = CascadeType.ALL,
           mappedBy = "userEntity",

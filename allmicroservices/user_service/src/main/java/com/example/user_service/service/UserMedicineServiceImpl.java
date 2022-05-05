@@ -2,12 +2,13 @@ package com.example.user_service.service;
 
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.exception.UserexceptionMessage;
+import com.example.user_service.model.Image;
 import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.Medicinepojo;
 import com.example.user_service.pojos.response.MedicineResponse;
+import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserMedHistoryRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -31,6 +33,9 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     public static final String ERROR = "Please enter valid id";
     @Autowired
     UserMedicineRepository userMedicineRepository;
+
+    @Autowired
+    ImageRepository imageRepository;
 
     @Autowired
     private ModelMapper mapper;
@@ -60,7 +65,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     public boolean syncData(String userId, List<UserMedicines> list) throws UserMedicineException {
 
         UserEntity user = userRepository.getUserById(userId);
-        if(user.getUserMedicines().isEmpty()){
+        if (user.getUserMedicines().isEmpty()) {
             throw new UserMedicineException("Unable to sync");
         }
         for (UserMedicines userMedicines : list) {
@@ -78,7 +83,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS) throws UserMedicineException {
 
         UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
-        if(userMedicines == null){
+        if (userMedicines == null) {
             throw new UserMedicineException("Unable to sync");
 
         }
@@ -100,15 +105,23 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
     public MedicineResponse getMedicineHistory(Integer medId) throws UserMedicineException {
 
-      List<MedicineHistory> medicineHistories =  userMedicineRepository.getMedById(medId).getMedicineHistories();
-      if(medicineHistories.isEmpty()){
-          throw new UserMedicineException("No record found!!");
-      }
-        return new MedicineResponse("OK" , "Medicine History" , medicineHistories);
+        List<MedicineHistory> medicineHistories = userMedicineRepository.getMedById(medId).getMedicineHistories();
+        if (medicineHistories.isEmpty()) {
+            throw new UserMedicineException("No record found!!");
+        }
+        return new MedicineResponse("OK", "Medicine History", medicineHistories);
+    }
+
+    @Override
+    public List<Image> getUserMedicineImages(Integer medId) {
+
+        return userMedicineRepository.getMedById(medId)
+                .getImages()
+                .stream()
+                .sorted(Comparator.comparing(Image::getDate).reversed())
+                .collect(Collectors.toList());
+
     }
 
 
-
-
 }
-///
