@@ -65,6 +65,12 @@ public class UserMedicines {
     @JsonIgnore
     private List<MedicineHistory> medicineHistories;
 
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "userMedicines"
+    )
+    @JsonIgnore
+    private List<Image> images;
 
 }
 ///
