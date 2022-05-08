@@ -24,3 +24,4 @@ public interface UserMedicineService {
     List<Image> getUserMedicineImages(Integer medId);
 
 }
+//

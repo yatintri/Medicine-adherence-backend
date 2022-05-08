@@ -16,3 +16,4 @@ public class UserDetailsDTO {
     private String martialStatus;
     private int weight;
 }
+//

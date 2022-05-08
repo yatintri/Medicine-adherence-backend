@@ -13,3 +13,4 @@ public class CaretakerDelete {
     private Boolean status;
     private String message;
 }
+//

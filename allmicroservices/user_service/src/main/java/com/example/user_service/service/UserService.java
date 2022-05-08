@@ -15,19 +15,19 @@ import java.util.concurrent.ExecutionException;
 
 public interface UserService {
 
-    public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserexceptionMessage;
+     UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserexceptionMessage;
 
-    public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage;
+     CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage;
 
-    public UserEntity getUserById(String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException;
+     UserEntity getUserById(String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException;
 
-    public UserEntity updateUser(String userId, UserEntityDTO userEntityDTO)throws UserexceptionMessage;
+     UserEntity updateUser(String userId, UserEntityDTO userEntityDTO)throws UserexceptionMessage;
 
-    public List<UserEntity> getUserByName(String userName)throws UserexceptionMessage;
+     List<UserEntity> getUserByName(String userName)throws UserexceptionMessage;
 
-    public UserEntity getUserByEmail(String email) throws UserexceptionMessage;
+     UserEntity getUserByEmail(String email) throws UserexceptionMessage;
 
-    public String sendUserMedicines(Integer userId) throws MessagingException, IOException;
+     String sendUserMedicines(Integer userId) throws MessagingException, IOException;
 
 }
 //////
