@@ -2,7 +2,7 @@ package com.example.user_service.controller;
 
 
 
-import com.example.user_service.exception.UserexceptionMessage;
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.pojos.dto.UserDetailsDTO;
 import com.example.user_service.pojos.response.UserDetailResponse;
@@ -23,7 +23,7 @@ public class UserDetailController {
 
     @PutMapping(value = "/user-details" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDetailResponse> updateUserDetails(@RequestParam("userId") String id,
-                                                                @RequestBody UserDetailsDTO userDetailsDTO) throws UserexceptionMessage {
+                                                                @RequestBody UserDetailsDTO userDetailsDTO) throws UserExceptionMessage {
         UserDetails userDetails = userDetailService.saveUserDetail(id,userDetailsDTO);
         UserDetailResponse userDetailResponse= new UserDetailResponse("Success","Saved user details",userDetails);
         return new ResponseEntity<>(userDetailResponse,HttpStatus.OK);

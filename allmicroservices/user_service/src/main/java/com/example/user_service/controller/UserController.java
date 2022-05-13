@@ -1,19 +1,17 @@
 package com.example.user_service.controller;
 
 
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.MailInfo;
-import com.example.user_service.pojos.Userresponse;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserProfileResponse;
 import com.example.user_service.pojos.response.UserResponse;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +24,6 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -55,7 +52,7 @@ public class UserController {
 
     // saving the user when they signup
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> saveUser(@RequestParam(name = "fcmToken") String fcmToken, @RequestParam(name = "picPath") String picPath, @RequestBody UserEntityDTO userEntityDTO) throws UserexceptionMessage, ExecutionException, InterruptedException {
+    public ResponseEntity<UserResponse> saveUser(@RequestParam(name = "fcmToken") String fcmToken, @RequestParam(name = "picPath") String picPath, @RequestBody UserEntityDTO userEntityDTO) throws UserExceptionMessage, ExecutionException, InterruptedException {
 
         return new ResponseEntity<>(userService.saveUser(userEntityDTO, fcmToken, picPath), HttpStatus.CREATED);
 
@@ -63,7 +60,7 @@ public class UserController {
     }
 
     @PostMapping("/refreshToken")
-    public ResponseEntity<?> refreshToken(@Valid @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    public ResponseEntity<?> refreshToken(@Valid @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest) throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
         String token = httpServletRequest.getHeader("Authorization");
         token = token.substring(7);
@@ -74,15 +71,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Userresponse> login(@RequestParam String email) throws UserexceptionMessage {
+    public ResponseEntity<UserResponse> login(@RequestParam String email) throws UserExceptionMessage {
         UserEntity user = userService.getUserByEmail(email);
         if (user != null) {
-            Userresponse userresponse = new Userresponse(MSG, user);
-            return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
+            UserResponse userResponse = new UserResponse(MSG, "",null,null,null);
+            return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
         }
-        Userresponse userresponse = new Userresponse("Not found", null);
+        UserResponse userResponse = new UserResponse("Not found", null,null,null,null);
 
-        return new ResponseEntity<>(userresponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
 
 
     }
@@ -90,8 +87,8 @@ public class UserController {
 
     // fetching all the users along with details
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    @RateLimiter(name = "serviceA")
-    public ResponseEntity<List<UserEntity>> getUsers() throws UserexceptionMessage, ExecutionException, InterruptedException {
+   
+    public ResponseEntity<List<UserEntity>> getUsers() throws UserExceptionMessage, ExecutionException, InterruptedException {
 
         return new ResponseEntity<>(userService.getUsers().get(), HttpStatus.OK);
 
@@ -100,7 +97,7 @@ public class UserController {
 
     // fetching user by id
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserProfileResponse> getUserById(@RequestParam("userId") String userId) throws UserexceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    public ResponseEntity<UserProfileResponse> getUserById(@RequestParam("userId") String userId) throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
 
         List<UserEntity> user = Arrays.asList(userService.getUserById(userId));
@@ -116,7 +113,7 @@ public class UserController {
     @GetMapping(value = "/email", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<? extends Object> getUserByEmail(@RequestParam("email") String email
             , @RequestParam("sender") String sender)
-            throws UserexceptionMessage {
+            throws UserExceptionMessage {
 
         UserEntity userEntity = userService.getUserByEmail(email);
         if (userEntity == null) {
@@ -131,7 +128,7 @@ public class UserController {
 
 
     @GetMapping(value = "/pdf")
-    public ResponseEntity<UserResponse> sendpdf(@RequestParam(name = "medId") Integer medId) throws IOException, MessagingException {
+    public ResponseEntity<UserResponse> sendPdf(@RequestParam(name = "medId") Integer medId) throws IOException, MessagingException {
         String filePath = userService.sendUserMedicines(medId);
         UserResponse userResponse = new UserResponse(MSG, filePath, null, "", "");
         return new ResponseEntity<>(userResponse, HttpStatus.OK);

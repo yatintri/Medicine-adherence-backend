@@ -43,7 +43,7 @@ public class PdfMailSender {
                 "                 <div>Blood Group - "+userDetails.getBloodGroup()+"</div>      \n" +
                 "                  <div>Marital Status - Unmarried</div>\n" +
                 "                  <div>Gender - "+userDetails.getGender()+"</div>\n" +
-                "                  <div>Contact - "+userDetails.getUsercontact()+"</div>\n" +
+                "                  <div>Contact - "+userDetails.getUserContact()+"</div>\n" +
                 "            </div><br>\n" +
                 "            <div style='font-size:24px; margin-bottom: 8px;font-weight: 600; color: gray;'>Medicine Details </div>\n" +
                 "                  <span>Name - " + userMedicines.getMedicineName() + "</span><br>\n" +
@@ -90,7 +90,7 @@ public class PdfMailSender {
             medicineHistory += " <tr>\n" +
                     "                <td style='border: 0.5px solid black;text-align: center;vertical-align: middle;height: 40px;'>" + medicineHistory1.getDate() + "</td>\n" +
                     "                <td style='border: 0.5px solid black;text-align: center;vertical-align: middle;height: 40px;'>" + medicineHistory1.getTaken() + "</td>\n" +
-                    "                <td style='border: 0.5px solid black;text-align: center;vertical-align: middle;height: 40px;'>" + medicineHistory1.getNottaken() + "</td>\n" +
+                    "                <td style='border: 0.5px solid black;text-align: center;vertical-align: middle;height: 40px;'>" + medicineHistory1.getNotTaken() + "</td>\n" +
                     "            </tr>\n";
 
         }

@@ -1,11 +1,10 @@
 package com.example.user_service.controller;
 
-import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.Medicinepojo;
-import com.example.user_service.pojos.response.MedicineResponse;
+import com.example.user_service.pojos.dto.MedicinePojo;
+
 import org.json.JSONException;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -32,8 +32,8 @@ class MedicineControllerIntegrationTest {
     HttpHeaders headers = new HttpHeaders();
     @Test
     void testSyncData() {
-        List<Medicinepojo> list = new ArrayList<>();
-        Medicinepojo user = new Medicinepojo();
+        List<MedicinePojo> list = new ArrayList<>();
+        MedicinePojo user = new MedicinePojo();
         user.setCurrentCount(2);
         user.setDays("Sun");
         user.setEndDate("12/03");
@@ -49,7 +49,7 @@ class MedicineControllerIntegrationTest {
 
 
 
-        HttpEntity<List<Medicinepojo>> request = new HttpEntity<>(list);
+        HttpEntity<List<MedicinePojo>> request = new HttpEntity<>(list);
         try {
             ResponseEntity<String> response = testRestTemplate
                     .exchange("http://localhost:" + port +
@@ -69,7 +69,7 @@ class MedicineControllerIntegrationTest {
     {
         List<MedicineHistoryDTO> list = new ArrayList<>();
         MedicineHistoryDTO user = new MedicineHistoryDTO();
-        user.setDate("23/04");
+        user.setDate(new Date("23/4/2022"));
         user.setRemId(23553637);
         user.setTaken(new String[]{"23:11"});
         user.setNot_taken(new String[]{"11:05"});

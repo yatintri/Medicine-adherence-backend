@@ -1,6 +1,6 @@
 package com.example.user_service.service;
 
-import com.example.user_service.exception.UserexceptionMessage;
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.dto.UserDetailsDTO;
@@ -24,11 +24,11 @@ public class UserDetailServiceImpl implements UserDetailService{
     @Autowired
     private ModelMapper mapper;
     @Override
-    public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO) throws UserexceptionMessage {
+    public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO) throws UserExceptionMessage {
 
         Optional<UserEntity> user = Optional.ofNullable(userRepository.getUserById(id));
         if (user.isEmpty()){
-            throw new UserexceptionMessage("User not found");
+            throw new UserExceptionMessage("User not found");
         }
         UserDetails userDetails1 = user.get().getUserDetails();
 
@@ -38,7 +38,7 @@ public class UserDetailServiceImpl implements UserDetailService{
         userDetails1.setGender(userDetailsDTO.getGender());
         userDetails1.setWeight(userDetailsDTO.getWeight());
         userDetails1.setMartialStatus(userDetailsDTO.getMartialStatus());
-        userDetails1.setUsercontact(userDetailsDTO.getUsercontact());
+        userDetails1.setUserContact(userDetailsDTO.getUserContact());
         return userDetailsRepository.save(userDetails1);
 
 

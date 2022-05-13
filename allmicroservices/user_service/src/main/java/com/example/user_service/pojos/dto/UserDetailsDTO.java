@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class UserDetailsDTO {
     private String bio;
     private int age;
-    private Long usercontact;
+    private Long userContact;
     private String gender;
     private String bloodGroup;
     private String martialStatus;
