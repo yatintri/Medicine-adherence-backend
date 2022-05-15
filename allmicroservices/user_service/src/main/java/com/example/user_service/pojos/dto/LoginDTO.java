@@ -4,18 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedicineHistoryDTO {
+public class LoginDTO {
 
-    private int remId;
-    private String date;
-    private String[] taken;
-    private String[] not_taken;
-
+    private String fcmToken;
+    private String email;
 
 }
-//

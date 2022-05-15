@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage {
-//
+
         UserEntity user = getUserByEmail(userEntityDTO.getEmail());
         if (user != null) {
             return new UserResponse(MSG2, "User is already present", new ArrayList<>(Arrays.asList(user)), "", "");
@@ -148,6 +148,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
     @Override
     public String sendUserMedicines(Integer medId) throws MessagingException, IOException {
         Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
@@ -159,8 +160,32 @@ public class UserServiceImpl implements UserService {
         return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
     }
 
+    @Override
+    public UserResponse login(String mail, String fcmToken) throws UserExceptionMessage {
+        try {
+            UserEntity user = getUserByEmail(mail);
+            UserDetails userDetails = user.getUserDetails();
+            userDetails.setFcmToken(fcmToken);
+            userDetailsRepository.save(userDetails);
+            user = getUserByEmail(mail);
+            if (user != null) {
+                String jwtToken = jwtUtil.generateToken(user.getUserName());
+                String refreshToken = passwordEncoder.encode(user.getUserId());
+                return new UserResponse(MSG, "Success", new ArrayList<>(Arrays.asList(user)), jwtToken, refreshToken);
+            }
+            throw new UserExceptionMessage("Data not found");
+
+        } catch (Exception exception) {
+
+            throw new UserExceptionMessage("Data not found");
+
+
+        }
+
+
+    }
+
     private UserEntity mapToEntity(UserEntityDTO userEntityDTO) {
         return mapper.map(userEntityDTO, UserEntity.class);
     }
 }
-///////
