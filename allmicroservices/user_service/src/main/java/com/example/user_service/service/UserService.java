@@ -29,5 +29,8 @@ public interface UserService {
 
      String sendUserMedicines(Integer userId) throws MessagingException, IOException;
 
+     UserResponse login(String mail , String fcmToken) throws UserExceptionMessage;
+
+
+
 }
-//////

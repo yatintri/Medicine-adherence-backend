@@ -6,6 +6,7 @@ import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.MailInfo;
+import com.example.user_service.pojos.dto.LoginDTO;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserProfileResponse;
 import com.example.user_service.pojos.response.UserResponse;
@@ -71,15 +72,9 @@ public class UserController {
     }
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> login(@RequestParam String email) throws UserExceptionMessage {
-        UserEntity user = userService.getUserByEmail(email);
-        if (user != null) {
-            UserResponse userResponse = new UserResponse(MSG, "",null,null,null);
-            return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
-        }
-        UserResponse userResponse = new UserResponse("Not found", null,null,null,null);
+    public ResponseEntity<UserResponse> login(@RequestBody LoginDTO loginDTO) throws UserExceptionMessage {
 
-        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.login(loginDTO.getEmail(),loginDTO.getFcmToken()), HttpStatus.OK);
 
 
     }
@@ -87,7 +82,7 @@ public class UserController {
 
     // fetching all the users along with details
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-   
+
     public ResponseEntity<List<UserEntity>> getUsers() throws UserExceptionMessage, ExecutionException, InterruptedException {
 
         return new ResponseEntity<>(userService.getUsers().get(), HttpStatus.OK);
@@ -137,4 +132,3 @@ public class UserController {
 
 
 }
-///////

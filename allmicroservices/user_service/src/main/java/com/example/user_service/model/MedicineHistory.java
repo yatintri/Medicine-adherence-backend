@@ -20,7 +20,7 @@ public class MedicineHistory {
     private int historyId;
 
     @Column(name = "med_date")
-    private Date date;
+    private String date;
 
     @Column(name = "taken")
     private String taken;
