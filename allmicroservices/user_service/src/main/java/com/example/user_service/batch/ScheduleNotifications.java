@@ -8,7 +8,6 @@ import com.example.user_service.util.Datehelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -24,8 +23,8 @@ public class ScheduleNotifications {
     CareTakerServiceImpl careTakerService;
     Logger logger = LoggerFactory.getLogger(ScheduleNotifications.class);
 
-    @Scheduled(fixedRate = 15000)
-    public void sendNotificationstocaretakers() {
+ //   @Scheduled(fixedRate = 15000)
+    public void sendNotificationsToCaretakers() {
         Calendar calendar = Calendar.getInstance();
         userMedicineRepository.getMedicinesforToday(Datehelper.getDay())
                 .stream().filter(userMedicines -> userMedicines.getMedicineName() != null)

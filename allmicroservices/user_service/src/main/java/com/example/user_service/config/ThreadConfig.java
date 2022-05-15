@@ -12,7 +12,7 @@ import java.util.concurrent.Executor;
 public class ThreadConfig  {
 
     @Bean
-    public Executor getexecutor(){
+    public Executor getExecutor(){
 
     ThreadPoolTaskExecutor threadPoolTaskExecutor =
                            new ThreadPoolTaskExecutor();

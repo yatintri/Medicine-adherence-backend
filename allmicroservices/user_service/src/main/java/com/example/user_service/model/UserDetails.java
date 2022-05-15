@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "userdetails")
+@Table(name = "user_details")
 @ToString(exclude = "")
 public class UserDetails {
     @Id
@@ -23,7 +23,7 @@ public class UserDetails {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String userdetId;
+    private String userDetId;
 
     @Column(name = "bio")
     private String bio;
@@ -40,8 +40,8 @@ public class UserDetails {
     @Column(name = "pincode")
     private int pincode;
 
-    @Column(name = "usercontact")
-    private Long usercontact;
+    @Column(name = "user_contact")
+    private Long userContact;
 
     @Column(name = "lattitude")
     private float lattitude;

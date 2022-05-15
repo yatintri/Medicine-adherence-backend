@@ -36,7 +36,7 @@ class UserDetailControllerIntegrationTest {
         user.setBloodGroup("o+");
         user.setGender("male");
         user.setMartialStatus(null);
-        user.setUsercontact(7653L);
+        user.setUserContact(7653L);
         user.setWeight(75);
         user.setBio("hi");
 

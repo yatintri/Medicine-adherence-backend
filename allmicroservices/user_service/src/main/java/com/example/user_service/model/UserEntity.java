@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-@NamedEntityGraph(name="userdetail_graph" ,
+@NamedEntityGraph(name="userDetail_graph" ,
         attributeNodes = @NamedAttributeNode(value = "userDetails"))
 public class UserEntity {
 

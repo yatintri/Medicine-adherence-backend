@@ -1,7 +1,7 @@
 package com.example.user_service.service;
 
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.Image;
 import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.UserEntity;
@@ -47,12 +47,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     @Override
     @Async
-    public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserexceptionMessage {
+    public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserExceptionMessage {
 
 
         UserEntity user = userRepository.getUserById(userId);
         if (user == null) {
-            throw new UserexceptionMessage(ERROR);
+            throw new UserExceptionMessage(ERROR);
         }
         List<UserMedicines> list = user.getUserMedicines();
 
@@ -93,7 +93,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
             medicineHistory1.setHistoryId(medHid.getRemId());
             medicineHistory1.setDate(medHid.getDate());
             medicineHistory1.setTaken(String.join(",", medHid.getTaken()));
-            medicineHistory1.setNottaken(String.join(",", medHid.getNot_taken()));
+            medicineHistory1.setNotTaken(String.join(",", medHid.getNot_taken()));
             medicineHistory1.setUserMedicines(userMedicines);
             return medicineHistory1;
         }).collect(Collectors.toList());

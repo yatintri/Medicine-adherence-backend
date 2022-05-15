@@ -6,29 +6,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "medicinehistory")
+@Table(name = "medicine_history")
 public class MedicineHistory {
 
     @Id
     @Column(name = "history_id")
     private int historyId;
 
-    @Column(name = "meddate")
-    private String date;
+    @Column(name = "med_date")
+    private Date date;
 
     @Column(name = "taken")
     private String taken;
 
-    @Column(name = "nottaken")
-    private String nottaken;
+    @Column(name = "not_taken")
+    private String notTaken;
 
     @ManyToOne()
-    @JoinColumn(name = "medicinehistory", referencedColumnName = "medicine_id")
+    @JoinColumn(name = "medicine_history", referencedColumnName = "medicine_id")
     @JsonIgnore
     UserMedicines userMedicines;
 

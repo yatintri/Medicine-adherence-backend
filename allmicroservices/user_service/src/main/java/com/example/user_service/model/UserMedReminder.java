@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -32,10 +33,10 @@ public class UserMedReminder {
     private String createdAt;
 
     @Column(name = "start_date")
-    private String startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private String endDate;
+    private Date endDate;
 
     @Column(name = "everyday")
     @Type(type = "org.hibernate.type.NumericBooleanType")

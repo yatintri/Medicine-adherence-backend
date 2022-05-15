@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query("select u from UserEntity u where lower(u.userName) like lower(concat(?1,'%'))")
-    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userdetail_graph")
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userDetail_graph")
     public List<UserEntity> findByNameIgnoreCase(String userName);
 
     @Query("select u from UserEntity u where lower(u.email) like lower(?1)")
@@ -21,7 +21,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     public UserEntity getUserById(String userId);
 
     @Query("SELECT user from UserEntity user")
-    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userdetail_graph")
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userDetail_graph")
     List<UserEntity> findAllUsers();
 
 }////

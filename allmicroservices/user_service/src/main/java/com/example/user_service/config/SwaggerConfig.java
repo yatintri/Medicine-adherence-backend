@@ -21,10 +21,10 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(getinfo());
+                .apiInfo(getInfo());
     }
 
-    public ApiInfo getinfo(){
+    public ApiInfo getInfo(){
 
         return new ApiInfo(
                 "Medicine adherence user_service REST API",

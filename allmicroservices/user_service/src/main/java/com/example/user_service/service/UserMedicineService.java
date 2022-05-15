@@ -1,7 +1,7 @@
 package com.example.user_service.service;
 
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.exception.UserexceptionMessage;
 import com.example.user_service.model.Image;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 public interface UserMedicineService {
 
 
-    CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserexceptionMessage;
+    CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserExceptionMessage;
 
     boolean syncData(String userId , List<UserMedicines> list) throws UserMedicineException;
 

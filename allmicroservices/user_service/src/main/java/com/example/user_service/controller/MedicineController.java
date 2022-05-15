@@ -4,7 +4,8 @@ package com.example.user_service.controller;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.model.*;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.Medicinepojo;
+
+import com.example.user_service.pojos.dto.MedicinePojo;
 import com.example.user_service.pojos.response.MedicineResponse;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
@@ -36,23 +37,23 @@ public class MedicineController {
 
 
     @PostMapping(value = "/medicines/sync", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> syncData(@RequestParam("userId") String userId, @RequestBody List<Medicinepojo> medicinepojo) {
+    public ResponseEntity<String> syncData(@RequestParam("userId") String userId, @RequestBody List<MedicinePojo> medicinePojo) {
 
         UserEntity userEntity = userRepository.getUserById(userId);
 
-        List<UserMedicines> userMedicinesList = medicinepojo.stream().map(medicinepojo1 -> {
+        List<UserMedicines> userMedicinesList = medicinePojo.stream().map(medicinePojo1 -> {
                     UserMedicines userMedicines = new UserMedicines();
 
-                    userMedicines.setMedicineDes(medicinepojo1.getMedicineDes());
-                    userMedicines.setMedicineName(medicinepojo1.getMedicineName());
-                    userMedicines.setDays(medicinepojo1.getDays());
-                    userMedicines.setMedicineId(medicinepojo1.getUserId());
-                    userMedicines.setEndDate(medicinepojo1.getEndDate());
-                    userMedicines.setTitle(medicinepojo1.getTitle());
-                    userMedicines.setCurrentCount(medicinepojo1.getCurrentCount());
-                    userMedicines.setTotalMedReminders(medicinepojo1.getTotalMedReminders());
-                    userMedicines.setStartDate(medicinepojo1.getStartDate());
-                    userMedicines.setTime(medicinepojo1.getTime());
+                    userMedicines.setMedicineDes(medicinePojo1.getMedicineDes());
+                    userMedicines.setMedicineName(medicinePojo1.getMedicineName());
+                    userMedicines.setDays(medicinePojo1.getDays());
+                    userMedicines.setMedicineId(medicinePojo1.getUserId());
+                    userMedicines.setEndDate(medicinePojo1.getEndDate());
+                    userMedicines.setTitle(medicinePojo1.getTitle());
+                    userMedicines.setCurrentCount(medicinePojo1.getCurrentCount());
+                    userMedicines.setTotalMedReminders(medicinePojo1.getTotalMedReminders());
+                    userMedicines.setStartDate(medicinePojo1.getStartDate());
+                    userMedicines.setTime(medicinePojo1.getTime());
                     userMedicines.setUserEntity(userEntity);
 
                     return userMedicines;

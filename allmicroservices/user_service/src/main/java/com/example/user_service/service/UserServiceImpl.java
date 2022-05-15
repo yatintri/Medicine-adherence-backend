@@ -2,7 +2,7 @@ package com.example.user_service.service;
 
 
 import com.example.user_service.config.PdfMailSender;
-import com.example.user_service.exception.UserexceptionMessage;
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
-    public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserexceptionMessage {
+    public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage {
 //
         UserEntity user = getUserByEmail(userEntityDTO.getEmail());
         if (user != null) {
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         userDetailsRepository.save(userDetails);
 
         if (ue.getUserName() == null) {
-            throw new UserexceptionMessage("Error try again!");
+            throw new UserExceptionMessage("Error try again!");
 
         }
         String jwtToken = jwtUtil.generateToken(ue.getUserName());
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Async
-    public CompletableFuture<List<UserEntity>> getUsers() throws UserexceptionMessage {
+    public CompletableFuture<List<UserEntity>> getUsers() throws UserExceptionMessage {
 
         List<UserEntity> list = userRepository.findAllUsers();
         logger.info(Thread.currentThread().getName());
@@ -104,12 +104,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
 
-    public UserEntity getUserById(String userId) throws UserexceptionMessage {
+    public UserEntity getUserById(String userId) throws UserExceptionMessage {
         Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getUserById(userId));
 
         logger.info(Thread.currentThread().getName());
         if (optionalUserEntity.isEmpty()) {
-            throw new UserexceptionMessage("Data not found");
+            throw new UserExceptionMessage("Data not found");
         }
 
         return optionalUserEntity.get();
@@ -131,18 +131,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getUserByName(String userName) throws UserexceptionMessage, NullPointerException {
+    public List<UserEntity> getUserByName(String userName) throws UserExceptionMessage, NullPointerException {
 
         List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
         if (userEntity.isEmpty()) {
-            throw new UserexceptionMessage("Data not found");
+            throw new UserExceptionMessage("Data not found");
         }
         return userEntity;
 
     }
 
     @Override
-    public UserEntity getUserByEmail(String email) throws UserexceptionMessage {
+    public UserEntity getUserByEmail(String email) throws UserExceptionMessage {
 
         return userRepository.findByMail(email);
 
