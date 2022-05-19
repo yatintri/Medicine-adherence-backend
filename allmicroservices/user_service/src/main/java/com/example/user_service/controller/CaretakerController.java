@@ -37,7 +37,7 @@ public class CaretakerController {
 
     // save caretaker for a patients
     @PostMapping(value = "/request", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CaretakerResponse> saveCaretaker(@RequestBody UserCaretakerDTO userCaretakerDTO) {
+    public ResponseEntity<CaretakerResponse> saveCaretaker(@RequestBody UserCaretakerDTO userCaretakerDTO) throws UserCaretakerException {
         UserCaretaker userCaretaker = careTakerService.saveCareTaker(userCaretakerDTO);
         CaretakerResponse caretakerResponse = new CaretakerResponse(MSG, "Request sent successfully", userCaretaker);
         return new ResponseEntity<>(caretakerResponse, HttpStatus.OK);

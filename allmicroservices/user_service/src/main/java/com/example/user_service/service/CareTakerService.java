@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CareTakerService {
 
-     UserCaretaker saveCareTaker(UserCaretakerDTO userCaretakerDTO);
+     UserCaretaker saveCareTaker(UserCaretakerDTO userCaretakerDTO) throws UserCaretakerException;
 
      UserCaretaker updateCaretakerStatus(String cId) throws UserCaretakerException;
 
