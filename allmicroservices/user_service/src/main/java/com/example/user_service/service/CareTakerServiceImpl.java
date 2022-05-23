@@ -49,12 +49,16 @@ public class CareTakerServiceImpl implements CareTakerService {
     private static final String MSG = "Data not found";
 
     @Override
-    public UserCaretaker saveCareTaker(UserCaretakerDTO userCaretakerDTO) {
+    public UserCaretaker saveCareTaker(UserCaretakerDTO userCaretakerDTO) throws UserCaretakerException {
 
         UserCaretaker userCaretaker = mapToEntity(userCaretakerDTO);
         userCaretaker.setCreatedAt(Datehelper.getcurrentdatatime());
-
-        return userCaretakerRepository.save(userCaretaker);
+        if(userCaretakerRepository.check(userCaretaker.getPatientId(),userCaretaker.getCaretakerId())!=null){
+            throw new UserCaretakerException("Caretaker Already Present!!");
+        }
+        else {
+            return userCaretakerRepository.save(userCaretaker);
+        }
     }
 
     @Override
