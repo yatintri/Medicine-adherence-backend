@@ -1,5 +1,6 @@
 package com.example.user_service.service;
 
+import com.example.user_service.exception.DataAccessExceptionMessage;
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.model.Image;
@@ -16,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -49,78 +51,95 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Async
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserExceptionMessage {
 
+        try {
+            UserEntity user = userRepository.getUserById(userId);
+            if (user == null) {
+                throw new UserExceptionMessage(ERROR);
+            }
+            List<UserMedicines> list = user.getUserMedicines();
 
-        UserEntity user = userRepository.getUserById(userId);
-        if (user == null) {
-            throw new UserExceptionMessage(ERROR);
+            return CompletableFuture.completedFuture(list);
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        List<UserMedicines> list = user.getUserMedicines();
-
-        return CompletableFuture.completedFuture(list);
 
     }
 
 
     @Override
     public boolean syncData(String userId, List<UserMedicines> list) throws UserMedicineException {
+        try {
+            UserEntity user = userRepository.getUserById(userId);
+            if (user.getUserMedicines().isEmpty()) {
+                throw new UserMedicineException("Unable to sync");
+            }
+            for (UserMedicines userMedicines : list) {
 
-        UserEntity user = userRepository.getUserById(userId);
-        if (user.getUserMedicines().isEmpty()) {
-            throw new UserMedicineException("Unable to sync");
+                userMedicines.setUserEntity(user);
+
+            }
+
+            return false;
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        for (UserMedicines userMedicines : list) {
-
-            userMedicines.setUserEntity(user);
-
-        }
-
-        return false;
     }
 
 
     @Override
     @Async
     public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS) throws UserMedicineException {
+        try {
+            UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
+            if (userMedicines == null) {
+                throw new UserMedicineException("Unable to sync");
 
-        UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
-        if (userMedicines == null) {
-            throw new UserMedicineException("Unable to sync");
+            }
 
+            List<MedicineHistory> medicineHistories = medicineHistoryDTOS.stream().map(medHid -> {
+                MedicineHistory medicineHistory1 = new MedicineHistory();
+                medicineHistory1.setHistoryId(medHid.getRemId());
+                medicineHistory1.setDate(medHid.getDate());
+                medicineHistory1.setTaken(String.join(",", medHid.getTaken()));
+                medicineHistory1.setNotTaken(String.join(",", medHid.getNot_taken()));
+                medicineHistory1.setUserMedicines(userMedicines);
+                return medicineHistory1;
+            }).collect(Collectors.toList());
+            CompletableFuture.completedFuture(userMedHistoryRepository.saveAll(medicineHistories));
+
+            return null;
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-
-        List<MedicineHistory> medicineHistories = medicineHistoryDTOS.stream().map(medHid -> {
-            MedicineHistory medicineHistory1 = new MedicineHistory();
-            medicineHistory1.setHistoryId(medHid.getRemId());
-            medicineHistory1.setDate(medHid.getDate());
-            medicineHistory1.setTaken(String.join(",", medHid.getTaken()));
-            medicineHistory1.setNotTaken(String.join(",", medHid.getNot_taken()));
-            medicineHistory1.setUserMedicines(userMedicines);
-            return medicineHistory1;
-        }).collect(Collectors.toList());
-        CompletableFuture.completedFuture(userMedHistoryRepository.saveAll(medicineHistories));
-
-        return null;
     }
 
     @Override
     public MedicineResponse getMedicineHistory(Integer medId) throws UserMedicineException {
 
-        List<MedicineHistory> medicineHistories = userMedicineRepository.getMedById(medId).getMedicineHistories();
-        if (medicineHistories.isEmpty()) {
-            throw new UserMedicineException("No record found!!");
+        try {
+            List<MedicineHistory> medicineHistories = userMedicineRepository.getMedById(medId).getMedicineHistories();
+            if (medicineHistories.isEmpty()) {
+                throw new UserMedicineException("No record found!!");
+            }
+            return new MedicineResponse("OK", "Medicine History", medicineHistories);
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        return new MedicineResponse("OK", "Medicine History", medicineHistories);
     }
 
     @Override
     public List<Image> getUserMedicineImages(Integer medId) {
 
-        return userMedicineRepository.getMedById(medId)
-                .getImages()
-                .stream()
-                .sorted(Comparator.comparing(Image::getDate).reversed())
-                .collect(Collectors.toList());
+        try {
+            return userMedicineRepository.getMedById(medId)
+                    .getImages()
+                    .stream()
+                    .sorted(Comparator.comparing(Image::getDate).reversed())
+                    .collect(Collectors.toList());
 
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+        }
     }
 
 

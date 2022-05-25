@@ -1,6 +1,7 @@
 package com.example.user_service.service;
 
 
+import com.example.user_service.exception.DataAccessExceptionMessage;
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.Image;
 import com.example.user_service.model.UserCaretaker;
@@ -15,6 +16,7 @@ import com.example.user_service.util.Datehelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,67 +53,94 @@ public class CareTakerServiceImpl implements CareTakerService {
     @Override
     public UserCaretaker saveCareTaker(UserCaretakerDTO userCaretakerDTO) throws UserCaretakerException {
 
-        UserCaretaker userCaretaker = mapToEntity(userCaretakerDTO);
-        userCaretaker.setCreatedAt(Datehelper.getcurrentdatatime());
-        if(userCaretakerRepository.check(userCaretaker.getPatientId(),userCaretaker.getCaretakerId())!=null){
-            throw new UserCaretakerException("Caretaker Already Present!!");
-        }
-        else {
-            return userCaretakerRepository.save(userCaretaker);
+        try {
+            UserCaretaker userCaretaker = mapToEntity(userCaretakerDTO);
+            userCaretaker.setCreatedAt(Datehelper.getcurrentdatatime());
+            if (userCaretakerRepository.check(userCaretaker.getPatientId(), userCaretaker.getCaretakerId()) != null) {
+                throw new UserCaretakerException("Caretaker Already Present!!");
+            } else {
+                return userCaretakerRepository.save(userCaretaker);
+            }
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
     }
 
     @Override
     public UserCaretaker updateCaretakerStatus(String cId) throws UserCaretakerException {
-        Optional<UserCaretaker> uc = userCaretakerRepository.findById(cId);
-        if (uc.isEmpty()) {
-            throw new UserCaretakerException("User not found");
+        try {
+            Optional<UserCaretaker> uc = userCaretakerRepository.findById(cId);
+            if (uc.isEmpty()) {
+                throw new UserCaretakerException("User not found");
+            }
+            uc.get().setReqStatus(true);
+            return userCaretakerRepository.save(uc.get());
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        uc.get().setReqStatus(true);
-        return userCaretakerRepository.save(uc.get());
     }
 
     @Override
     public List<UserCaretaker> getPatientsUnderMe(String userId) throws UserCaretakerException {
 
-        List<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientsUnderMe(userId);
-        if (userCaretaker.isEmpty()) {
-            throw new UserCaretakerException(MSG);
+        try {
+            List<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientsUnderMe(userId);
+            if (userCaretaker.isEmpty()) {
+                throw new UserCaretakerException(MSG);
+            }
+            return userCaretaker;
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        return userCaretaker;
     }
 
     @Override
     public List<UserCaretaker> getPatientRequests(String userId) throws UserCaretakerException {
-        List<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientRequests(userId);
-        if (userCaretaker.isEmpty()) {
-            throw new UserCaretakerException(MSG);
+        try {
+            List<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientRequests(userId);
+            if (userCaretaker.isEmpty()) {
+                throw new UserCaretakerException(MSG);
+            }
+            return userCaretaker;
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        return userCaretaker;
     }
 
     @Override
     public List<UserCaretaker> getMyCaretakers(String userId) throws UserCaretakerException {
-        List<UserCaretaker> userCaretaker = userCaretakerRepository.getMyCaretakers(userId);
-        if (userCaretaker.isEmpty()) {
-            throw new UserCaretakerException(MSG);
+        try {
+            List<UserCaretaker> userCaretaker = userCaretakerRepository.getMyCaretakers(userId);
+            if (userCaretaker.isEmpty()) {
+                throw new UserCaretakerException(MSG);
+            }
+            return userCaretaker;
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        return userCaretaker;
     }
 
     @Override
     public List<UserCaretaker> getCaretakerRequestStatus(String userId) {
-        return userCaretakerRepository.getCaretakerRequestStatus(userId);
+        try {
+            return userCaretakerRepository.getCaretakerRequestStatus(userId);
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+        }
     }
 
 
     @Override
     public List<UserCaretaker> getCaretakerRequestsP(String userId) throws UserCaretakerException {
-        List<UserCaretaker> userCaretaker = userCaretakerRepository.getCaretakerRequestsP(userId);
-        if (userCaretaker.isEmpty()) {
-            throw new UserCaretakerException(MSG);
+        try {
+            List<UserCaretaker> userCaretaker = userCaretakerRepository.getCaretakerRequestsP(userId);
+            if (userCaretaker.isEmpty()) {
+                throw new UserCaretakerException(MSG);
+            }
+            return userCaretaker;
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        return userCaretaker;
     }
 
     @Override
@@ -132,7 +161,7 @@ public class CareTakerServiceImpl implements CareTakerService {
     }
 
     @Override
-    public boolean sendImageToCaretaker(MultipartFile multipartFile, String filename, String caretakerid, String medName , Integer medId) throws IOException, UserCaretakerException {
+    public boolean sendImageToCaretaker(MultipartFile multipartFile, String filename, String caretakerid, String medName, Integer medId) throws IOException, UserCaretakerException {
 
         try {
             File file = new File(System.getProperty("user.dir") + "/src/main/upload/static/images");
@@ -143,7 +172,7 @@ public class CareTakerServiceImpl implements CareTakerService {
             Files.write(path, multipartFile.getBytes());
 
             UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
-            String userName =  userMedicines.getUserEntity().getUserName();
+            String userName = userMedicines.getUserEntity().getUserName();
             Image image = new Image();
             image.setImageUrl(path.getFileName().toString());
             image.setTime(Calendar.getInstance().getTime().toString());

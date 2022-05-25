@@ -2,6 +2,7 @@ package com.example.user_service.service;
 
 
 import com.example.user_service.config.PdfMailSender;
+import com.example.user_service.exception.DataAccessExceptionMessage;
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.UserDetails;
@@ -19,8 +20,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataAccessException;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.config.provisioning.UserDetailsManagerResourceFactoryBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,100 +65,126 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage {
 
-        UserEntity user = getUserByEmail(userEntityDTO.getEmail());
-        if (user != null) {
-            return new UserResponse(MSG2, "User is already present", new ArrayList<>(Arrays.asList(user)), "", "");
+        try {
+            UserEntity user = getUserByEmail(userEntityDTO.getEmail());
+            if (user != null) {
+                return new UserResponse(MSG2, "User is already present", new ArrayList<>(Arrays.asList(user)), "", "");
+            }
+
+            logger.info(Thread.currentThread().getName());
+            UserEntity userEntity = mapToEntity(userEntityDTO);
+            userEntity.setLastLogin(Datehelper.getcurrentdatatime());
+            userEntity.setCreatedAt(Datehelper.getcurrentdatatime());
+            UserEntity ue = userRepository.save(userEntity);
+            UserDetails userDetails = new UserDetails();
+            userDetails.setFcmToken(fcmToken);
+            userDetails.setPicPath(picPath);
+            userDetails.setUser(ue);
+            userDetailsRepository.save(userDetails);
+
+            if (ue.getUserName() == null) {
+                throw new UserExceptionMessage("Error try again!");
+
+            }
+            String jwtToken = jwtUtil.generateToken(ue.getUserName());
+            String refreshToken = passwordEncoder.encode(ue.getUserId());
+
+            return new UserResponse(MSG, "Saved user successfully", new ArrayList<>(Arrays.asList(ue)), jwtToken, refreshToken);
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL Error" + dataAccessException.getMessage());
         }
-
-        logger.info(Thread.currentThread().getName());
-        UserEntity userEntity = mapToEntity(userEntityDTO);
-        userEntity.setLastLogin(Datehelper.getcurrentdatatime());
-        userEntity.setCreatedAt(Datehelper.getcurrentdatatime());
-        UserEntity ue = userRepository.save(userEntity);
-        UserDetails userDetails = new UserDetails();
-        userDetails.setFcmToken(fcmToken);
-        userDetails.setPicPath(picPath);
-        userDetails.setUser(ue);
-        userDetailsRepository.save(userDetails);
-
-        if (ue.getUserName() == null) {
-            throw new UserExceptionMessage("Error try again!");
-
-        }
-        String jwtToken = jwtUtil.generateToken(ue.getUserName());
-        String refreshToken = passwordEncoder.encode(ue.getUserId());
-
-        return new UserResponse(MSG, "Saved user successfully", new ArrayList<>(Arrays.asList(ue)), jwtToken, refreshToken);
-
     }
 
     @Override
     @Async
     public CompletableFuture<List<UserEntity>> getUsers() throws UserExceptionMessage {
 
-        List<UserEntity> list = userRepository.findAllUsers();
-        logger.info(Thread.currentThread().getName());
-        return CompletableFuture.completedFuture(list);
-
+        try {
+            List<UserEntity> list = userRepository.findAllUsers();
+            logger.info(Thread.currentThread().getName());
+            return CompletableFuture.completedFuture(list);
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL Error" + dataAccessException.getMessage());
+        }
     }
 
 
     @Override
 
     public UserEntity getUserById(String userId) throws UserExceptionMessage {
-        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getUserById(userId));
+        try {
+            Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getUserById(userId));
 
-        logger.info(Thread.currentThread().getName());
-        if (optionalUserEntity.isEmpty()) {
-            throw new UserExceptionMessage("Data not found");
+            logger.info(Thread.currentThread().getName());
+            if (optionalUserEntity.isEmpty()) {
+                throw new UserExceptionMessage("Data not found");
+            }
+
+            return optionalUserEntity.get();
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-
-        return optionalUserEntity.get();
     }
 
 
     @Override
     public UserEntity updateUser(String userId, UserEntityDTO userEntityDTO) {
-        UserEntity userDB = userRepository.getUserById(userId);
-        UserEntity userEntity = mapToEntity(userEntityDTO);
-        if (Objects.nonNull(userEntity.getUserName()) && !"".equalsIgnoreCase(userEntity.getUserName())) {
-            userDB.setUserName(userEntity.getUserName());
-        }
-        if (Objects.nonNull(userEntity.getEmail()) && !"".equalsIgnoreCase(userEntity.getEmail())) {
-            userDB.setEmail(userEntity.getEmail());
-        }
+        try {
+            UserEntity userDB = userRepository.getUserById(userId);
+            UserEntity userEntity = mapToEntity(userEntityDTO);
+            if (Objects.nonNull(userEntity.getUserName()) && !"".equalsIgnoreCase(userEntity.getUserName())) {
+                userDB.setUserName(userEntity.getUserName());
+            }
+            if (Objects.nonNull(userEntity.getEmail()) && !"".equalsIgnoreCase(userEntity.getEmail())) {
+                userDB.setEmail(userEntity.getEmail());
+            }
 
-        return userRepository.save(userDB);
+            return userRepository.save(userDB);
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+        }
     }
 
     @Override
     public List<UserEntity> getUserByName(String userName) throws UserExceptionMessage, NullPointerException {
 
-        List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
-        if (userEntity.isEmpty()) {
-            throw new UserExceptionMessage("Data not found");
+        try {
+            List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
+            if (userEntity.isEmpty()) {
+                throw new UserExceptionMessage("Data not found");
+            }
+            return userEntity;
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        return userEntity;
 
     }
 
     @Override
     public UserEntity getUserByEmail(String email) throws UserExceptionMessage {
 
-        return userRepository.findByMail(email);
+        try {
+            return userRepository.findByMail(email);
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+        }
 
     }
 
 
     @Override
     public String sendUserMedicines(Integer medId) throws MessagingException, IOException {
-        Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
-        if (userMedicines.isEmpty()) {
-            return "Failed";
+        try {
+            Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
+            if (userMedicines.isEmpty()) {
+                return "Failed";
+            }
+            UserEntity entity = userMedicines.get().getUserEntity();
+            List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
+            return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
-        UserEntity entity = userMedicines.get().getUserEntity();
-        List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
-        return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
     }
 
     @Override
@@ -175,11 +202,8 @@ public class UserServiceImpl implements UserService {
             }
             throw new UserExceptionMessage("Data not found");
 
-        } catch (Exception exception) {
-
-            throw new UserExceptionMessage("Data not found");
-
-
+        } catch (DataAccessException dataAccessException) {
+            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
         }
 
 
