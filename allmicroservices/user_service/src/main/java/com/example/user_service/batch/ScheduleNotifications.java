@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Calendar;
+
 
 @Component
 public class ScheduleNotifications {
@@ -25,7 +25,6 @@ public class ScheduleNotifications {
 
  //   @Scheduled(fixedRate = 15000)
     public void sendNotificationsToCaretakers() {
-        Calendar calendar = Calendar.getInstance();
         userMedicineRepository.getMedicinesforToday(Datehelper.getDay())
                 .stream().filter(userMedicines -> userMedicines.getMedicineName() != null)
                 .forEach(userMedicines -> {
@@ -43,9 +42,7 @@ public class ScheduleNotifications {
                             logger.info(Arrays.deepToString(times));
                             try {
                                 careTakerService.getMyCaretakers(userEntity.getUserId())
-                                        .stream().forEach(userCaretaker -> {
-                                            System.out.println(userCaretaker.getCaretakerId());
-                                        });
+                                        .stream().forEach(userCaretaker -> {});
 
                             } catch (UserCaretakerException e) {
                                 throw new RuntimeException(e);

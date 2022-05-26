@@ -5,7 +5,6 @@ import com.example.user_service.exception.DataAccessExceptionMessage;
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.model.Image;
 import com.example.user_service.model.UserCaretaker;
-import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
@@ -20,14 +19,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +46,7 @@ public class CareTakerServiceImpl implements CareTakerService {
     RabbitTemplate rabbitTemplate;
 
     private static final String MSG = "Data not found";
+    private static final String errorMsg = "SQL error!";
 
     @Override
     public UserCaretaker saveCareTaker(UserCaretakerDTO userCaretakerDTO) throws UserCaretakerException {
@@ -62,7 +60,7 @@ public class CareTakerServiceImpl implements CareTakerService {
                 return userCaretakerRepository.save(userCaretaker);
             }
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -76,7 +74,7 @@ public class CareTakerServiceImpl implements CareTakerService {
             uc.get().setReqStatus(true);
             return userCaretakerRepository.save(uc.get());
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -90,7 +88,7 @@ public class CareTakerServiceImpl implements CareTakerService {
             }
             return userCaretaker;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -103,7 +101,7 @@ public class CareTakerServiceImpl implements CareTakerService {
             }
             return userCaretaker;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -116,7 +114,7 @@ public class CareTakerServiceImpl implements CareTakerService {
             }
             return userCaretaker;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -125,7 +123,7 @@ public class CareTakerServiceImpl implements CareTakerService {
         try {
             return userCaretakerRepository.getCaretakerRequestStatus(userId);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -139,7 +137,7 @@ public class CareTakerServiceImpl implements CareTakerService {
             }
             return userCaretaker;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 

@@ -137,7 +137,7 @@ import java.util.List;
                         port + "/api/v1/users",
                 List.class);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals(29,user.size());
+        Assertions.assertEquals(31,user.size());
     }
 
     @Test
