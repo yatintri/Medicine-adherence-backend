@@ -51,12 +51,14 @@ import java.util.List;
                             HttpMethod.POST, request, new ParameterizedTypeReference<String>() {
                             });
             String expected =
-                    "{\"status\":\"Success\",\"message\":\"User is already present\"," +
-                            "\"userentity\":[{\"userId\":\"d35542b3-70ee-4077-86fa-38ff76ada0d1\",\"userName\":\"VSoniBhai\",\"email\":\"VinaySoniBhai@gmail.com\"," +
-                            "\"lastLogin\":\"2022/03/24 13:38:04\",\"createdAt\":\"2022/03/24 13:38:04\"," +
-                            "\"userDetails\":{\"userdetId\":\"3f2a407c-588e-4a2d-afce-8be3812c7231\",\"bio\":null," +
-                            "\"picPath\":\"falka\",\"age\":0,\"fcmToken\":\"hsagdjg\",\"pincode\":0,\"usercontact\":0," +
-                            "\"lattitude\":0.0,\"longitude\":0.0,\"address\":null,\"gender\":null,\"bloodGroup\":null,\"martialStatus\":null,\"weight\":0,\"emergencyContact\":0,\"pastMedication\":null}}],\"jwt\":\"\",\"refreshToken\":\"\"}\n";
+                    "{\"status\":\"failed\",\"message\":\"User is already present\"," +
+                            "\"userEntity\":[{\"userId\":\"d35542b3-70ee-4077-86fa-38ff76ada0d1\"," +
+                            "\"userName\":\"VSoniBhai\",\"email\":\"VinaySoniBhai@gmail.com\"," +
+                            "\"lastLogin\":\"2022/03/24 13:38:04\"," +
+                            "\"createdAt\":\"2022/03/24 13:38:04\"," +
+                            "\"userDetails\":{\"userDetId\":\"3f2a407c-588e-4a2d-afce-8be3812c7231\"," +
+                            "\"bio\":null,\"picPath\":\"falka\",\"age\":0,\"fcmToken\":\"hsagdjg\",\"pincode\":0," +
+                            "\"userContact\":0,\"lattitude\":0.0,\"longitude\":0.0,\"address\":null,\"gender\":null,\"bloodGroup\":null,\"martialStatus\":null,\"weight\":0,\"emergencyContact\":0,\"pastMedication\":null}}],\"jwt\":\"\",\"refreshToken\":\"\"}\n";
             System.out.println(response.getBody());
             JSONAssert.assertEquals(expected, String.valueOf(response.getBody()), false);
         }
@@ -113,11 +115,12 @@ import java.util.List;
                             HttpMethod.POST, request, new ParameterizedTypeReference<String>() {
                             });
             String expected =
-                    "{\"status\":\"Success\",\"userentity\":[{\"userId\":\"e61ef901-e105-4636-bef6-f664c204a825\",\"userName\":\"Yatin\",\"email\":\"yatintri@gmail.com\",\"lastLogin\":\"2022/03/23 10:59:08\",\"createdAt\":\"2022/03/23 10:59:08\",\"userDetails\":{\"userdetId\":\"a7acd557-5a4f-4a06-a1c0-d099e322a8f9\",\"bio\":null,\"picPath\":\"kalka\"," +
-                            "\"age\":0,\"fcmToken\":\"hsagdj\",\"pincode\":0,\"usercontact\":0," +
-                            "\"lattitude\":0.0,\"longitude\":0.0,\"address\":null,\"gender\":null," +
-                            "\"bloodGroup\":null,\"martialStatus\":null,\"weight\":0,\"emergencyContact\":0," +
-                            "\"pastMedication\":null}}]}\n";
+                    "{\"status\":\"Success\",\"message\":\"Success\",\"userEntity\":[{\"userId\":\"e61ef901-e105-4636-bef6-f664c204a825\"," +
+                            "\"userName\":\"Yatin\",\"email\":\"yatintri@gmail.com\",\"lastLogin\":\"2022/03/23 10:59:08\"," +
+                            "\"createdAt\":\"2022/03/23 10:59:08\",\"userDetails\":{\"userDetId\":\"a7acd557-5a4f-4a06-a1c0-d099e322a8f9\"," +
+                            "\"bio\":null,\"picPath\":\"kalka\",\"age\":0,\"fcmToken\":null,\"pincode\":0,\"userContact\":0,\"lattitude\":0.0," +
+                            "\"longitude\":0.0,\"address\":null,\"gender\":null,\"bloodGroup\":null,\"martialStatus\":null," +
+                            "\"weight\":0,\"emergencyContact\":0,\"pastMedication\":null}}]}\n";
             System.out.println(response.getBody());
             JSONAssert.assertEquals(expected, String.valueOf(response.getBody()), false);
         }
@@ -134,7 +137,7 @@ import java.util.List;
                         port + "/api/v1/users",
                 List.class);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals(21,user.size());
+        Assertions.assertEquals(29,user.size());
     }
 
     @Test
@@ -146,7 +149,9 @@ import java.util.List;
                 createURLWithPort("/api/v1/user?userId=379dfb3b-4b78-4232-84af-110d406622a6")
                 , HttpMethod.GET, entity,String.class);
 
-        String expected = "{\"status\":\"OK\",\"userEntityList\":[{\"userId\":\"379dfb3b-4b78-4232-84af-110d406622a6\",\"userName\":\"Soni\",\"email\":\"VinaySoni@gmail.com\",\"lastLogin\":\"2022/02/23 17:13:45\",\"createdAt\":\"2022/02/23 17:13:45\",\"userDetails\":null}],\"medicinesList\":[{\"medicineId\":5,\"startDate\":\"14-04-2022\",\"medicineName\":\"Paracetamol\",\"medicineDes\":\"syrup\",\"days\":\"Mon\",\"endDate\":\"12-03-2022\",\"time\":\"13:07\",\"title\":\"eat 2 times\",\"totalMedReminders\":6,\"currentCount\":3}]}\n";
+        String expected = "{\"status\":\"OK\",\"userEntityList\":[{\"userId\":\"379dfb3b-4b78-4232-84af-110d406622a6\"," +
+                "\"userName\":\"Soni\",\"email\":\"VinaySoni@gmail.com\",\"lastLogin\":\"2022/02/23 17:13:45\"," +
+                "\"createdAt\":\"2022/02/23 17:13:45\",\"userDetails\":null}],\"medicinesList\":[]}\n";
         System.out.println(response.getBody());
         JSONAssert.assertEquals(expected,response.getBody(), false);
     }
@@ -202,12 +207,9 @@ import java.util.List;
                 createURLWithPort("/api/v1/pdf?medId=12345")
                 , HttpMethod.GET, entity,String.class);
 
-        String expected = "{\n" +
-                "    \"status\": \"Success\",\n" +
-                "    \"userentity\": null,\n" +
-                "    \"jwt\": \"\",\n" +
-                "    \"refreshToken\": \"\"\n" +
-                "}";
+        String expected = "{\"status\":\"Success\"," +
+                "\"userEntity\":null," +
+                "\"jwt\":\"\",\"refreshToken\":\"\"}";
         System.out.println(response.getBody());
         JSONAssert.assertEquals(expected, String.valueOf(response.getBody()), false);
     }

@@ -69,7 +69,7 @@ class MedicineControllerIntegrationTest {
     {
         List<MedicineHistoryDTO> list = new ArrayList<>();
         MedicineHistoryDTO user = new MedicineHistoryDTO();
-        user.setDate(new Date("23/4/2022"));
+        user.setDate(String.valueOf(new Date("23/4/2022")));
         user.setRemId(23553637);
         user.setTaken(new String[]{"23:11"});
         user.setNot_taken(new String[]{"11:05"});
@@ -100,18 +100,9 @@ class MedicineControllerIntegrationTest {
                     , HttpMethod.GET, entity, String.class);
 
             String expected
-                    = "{\n" +
-                    "    \"status\": \"OK\",\n" +
-                    "    \"message\": \"Medicine History\",\n" +
-                    "    \"userMedicinesList\": [\n" +
-                    "        {\n" +
-                    "            \"historyId\": 23553637,\n" +
-                    "            \"date\": \"23/04\",\n" +
-                    "            \"taken\": \"23:11\",\n" +
-                    "            \"nottaken\": \"11:05\"\n" +
-                    "        }\n" +
-                    "    ]\n" +
-                    "}";
+                    = "{\"status\":\"OK\",\"message\":\"Medicine History\"," +
+                    "\"userMedicinesList\":[{\"historyId\":123467,\"date\":\"2019-04-28 20:15:15\"," +
+                    "\"taken\":\"10:00,1:00,6:00\",\"notTaken\":\"11:05\"}]}\n";
             System.out.println(response.getBody());
             JSONAssert.assertEquals(expected, response.getBody(), false);
         }
