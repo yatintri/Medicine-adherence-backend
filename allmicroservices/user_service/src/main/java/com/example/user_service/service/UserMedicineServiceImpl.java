@@ -47,6 +47,9 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     Logger logger = LoggerFactory.getLogger(UserMedicineServiceImpl.class);
 
+    private static final String errorMsg = "SQL error!";
+
+
     @Override
     @Async
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId) throws UserMedicineException, UserExceptionMessage {
@@ -60,7 +63,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
             return CompletableFuture.completedFuture(list);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
 
     }
@@ -81,7 +84,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
             return false;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -109,7 +112,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
             return null;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -123,7 +126,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
             }
             return new MedicineResponse("OK", "Medicine History", medicineHistories);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -138,7 +141,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                     .collect(Collectors.toList());
 
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 

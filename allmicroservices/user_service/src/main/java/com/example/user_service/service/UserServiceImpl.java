@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.config.provisioning.UserDetailsManagerResourceFactoryBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +61,10 @@ public class UserServiceImpl implements UserService {
 
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    private static final String errorMsg = "SQL error!";
+    private static final String exception = "Data not found";
+
+
     @Override
     public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage {
 
@@ -91,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
             return new UserResponse(MSG, "Saved user successfully", new ArrayList<>(Arrays.asList(ue)), jwtToken, refreshToken);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL Error" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -104,7 +107,7 @@ public class UserServiceImpl implements UserService {
             logger.info(Thread.currentThread().getName());
             return CompletableFuture.completedFuture(list);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL Error" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -117,12 +120,12 @@ public class UserServiceImpl implements UserService {
 
             logger.info(Thread.currentThread().getName());
             if (optionalUserEntity.isEmpty()) {
-                throw new UserExceptionMessage("Data not found");
+                throw new UserExceptionMessage(exception);
             }
 
             return optionalUserEntity.get();
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -141,7 +144,7 @@ public class UserServiceImpl implements UserService {
 
             return userRepository.save(userDB);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -151,11 +154,11 @@ public class UserServiceImpl implements UserService {
         try {
             List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
             if (userEntity.isEmpty()) {
-                throw new UserExceptionMessage("Data not found");
+                throw new UserExceptionMessage(exception);
             }
             return userEntity;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
 
     }
@@ -166,7 +169,7 @@ public class UserServiceImpl implements UserService {
         try {
             return userRepository.findByMail(email);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
 
     }
@@ -183,7 +186,7 @@ public class UserServiceImpl implements UserService {
             List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
             return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
@@ -200,10 +203,10 @@ public class UserServiceImpl implements UserService {
                 String refreshToken = passwordEncoder.encode(user.getUserId());
                 return new UserResponse(MSG, "Success", new ArrayList<>(Arrays.asList(user)), jwtToken, refreshToken);
             }
-            throw new UserExceptionMessage("Data not found");
+            throw new UserExceptionMessage(exception);
 
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
 
 

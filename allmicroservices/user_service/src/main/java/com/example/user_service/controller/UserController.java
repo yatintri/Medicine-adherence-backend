@@ -53,7 +53,7 @@ public class UserController {
 
     // saving the user when they signup
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> saveUser(@RequestParam(name = "fcmToken") String fcmToken, @RequestParam(name = "picPath") String picPath, @RequestBody UserEntityDTO userEntityDTO) throws UserExceptionMessage, ExecutionException, InterruptedException {
+    public ResponseEntity<UserResponse> saveUser(@RequestParam(name = "fcmToken") String fcmToken, @RequestParam(name = "picPath") String picPath, @RequestBody UserEntityDTO userEntityDTO) throws UserExceptionMessage{
 
         return new ResponseEntity<>(userService.saveUser(userEntityDTO, fcmToken, picPath), HttpStatus.CREATED);
 
@@ -61,10 +61,9 @@ public class UserController {
     }
 
     @PostMapping("/refreshToken")
-    public ResponseEntity<?> refreshToken(@Valid @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest) throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
+    public ResponseEntity<String> refreshToken(@Valid @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest) throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException {
 
-        String token = httpServletRequest.getHeader("Authorization");
-        token = token.substring(7);
+        String token = httpServletRequest.getHeader("Authorization").substring(7);
         String jwtToken = jwtUtil.generateToken(userService.getUserById(uid).getUserName());
 
         return new ResponseEntity<>(jwtToken, HttpStatus.CREATED);
