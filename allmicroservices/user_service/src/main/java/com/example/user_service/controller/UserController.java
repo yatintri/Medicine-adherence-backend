@@ -122,7 +122,10 @@ public class UserController {
 
 
     @GetMapping(value = "/pdf")
-    public ResponseEntity<UserResponse> sendPdf(@RequestParam(name = "medId") Integer medId) throws IOException, MessagingException {
+    public ResponseEntity<UserResponse> sendPdf(@RequestParam(name = "medId") Integer medId) throws IOException, MessagingException, UserExceptionMessage {
+       if(userService.sendUserMedicines(medId).equals("Failed")){
+           throw new UserExceptionMessage("No medicine found!");
+       }
         String filePath = userService.sendUserMedicines(medId);
         UserResponse userResponse = new UserResponse(MSG, filePath, null, "", "");
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
