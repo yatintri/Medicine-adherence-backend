@@ -1,6 +1,7 @@
 package com.example.user_service.service;
 
 import com.example.user_service.exception.UserCaretakerException;
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +25,7 @@ public interface CareTakerService {
 
      List<UserCaretaker> getCaretakerRequestsP(String userId) throws UserCaretakerException;
 
-     Boolean delPatientReq(String cId);
+     String delPatientReq(String cId) throws UserExceptionMessage, UserCaretakerException;
 
     boolean sendImageToCaretaker(MultipartFile multipartFile , String filename , String caretakerId , String medName, Integer medId) throws IOException , UserCaretakerException;
 }

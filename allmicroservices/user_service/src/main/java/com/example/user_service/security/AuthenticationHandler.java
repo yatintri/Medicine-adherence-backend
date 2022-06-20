@@ -34,6 +34,7 @@ public class AuthenticationHandler implements HandlerInterceptor {
         String jwt = null;
         String username = null;
         final String id = request.getParameter("userId");
+        logger.info(id);
         logger.info(authorizationHeader);
         try {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -65,6 +66,12 @@ public class AuthenticationHandler implements HandlerInterceptor {
                 }
             } catch (Exception usernameNotFoundException) {
                 response.setStatus(404);
+                String content = "{\n" +
+                        "    \"status\": \"failed\",\n" +
+                        "    \"message\": \"User invalid\",\n" +
+                        "}";
+                response.setContentType("application/json");
+                response.getWriter().write(content);
                 return false;
             }
 

@@ -90,7 +90,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
 
     @Override
-    @Async
+
     public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS) throws UserMedicineException {
         try {
             UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
@@ -127,6 +127,9 @@ public class UserMedicineServiceImpl implements UserMedicineService {
             return new MedicineResponse("OK", "Medicine History", medicineHistories);
         } catch (DataAccessException dataAccessException) {
             throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+        }
+        catch (NullPointerException exception){
+            throw new UserMedicineException("No medicine found");
         }
     }
 

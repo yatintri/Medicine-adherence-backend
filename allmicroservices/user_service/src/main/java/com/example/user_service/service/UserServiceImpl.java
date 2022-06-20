@@ -208,6 +208,10 @@ public class UserServiceImpl implements UserService {
         } catch (DataAccessException dataAccessException) {
             throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
+        catch (NullPointerException e){
+            throw new UserExceptionMessage(exception);
+
+        }
 
 
     }

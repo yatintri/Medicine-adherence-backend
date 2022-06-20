@@ -2,12 +2,14 @@ package com.example.user_service.controller;
 
 import com.example.user_service.exception.UserCaretakerException;
 
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
 import com.example.user_service.pojos.response.CaretakerDelete;
 import com.example.user_service.pojos.response.CaretakerResponse;
 import com.example.user_service.pojos.response.CaretakerResponse1;
+import com.example.user_service.pojos.response.ImageResponse;
 import com.example.user_service.service.CareTakerService;
 import com.example.user_service.service.UserService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -92,9 +94,9 @@ public class CaretakerController {
     }
 
     @GetMapping(value = "/delete")
-    public ResponseEntity<CaretakerDelete> delPatientReq(@RequestParam(name = "cId") String cId) {
-        boolean b = careTakerService.delPatientReq(cId);
-        CaretakerDelete caretakerDelete = new CaretakerDelete(b, "Deleted successfully");
+    public ResponseEntity<CaretakerDelete> delPatientReq(@RequestParam(name = "cId") String cId) throws UserExceptionMessage, UserCaretakerException {
+        String delPatientStatus = careTakerService.delPatientReq(cId);
+        CaretakerDelete caretakerDelete = new CaretakerDelete(delPatientStatus, "Deleted successfully");
         return new ResponseEntity<>(caretakerDelete, HttpStatus.OK);
     }
 
@@ -107,13 +109,15 @@ public class CaretakerController {
     }
 
     @PostMapping(value = "/image")
-    public ResponseEntity<String> sendImageToCaretaker(@RequestParam(name = "image") MultipartFile multipartFile
+    public ImageResponse sendImageToCaretaker(@RequestParam(name = "image") MultipartFile multipartFile
             , @RequestParam(name = "name") String filename, @RequestParam("medName") String medName,
-                                                       @RequestParam(name = "id") String caretakerId, @RequestParam(name = "medId") Integer medId) throws IOException, UserCaretakerException {
+                                              @RequestParam(name = "id") String caretakerId,
+                                              @RequestParam(name = "medId") Integer medId) throws IOException, UserCaretakerException {
 
-        careTakerService.sendImageToCaretaker(multipartFile, filename, caretakerId, medName , medId);
-        return new ResponseEntity<>("Ok", HttpStatus.OK);
-
+        if(careTakerService.sendImageToCaretaker(multipartFile, filename, caretakerId, medName, medId)) {
+            return new ImageResponse(MSG,"Image sent successfully!");
+        }
+        return new ImageResponse("failed","Image not sent");
     }
 
 ////

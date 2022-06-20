@@ -3,6 +3,7 @@ package com.example.user_service.service;
 
 import com.example.user_service.exception.DataAccessExceptionMessage;
 import com.example.user_service.exception.UserCaretakerException;
+import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.model.Image;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.model.UserMedicines;
@@ -69,7 +70,7 @@ public class CareTakerServiceImpl implements CareTakerService {
         try {
             Optional<UserCaretaker> uc = userCaretakerRepository.findById(cId);
             if (uc.isEmpty()) {
-                throw new UserCaretakerException("User not found");
+                throw new UserCaretakerException("Request not found");
             }
             uc.get().setReqStatus(true);
             return userCaretakerRepository.save(uc.get());
@@ -142,19 +143,19 @@ public class CareTakerServiceImpl implements CareTakerService {
     }
 
     @Override
-    public Boolean delPatientReq(String cId) {
+    public String delPatientReq(String cId) throws UserExceptionMessage, UserCaretakerException {
 
 
         try {
             Optional<UserCaretaker> userCaretaker = userCaretakerRepository.findById(cId);
             if (userCaretaker.isPresent()) {
                 userCaretakerRepository.delete(userCaretaker.get());
-                return true;
+                return "Success";
 
             }
-            return false;
+            throw new UserCaretakerException("No record found");
         } catch (Exception e) {
-            return false;
+            throw new UserCaretakerException("No record found");
         }
     }
 
@@ -178,7 +179,7 @@ public class CareTakerServiceImpl implements CareTakerService {
             image.setUserMedicines(userMedicines);
             image.setCaretakerName(userName);
             imageRepository.save(image);
-            String fcmToken = "eSopD9D5TsOozFw3yILXCL:APA91bEd0g-Uu4Ho1yx6Ye0akuhoFJ4pWP7ZZ_ZVKV4bpGL5tF7uPYDer84TyBD_k0Uzqdjdtue9_FU383WjReFqi611QqcJ_5KdADy3CYXk2FxAY88yk-pN5YjPwYEJz8QWD_EFDEOh";
+            String fcmToken = "epkw4MI-RxyMzZjvD6fUl6:APA91bEUyAJpJ5RmDyI1KLcMLJbBPiYSX64oIW4WkNq62zeUlMPUPknGkBHTB_drOBX6CUkiI0Pyfc4Myvt87v6BU69kz0LPq4YM9iWnG9RrNbxIpC4LrtE-zWfNdbB3dbjR2bmogops";
             rabbitTemplate.convertAndSend("project_exchange", "notification_key", new Notificationmessage(fcmToken, "Take medicine", "caretaker", medName, filename + ".jpg"));
 
         } catch (Exception e) {
