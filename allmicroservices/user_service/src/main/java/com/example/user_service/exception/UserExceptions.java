@@ -6,6 +6,7 @@ import com.example.user_service.pojos.response.SqlErrorResponse;
 import com.example.user_service.pojos.response.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -15,7 +16,7 @@ import org.springframework.web.context.request.WebRequest;
  * This class is used to send error response
  */
 @ControllerAdvice
-public class UserExceptions {
+public class UserExceptions extends Throwable {
 
     /**
      * Returns user exception response
@@ -35,6 +36,13 @@ public class UserExceptions {
     @ExceptionHandler({UserCaretakerException.class})
     public ResponseEntity<CaretakerResponse> getcaretakerexception(UserCaretakerException uce, WebRequest webRequest) {
         CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getMessage(), null);
+        return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<CaretakerResponse> getcaretakernotvalidexception(MethodArgumentNotValidException uce, WebRequest webRequest) {
+        CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getFieldError().getDefaultMessage(), null);
         return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 
     }

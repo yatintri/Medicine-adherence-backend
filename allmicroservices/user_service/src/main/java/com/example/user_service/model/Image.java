@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -23,20 +25,29 @@ public class Image {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @NotNull(message = "ImageId is mandatory")
+    @NotBlank(message = "ImageId is mandatory")
     private String imageId;
 
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @NotNull(message = "Date is mandatory")
     private Date date;
 
     @Column(name = "time")
+    @NotNull(message = "Time is mandatory")
+    @NotBlank(message = "Time is mandatory")
     private String time;
 
     @Column(name = "Caretaker_name")
+    @NotNull(message = "Caretaker name is mandatory")
+    @NotBlank(message = "Caretaker name is mandatory")
     private String caretakerName;
 
     @Column(name = "image_url")
+    @NotNull(message = "ImageUrl is mandatory")
+    @NotBlank(message = "ImageUrl is mandatory")
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.EAGER)

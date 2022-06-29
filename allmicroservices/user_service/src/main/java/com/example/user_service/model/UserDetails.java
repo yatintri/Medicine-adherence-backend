@@ -8,6 +8,10 @@ import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -25,22 +29,23 @@ public class UserDetails {
     )
     private String userDetId;
 
-    @Column(name = "bio")
+    @Column(name = "bio",columnDefinition = "String(250) default ''")
     private String bio;
 
     @Column(name = "pic_path")
+    @NotBlank(message = "PicPath is mandatory")
     private String picPath;
 
-    @Column(name = "age")
+    @Column(name = "age", columnDefinition = "int default 0")
     private int age;
 
     @Column(name = "fcm_token")
     private String fcmToken;
 
-    @Column(name = "pincode")
+    @Column(name = "pincode",columnDefinition = "int default 0")
     private int pincode;
 
-    @Column(name = "user_contact")
+    @Column(name = "user_contact",columnDefinition = "Long default 0")
     private Long userContact;
 
     @Column(name = "lattitude")
@@ -55,13 +60,13 @@ public class UserDetails {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "blood_group")
+    @Column(name = "blood_group",columnDefinition = "String(250) default ''")
     private String bloodGroup;
 
-    @Column(name = "martial_status")
+    @Column(name = "martial_status",columnDefinition = "String(250) default ''")
     private String martialStatus;
 
-    @Column(name = "weight")
+    @Column(name = "weight", columnDefinition = "int default 0")
     private int weight;
 
     @Column(name = "emergency_contact")
@@ -80,4 +85,3 @@ public class UserDetails {
     @JsonIgnore
     private UserEntity user;
 }
-///

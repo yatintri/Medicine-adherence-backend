@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -19,9 +21,10 @@ public class MedicineEntity {
      private int medId;
 
     @Column(name = "med_name")
+    @NotNull(message = "Med name is mandatory")
+    @NotBlank(message = "Med name is mandatory")
     private String medName;
 
 
 
 }
-////

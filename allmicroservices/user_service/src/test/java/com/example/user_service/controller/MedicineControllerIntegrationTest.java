@@ -36,10 +36,10 @@ class MedicineControllerIntegrationTest {
         MedicinePojo user = new MedicinePojo();
         user.setCurrentCount(2);
         user.setDays("Sun");
-        user.setEndDate("12/03");
+        user.setEndDate(new Date());
         user.setMedicineDes("tablet");
         user.setMedicineName("dolo");
-        user.setStartDate("11/03");
+        user.setStartDate(new Date());
         user.setTime("string");
         user.setTitle("daily");
         user.setStatus(0);
@@ -69,7 +69,7 @@ class MedicineControllerIntegrationTest {
     {
         List<MedicineHistoryDTO> list = new ArrayList<>();
         MedicineHistoryDTO user = new MedicineHistoryDTO();
-        user.setDate(String.valueOf(new Date("23/4/2022")));
+        user.setDate((new Date(2000,11,01)));
         user.setRemId(23553637);
         user.setTaken(new String[]{"23:11"});
         user.setNot_taken(new String[]{"11:05"});

@@ -13,4 +13,3 @@ public interface Medrepo extends JpaRepository<MedicineEntity , Integer> {
 
 
 }
-////

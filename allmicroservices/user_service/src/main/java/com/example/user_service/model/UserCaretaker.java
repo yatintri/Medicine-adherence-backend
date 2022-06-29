@@ -7,6 +7,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -22,9 +25,13 @@ public class UserCaretaker {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @NotNull(message = "Id is mandatory")
+    @NotBlank(message = "Id is mandatory")
     private String cId;
 
     @Column(name = "patient_name")
+    @NotNull(message = "Patient Name is mandatory")
+    @NotBlank(message = "Patient Name is mandatory")
     private String patientName;
 
     @Column(name = "req_status")
@@ -32,18 +39,28 @@ public class UserCaretaker {
     private boolean reqStatus;
 
     @Column(name = "caretaker_id")
+    @NotNull(message = "Caretaker id is mandatory")
+    @NotBlank(message = "Caretaker id is mandatory")
     private String caretakerId;
 
     @Column(name = "patient_id")
+    @NotNull(message = "Patient Id is mandatory")
+    @NotBlank(message = "Patient Id is mandatory")
     private String patientId;
 
     @Column(name = "caretaker_username")
+    @NotNull(message = "Caretaker name is mandatory")
+    @NotBlank(message = "Caretaker name is mandatory")
     private String caretakerUsername;
 
     @Column(name = "created_at")
-    private String createdAt;
+    @NotNull(message = "Created at is mandatory")
+    @NotBlank(message = "Created at is mandatory")
+    private LocalDateTime createdAt;
 
     @Column(name = "sent_by")
+    @NotNull(message = "Sent By is mandatory")
+    @NotBlank(message = "Sent By is mandatory")
     private String sentBy;
 }
 ///

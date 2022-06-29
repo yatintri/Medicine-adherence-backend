@@ -4,24 +4,30 @@ package com.example.user_service.service;
 import com.example.user_service.config.PdfMailSender;
 import com.example.user_service.exception.DataAccessExceptionMessage;
 import com.example.user_service.exception.UserExceptionMessage;
+import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserResponse;
+import com.example.user_service.pojos.response.UserResponsePage;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
 
 import com.example.user_service.util.JwtUtil;
+import com.example.user_service.util.Messages;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -66,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage {
+    public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage ,UserExceptions {
 
         try {
             UserEntity user = getUserByEmail(userEntityDTO.getEmail());
@@ -78,12 +84,14 @@ public class UserServiceImpl implements UserService {
             UserEntity userEntity = mapToEntity(userEntityDTO);
             userEntity.setLastLogin(Datehelper.getcurrentdatatime());
             userEntity.setCreatedAt(Datehelper.getcurrentdatatime());
-            UserEntity ue = userRepository.save(userEntity);
             UserDetails userDetails = new UserDetails();
             userDetails.setFcmToken(fcmToken);
             userDetails.setPicPath(picPath);
-            userDetails.setUser(ue);
-            userDetailsRepository.save(userDetails);
+            userEntity.setUserDetails(userDetails);
+            UserEntity ue = userRepository.save(userEntity);
+
+          //  userDetails.setUser(ue);
+
 
             if (ue.getUserName() == null) {
                 throw new UserExceptionMessage("Error try again!");
@@ -94,18 +102,19 @@ public class UserServiceImpl implements UserService {
 
             return new UserResponse(MSG, "Saved user successfully", new ArrayList<>(Arrays.asList(ue)), jwtToken, refreshToken);
         } catch (DataAccessException dataAccessException) {
+            System.out.println(dataAccessException.getMessage());
             throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
     }
 
     @Override
     @Async
-    public CompletableFuture<List<UserEntity>> getUsers() throws UserExceptionMessage {
-
+    public CompletableFuture<UserResponsePage> getUsers(int page, int limit) throws UserExceptionMessage , UserExceptions{
+        Pageable pageableRequest = PageRequest.of(page, limit);
         try {
-            List<UserEntity> list = userRepository.findAllUsers();
+            Page<UserEntity> list = userRepository.findAllUsers(pageableRequest);
             logger.info(Thread.currentThread().getName());
-            return CompletableFuture.completedFuture(list);
+            return CompletableFuture.completedFuture(new UserResponsePage(Messages.SUCCESS,Messages.DATA_FOUND,list.getTotalElements(), list.getTotalPages(), page,list.get()));
         } catch (DataAccessException dataAccessException) {
             throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
         }
@@ -114,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
 
-    public UserEntity getUserById(String userId) throws UserExceptionMessage {
+    public UserEntity getUserById(String userId) throws UserExceptionMessage, UserExceptions {
         try {
             Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getUserById(userId));
 
@@ -149,7 +158,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getUserByName(String userName) throws UserExceptionMessage, NullPointerException {
+    public List<UserEntity> getUserByName(String userName) throws UserExceptionMessage, NullPointerException, UserExceptions {
 
         try {
             List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
@@ -164,7 +173,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getUserByEmail(String email) throws UserExceptionMessage {
+    public UserEntity getUserByEmail(String email) throws UserExceptionMessage , UserExceptions{
 
         try {
             return userRepository.findByMail(email);
@@ -176,7 +185,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public String sendUserMedicines(Integer medId) throws MessagingException, IOException {
+    public String sendUserMedicines(Integer medId) throws MessagingException, IOException , UserExceptions{
         try {
             Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
             if (userMedicines.isEmpty()) {
@@ -191,7 +200,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse login(String mail, String fcmToken) throws UserExceptionMessage {
+    public UserResponse login(String mail, String fcmToken) throws UserExceptionMessage, UserExceptions {
         try {
             UserEntity user = getUserByEmail(mail);
             UserDetails userDetails = user.getUserDetails();

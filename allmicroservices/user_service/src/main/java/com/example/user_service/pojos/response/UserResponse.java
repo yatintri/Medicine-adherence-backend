@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 public class UserResponse {
 
+
     private String status;
     private String message;
-    private List<UserEntity> userEntity = new ArrayList<>();
+    private List< UserEntity> userEntity = new ArrayList<>();
     private String jwt;
     private String refreshToken;
 }
-///

@@ -1,11 +1,24 @@
 package com.example.user_service.pojos;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class Notificationmessage {
-    //
+
+    @NotNull
+    @NotBlank
     private String fcmToken;
+    @NotNull
+    @NotBlank
     private String message;
+    @NotNull
+    @NotBlank
     private String title;
+    @NotNull
+    @NotBlank
     private String body;
+    @NotNull
+    @NotBlank
     private String imageUrl;
     public String getImageUrl() {
         return imageUrl;

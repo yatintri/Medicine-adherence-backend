@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +22,8 @@ public class MedicineHistory {
     private int historyId;
 
     @Column(name = "med_date")
-    private String date;
+    @NotNull(message = "Date is mandatory")
+    private Date date;
 
     @Column(name = "taken")
     private String taken;

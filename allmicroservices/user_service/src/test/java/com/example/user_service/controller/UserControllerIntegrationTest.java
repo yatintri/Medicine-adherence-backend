@@ -16,6 +16,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -39,8 +41,8 @@ import java.util.List;
         user.setUserId("379dfb3b-4b78-4232-84af-110d406622a6");
         user.setUserName("VSoniBhai");
         user.setEmail("VinaySoniBhai@gmail.com");
-        user.setCreatedAt("23/02");
-        user.setLastLogin("23/02");
+        user.setCreatedAt(LocalDateTime.parse("23/02"));
+        user.setLastLogin(LocalDateTime.parse("23/02"));
         user.setUserDetails(null);
 
         HttpEntity<UserEntity> request = new HttpEntity<>(user);
@@ -74,8 +76,8 @@ import java.util.List;
         user.setUserId("768753");
         user.setUserName("karan");
         user.setEmail("karan@gmail.com");
-        user.setCreatedAt("13/02");
-        user.setLastLogin("03/02");
+        user.setCreatedAt(LocalDateTime.parse("13/02"));
+        user.setLastLogin(LocalDateTime.parse("03/02"));
         user.setUserDetails(null);
 
         HttpEntity<UserEntity> request = new HttpEntity<>(user);

@@ -4,9 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -21,24 +25,36 @@ public class UserMedicines {
     private int medicineId;
 
     @Column(name = "start_date")
-    private String startDate;
+    @NotNull(message = "Start date is mandatory")
+    private Date startDate;
 
     @Column(name = "medicine_name")
+    @NotNull(message = "Medicine name is mandatory")
+    @NotBlank(message = "Medicine name is mandatory")
     private String medicineName;
 
     @Column(name = "medicine_des")
+    @NotNull(message = "Medicine description is mandatory")
+    @NotBlank(message = "Medicine description is mandatory")
     private String medicineDes;
 
     @Column(name = "days")
+    @NotNull(message = "Days is mandatory")
+    @NotBlank(message = "Days is mandatory")
     private String days;
 
     @Column(name = "end_date")
-    private String endDate;
+    @NotNull(message = "End date is mandatory")
+    private Date EndDate;
 
     @Column(name = "time")
+    @NotNull(message = "Time is mandatory")
+    @NotBlank(message = "Time is mandatory")
     private String time;
 
     @Column(name = "title")
+    @NotNull(message = "Title is mandatory")
+    @NotBlank(message = "Title is mandatory")
     private String title;
 
     @Column(name = "total_med_reminders")
@@ -73,4 +89,3 @@ public class UserMedicines {
     private List<Image> images;
 
 }
-////
