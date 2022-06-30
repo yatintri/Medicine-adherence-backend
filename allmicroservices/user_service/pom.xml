@@ -50,13 +50,6 @@
 			<version>2.9.2</version>
 		</dependency>
 
-		<!-- Starter for using Java Mail and Spring Framework's email sending support -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-			<version>2.5.6</version>
-		</dependency>
-
 		<!-- For adding validation to methods and entities -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -116,35 +109,41 @@
 			<version>3.1.0</version>
 		</dependency>
 
-		<!-- provides reusable functions that are essential in processing large volumes of records -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-batch</artifactId>
-		</dependency>
-
 		<!-- Actuator which provides production ready features to help you monitor and manage your application  -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
 
-		</dependency>
-
-
+		<!-- Starter for testing Spring Boot applications with libraries including JUnit Jupiter, Hamcrest and Mockito -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
+		<!-- will allow you to easily convert HTML to PDF -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>html2pdf</artifactId>
 			<version>4.0.2</version>
 		</dependency>
+
+		<!-- open-source database migration tool -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-maven-plugin</artifactId>
+			<version>8.5.13</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>8.5.13</version>
+		</dependency>
+
+
 
 	</dependencies>
 

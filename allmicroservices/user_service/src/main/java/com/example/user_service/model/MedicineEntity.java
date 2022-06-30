@@ -16,13 +16,11 @@ import javax.validation.constraints.NotNull;
 public class MedicineEntity {
 
     @Id
-    @Column(name = "med_id")
+    @Column(name = "med_id",nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      private int medId;
 
-    @Column(name = "med_name")
-    @NotNull(message = "Med name is mandatory")
-    @NotBlank(message = "Med name is mandatory")
+    @Column(name = "med_name",nullable = false,length = 150)
     private String medName;
 
 

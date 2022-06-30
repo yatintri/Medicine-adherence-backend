@@ -18,17 +18,17 @@ import java.util.Date;
 public class MedicineHistory {
 
     @Id
-    @Column(name = "history_id")
+    @Column(name = "history_id",nullable = false)
     private int historyId;
 
-    @Column(name = "med_date")
+    @Column(name = "med_date",nullable = false)
     @NotNull(message = "Date is mandatory")
     private Date date;
 
-    @Column(name = "taken")
+    @Column(name = "taken",nullable = false,length = 50)
     private String taken;
 
-    @Column(name = "not_taken")
+    @Column(name = "not_taken",nullable = false,length = 50)
     private String notTaken;
 
     @ManyToOne()

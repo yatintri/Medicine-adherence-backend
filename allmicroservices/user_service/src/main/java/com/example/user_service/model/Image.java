@@ -19,35 +19,27 @@ import java.util.Date;
 public class Image {
 
     @Id
-    @Column(name = "image_id")
+    @Column(name = "image_id",nullable = false,length = 100)
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @NotNull(message = "ImageId is mandatory")
-    @NotBlank(message = "ImageId is mandatory")
+
     private String imageId;
 
-    @Column(name = "date")
+    @Column(name = "date",nullable = false)
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @NotNull(message = "Date is mandatory")
     private Date date;
 
-    @Column(name = "time")
-    @NotNull(message = "Time is mandatory")
-    @NotBlank(message = "Time is mandatory")
+    @Column(name = "time",nullable = false,length = 50)
     private String time;
 
-    @Column(name = "Caretaker_name")
-    @NotNull(message = "Caretaker name is mandatory")
-    @NotBlank(message = "Caretaker name is mandatory")
+    @Column(name = "Caretaker_name",nullable = false,length = 100)
     private String caretakerName;
 
-    @Column(name = "image_url")
-    @NotNull(message = "ImageUrl is mandatory")
-    @NotBlank(message = "ImageUrl is mandatory")
+    @Column(name = "image_url",nullable = false,length = 150)
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -41,6 +42,7 @@ import java.util.concurrent.ExecutionException;
 
 
 @RestController
+@Validated
 @RequestMapping(path = "/api/v1")
 public class UserController {
 

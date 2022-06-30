@@ -19,48 +19,33 @@ import java.time.LocalDateTime;
 public class UserCaretaker {
 
     @Id
-    @Column(name = "c_id")
+    @Column(name = "c_id",nullable = false,length = 100)
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @NotNull(message = "Id is mandatory")
-    @NotBlank(message = "Id is mandatory")
     private String cId;
 
-    @Column(name = "patient_name")
-    @NotNull(message = "Patient Name is mandatory")
-    @NotBlank(message = "Patient Name is mandatory")
+    @Column(name = "patient_name",nullable = false,length = 100)
     private String patientName;
 
-    @Column(name = "req_status")
+    @Column(name = "req_status",nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean reqStatus;
 
-    @Column(name = "caretaker_id")
-    @NotNull(message = "Caretaker id is mandatory")
-    @NotBlank(message = "Caretaker id is mandatory")
+    @Column(name = "caretaker_id",nullable = false,length = 100)
     private String caretakerId;
 
-    @Column(name = "patient_id")
-    @NotNull(message = "Patient Id is mandatory")
-    @NotBlank(message = "Patient Id is mandatory")
+    @Column(name = "patient_id",nullable = false,length = 100)
     private String patientId;
 
-    @Column(name = "caretaker_username")
-    @NotNull(message = "Caretaker name is mandatory")
-    @NotBlank(message = "Caretaker name is mandatory")
+    @Column(name = "caretaker_username",nullable = false,length = 100)
     private String caretakerUsername;
 
-    @Column(name = "created_at")
-    @NotNull(message = "Created at is mandatory")
-    @NotBlank(message = "Created at is mandatory")
+    @Column(name = "created_at",nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "sent_by")
-    @NotNull(message = "Sent By is mandatory")
-    @NotBlank(message = "Sent By is mandatory")
+    @Column(name = "sent_by",nullable = false,length = 100)
     private String sentBy;
 }
-///

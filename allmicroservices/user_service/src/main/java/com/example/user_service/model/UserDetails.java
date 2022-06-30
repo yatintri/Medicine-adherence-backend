@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @ToString(exclude = "")
 public class UserDetails {
     @Id
-    @Column(name = "userdet_id")
+    @Column(name = "userdet_id",nullable = false,length = 100)
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
@@ -29,17 +29,17 @@ public class UserDetails {
     )
     private String userDetId;
 
-    @Column(name = "bio",columnDefinition = "String(250) default ''")
+    @Column(name = "bio",columnDefinition = "String(250) default ''",length = 100)
     private String bio;
 
-    @Column(name = "pic_path")
+    @Column(name = "pic_path",nullable = false,length = 100)
     @NotBlank(message = "PicPath is mandatory")
     private String picPath;
 
     @Column(name = "age", columnDefinition = "int default 0")
     private int age;
 
-    @Column(name = "fcm_token")
+    @Column(name = "fcm_token",nullable = false,length = 200)
     private String fcmToken;
 
     @Column(name = "pincode",columnDefinition = "int default 0")
@@ -60,10 +60,10 @@ public class UserDetails {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "blood_group",columnDefinition = "String(250) default ''")
+    @Column(name = "blood_group",columnDefinition = "String(250) default ''",length = 50)
     private String bloodGroup;
 
-    @Column(name = "martial_status",columnDefinition = "String(250) default ''")
+    @Column(name = "martial_status",columnDefinition = "String(250) default ''",length = 50)
     private String martialStatus;
 
     @Column(name = "weight", columnDefinition = "int default 0")

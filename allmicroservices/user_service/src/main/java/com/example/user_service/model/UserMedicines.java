@@ -21,46 +21,34 @@ import java.util.List;
 public class UserMedicines {
 
     @Id
-    @Column(name = "medicine_id")
+    @Column(name = "medicine_id",nullable = false)
     private int medicineId;
 
-    @Column(name = "start_date")
-    @NotNull(message = "Start date is mandatory")
+    @Column(name = "start_date",nullable = false)
     private Date startDate;
 
-    @Column(name = "medicine_name")
-    @NotNull(message = "Medicine name is mandatory")
-    @NotBlank(message = "Medicine name is mandatory")
+    @Column(name = "medicine_name",nullable = false,length = 150)
     private String medicineName;
 
-    @Column(name = "medicine_des")
-    @NotNull(message = "Medicine description is mandatory")
-    @NotBlank(message = "Medicine description is mandatory")
+    @Column(name = "medicine_des",nullable = false,length = 150)
     private String medicineDes;
 
-    @Column(name = "days")
-    @NotNull(message = "Days is mandatory")
-    @NotBlank(message = "Days is mandatory")
+    @Column(name = "days",nullable = false,length = 200)
     private String days;
 
-    @Column(name = "end_date")
-    @NotNull(message = "End date is mandatory")
+    @Column(name = "end_date",nullable = false)
     private Date EndDate;
 
-    @Column(name = "time")
-    @NotNull(message = "Time is mandatory")
-    @NotBlank(message = "Time is mandatory")
+    @Column(name = "time",nullable = false,length = 200)
     private String time;
 
-    @Column(name = "title")
-    @NotNull(message = "Title is mandatory")
-    @NotBlank(message = "Title is mandatory")
+    @Column(name = "title",nullable = false,length = 150)
     private String title;
 
-    @Column(name = "total_med_reminders")
+    @Column(name = "total_med_reminders",nullable = false)
     private int totalMedReminders;
 
-    @Column(name = "current_count")
+    @Column(name = "current_count",nullable = false)
     private int currentCount;
 
 
