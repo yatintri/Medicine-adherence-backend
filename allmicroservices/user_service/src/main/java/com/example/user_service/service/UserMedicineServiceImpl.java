@@ -13,6 +13,7 @@ import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserMedHistoryRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
+import com.example.user_service.util.Messages;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,6 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Autowired
     UserRepository userRepository;
 
-    public static final String ERROR = "Please enter valid id";
     @Autowired
     UserMedicineRepository userMedicineRepository;
 
@@ -50,9 +50,6 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     Logger logger = LoggerFactory.getLogger(UserMedicineServiceImpl.class);
 
-    private static final String errorMsg = "SQL error!";
-
-
     @Override
     @Async
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId,int page,int limit) throws UserMedicineException, UserExceptionMessage, UserExceptions {
@@ -64,13 +61,14 @@ public class UserMedicineServiceImpl implements UserMedicineService {
         try {
             UserEntity user = userRepository.getUserById(userId);
             if (user == null) {
-                throw new UserExceptionMessage(ERROR);
+                throw new UserExceptionMessage(Messages.PROVIDE_VALID_ID);
             }
             List<UserMedicines> list = user.getUserMedicines().subList(0,2);
 
             return CompletableFuture.completedFuture(list);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
 
     }
@@ -81,7 +79,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
         try {
             UserEntity user = userRepository.getUserById(userId);
             if (user.getUserMedicines().isEmpty()) {
-                throw new UserMedicineException("Unable to sync");
+                throw new UserMedicineException(Messages.UNABLE_TO_SYNC);
             }
             for (UserMedicines userMedicines : list) {
 
@@ -91,7 +89,8 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
             return false;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -102,7 +101,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
         try {
             UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
             if (userMedicines == null) {
-                throw new UserMedicineException("Unable to sync");
+                throw new UserMedicineException(Messages.UNABLE_TO_SYNC);
 
             }
 
@@ -119,7 +118,8 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
             return null;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -133,14 +133,15 @@ public class UserMedicineServiceImpl implements UserMedicineService {
         try {
             List<MedicineHistory> medicineHistories = userMedicineRepository.getMedById(medId).getMedicineHistories().subList(0,2);
             if (medicineHistories.isEmpty()) {
-                throw new UserMedicineException("No record found!!");
+                throw new UserMedicineException(Messages.MSG);
             }
             return new MedicineResponse("OK", "Medicine History",medicineHistories);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
         catch (NullPointerException exception){
-            throw new UserMedicineException("No medicine found");
+            throw new UserMedicineException(Messages.NO_MEDICINE_FOUND);
         }
     }
 
@@ -159,10 +160,9 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                     .collect(Collectors.toList()));
 
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
-
 }
-//

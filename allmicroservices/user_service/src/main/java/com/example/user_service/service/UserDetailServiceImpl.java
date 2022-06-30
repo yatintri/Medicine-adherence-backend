@@ -8,6 +8,7 @@ import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.dto.UserDetailsDTO;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
+import com.example.user_service.util.Messages;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         try {
             Optional<UserEntity> user = Optional.ofNullable(userRepository.getUserById(id));
             if (user.isEmpty()) {
-                throw new UserExceptionMessage("User not found");
+                throw new UserExceptionMessage(Messages.USER_NOT_FOUND);
             }
             UserDetails userDetails1 = user.get().getUserDetails();
 
@@ -50,7 +51,8 @@ public class UserDetailServiceImpl implements UserDetailService {
             userDetails1.setUserContact(userDetailsDTO.getUserContact());
             return userDetailsRepository.save(userDetails1);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage("SQL error!" + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG+ dataAccessException.getMessage());
         }
 
 

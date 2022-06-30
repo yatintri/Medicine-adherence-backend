@@ -18,9 +18,16 @@ public class Messages {
     public static final String SYNC  = "Synced successfully";
     public static final String MEDICINE_NOT_FOUND = "Medicine not found";
     public static final String SAVE_DETAILS = "Saved user details";
+    public static final String SAVED_USER = "Saved user successfully";
+
     public static final String VALIDATION = "Please provide valid inputs";
     public static final String ALREADY_PRESENT = "Caretaker already present";
-
+    public static final String USER_PRESENT = "User already present";
+    public static final String USER_NOT_FOUND = "User not found";
+    public static final String PROVIDE_VALID_ID = "Please provide valid id";
+    public static final String UNABLE_TO_SYNC = "Unable to sync";
+    public static final String NO_MEDICINE_FOUND = "No medicine found";
+    public static final String ERROR = "Error try again";
 
 }
 

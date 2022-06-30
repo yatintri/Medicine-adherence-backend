@@ -68,9 +68,6 @@ public class CareTakerServiceImpl implements CareTakerService {
 
     Logger logger =  LoggerFactory.getLogger(CareTakerServiceImpl.class);
 
-    private static final String MSG = "Data not found";
-    private static final String errorMsg = "SQL error!";
-
     @Override
     public CaretakerResponse saveCareTaker(@Valid UserCaretakerDTO userCaretakerDTO, BindingResult bindingResult) throws UserCaretakerException , UserExceptions {
 
@@ -86,8 +83,8 @@ public class CareTakerServiceImpl implements CareTakerService {
                 return new CaretakerResponse(Messages.SUCCESS,Messages.REQ_SENT_SUCCESS,userCaretakerRepository.save(userCaretaker));
             }
         } catch (DataAccessException dataAccessException) {
-            logger.error(errorMsg);
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -101,8 +98,8 @@ public class CareTakerServiceImpl implements CareTakerService {
             uc.get().setReqStatus(true);
             return new CaretakerResponse(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretakerRepository.save(uc.get()));
         } catch (DataAccessException dataAccessException) {
-            logger.error(errorMsg);
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -113,12 +110,12 @@ public class CareTakerServiceImpl implements CareTakerService {
         try {
             Page<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientsUnderMe(userId,pageableRequest);
             if (userCaretaker.isEmpty()) {
-                throw new UserCaretakerException(MSG);
+                throw new UserCaretakerException(Messages.MSG);
             }
             return new CaretakerResponsePage(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretaker.getTotalElements(), userCaretaker.getTotalPages(), page,userCaretaker.get());
         } catch (DataAccessException dataAccessException) {
-            logger.error(errorMsg);
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -129,12 +126,12 @@ public class CareTakerServiceImpl implements CareTakerService {
         try {
            Page<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientRequests(userId,pageableRequest);
             if (userCaretaker.isEmpty()) {
-                throw new UserCaretakerException(MSG);
+                throw new UserCaretakerException(Messages.MSG);
             }
             return new CaretakerResponsePage(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretaker.getTotalElements(), userCaretaker.getTotalPages(), page,userCaretaker.get());
         } catch (DataAccessException dataAccessException) {
-            logger.error(errorMsg);
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -147,12 +144,12 @@ public class CareTakerServiceImpl implements CareTakerService {
         try {
             Page<UserCaretaker> userCaretaker = userCaretakerRepository.getMyCaretakers(userId,pageableRequest);
             if (userCaretaker.isEmpty()) {
-                throw new UserCaretakerException(MSG);
+                throw new UserCaretakerException(Messages.MSG);
             }
             return new CaretakerResponsePage(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretaker.getTotalElements(), userCaretaker.getTotalPages(), page,userCaretaker.get());
         } catch (DataAccessException dataAccessException) {
-            logger.error(errorMsg);
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -162,8 +159,8 @@ public class CareTakerServiceImpl implements CareTakerService {
             //return userCaretakerRepository.getCaretakerRequestStatus(userId);
             return new CaretakerResponse1(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretakerRepository.getCaretakerRequestStatus(userId));
         } catch (DataAccessException dataAccessException) {
-            logger.error(errorMsg);
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -176,12 +173,12 @@ public class CareTakerServiceImpl implements CareTakerService {
         try {
             Page<UserCaretaker> userCaretaker = userCaretakerRepository.getCaretakerRequestsP(userId,pageableRequest);
             if (userCaretaker.isEmpty()) {
-                throw new UserCaretakerException(MSG);
+                throw new UserCaretakerException(Messages.MSG);
             }
             return new CaretakerResponsePage(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretaker.getTotalElements(), userCaretaker.getTotalPages(), page,userCaretaker.get());
         } catch (DataAccessException dataAccessException) {
-            logger.error(errorMsg);
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 

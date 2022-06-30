@@ -28,11 +28,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.MessagingException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -58,8 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMedicineRepository userMedicineRepository;
-    private static final String MSG = "Success";
-    private static final String MSG2 = "failed";
+
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
@@ -67,17 +67,13 @@ public class UserServiceImpl implements UserService {
 
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private static final String errorMsg = "SQL error!";
-    private static final String exception = "Data not found";
-
-
     @Override
     public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage ,UserExceptions {
 
         try {
             UserEntity user = getUserByEmail(userEntityDTO.getEmail());
             if (user != null) {
-                return new UserResponse(MSG2, "User is already present", new ArrayList<>(Arrays.asList(user)), "", "");
+                return new UserResponse(Messages.FAILED, Messages.USER_PRESENT, new ArrayList<>(Arrays.asList(user)), "", "");
             }
 
             logger.info(Thread.currentThread().getName());
@@ -94,16 +90,16 @@ public class UserServiceImpl implements UserService {
 
 
             if (ue.getUserName() == null) {
-                throw new UserExceptionMessage("Error try again!");
+                throw new UserExceptionMessage(Messages.ERROR);
 
             }
             String jwtToken = jwtUtil.generateToken(ue.getUserName());
             String refreshToken = passwordEncoder.encode(ue.getUserId());
 
-            return new UserResponse(MSG, "Saved user successfully", new ArrayList<>(Arrays.asList(ue)), jwtToken, refreshToken);
+            return new UserResponse(Messages.SUCCESS, Messages.SAVED_USER, new ArrayList<>(Arrays.asList(ue)), jwtToken, refreshToken);
         } catch (DataAccessException dataAccessException) {
-            System.out.println(dataAccessException.getMessage());
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -116,7 +112,8 @@ public class UserServiceImpl implements UserService {
             logger.info(Thread.currentThread().getName());
             return CompletableFuture.completedFuture(new UserResponsePage(Messages.SUCCESS,Messages.DATA_FOUND,list.getTotalElements(), list.getTotalPages(), page,list.get()));
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -129,12 +126,13 @@ public class UserServiceImpl implements UserService {
 
             logger.info(Thread.currentThread().getName());
             if (optionalUserEntity.isEmpty()) {
-                throw new UserExceptionMessage(exception);
+                throw new UserExceptionMessage(Messages.MSG);
             }
 
             return optionalUserEntity.get();
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -153,7 +151,8 @@ public class UserServiceImpl implements UserService {
 
             return userRepository.save(userDB);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -163,11 +162,12 @@ public class UserServiceImpl implements UserService {
         try {
             List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
             if (userEntity.isEmpty()) {
-                throw new UserExceptionMessage(exception);
+                throw new UserExceptionMessage(Messages.MSG);
             }
             return userEntity;
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
 
     }
@@ -178,7 +178,8 @@ public class UserServiceImpl implements UserService {
         try {
             return userRepository.findByMail(email);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
 
     }
@@ -189,13 +190,14 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
             if (userMedicines.isEmpty()) {
-                return "Failed";
+                return Messages.FAILED;
             }
             UserEntity entity = userMedicines.get().getUserEntity();
             List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
             return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
@@ -210,15 +212,16 @@ public class UserServiceImpl implements UserService {
             if (user != null) {
                 String jwtToken = jwtUtil.generateToken(user.getUserName());
                 String refreshToken = passwordEncoder.encode(user.getUserId());
-                return new UserResponse(MSG, "Success", new ArrayList<>(Arrays.asList(user)), jwtToken, refreshToken);
+                return new UserResponse(Messages.SUCCESS, Messages.SUCCESS, new ArrayList<>(Arrays.asList(user)), jwtToken, refreshToken);
             }
-            throw new UserExceptionMessage(exception);
+            throw new UserExceptionMessage(Messages.MSG);
 
         } catch (DataAccessException dataAccessException) {
-            throw new DataAccessExceptionMessage(errorMsg + dataAccessException.getMessage());
+            logger.error(Messages.SQL_ERROR_MSG);
+            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
         catch (NullPointerException e){
-            throw new UserExceptionMessage(exception);
+            throw new UserExceptionMessage(Messages.MSG);
 
         }
 
