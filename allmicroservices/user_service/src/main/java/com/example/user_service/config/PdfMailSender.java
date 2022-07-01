@@ -8,7 +8,6 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
@@ -19,11 +18,6 @@ import java.util.UUID;
 
 @Component
 public class PdfMailSender {
-
-    @Autowired
-    private JavaMailSender javaMailSender;
-    Logger logger = LoggerFactory.getLogger(PdfMailSender.class);
-
 
     public String send(UserEntity userEntity, UserMedicines userMedicines
             , List<MedicineHistory> medicineHistoryList) {

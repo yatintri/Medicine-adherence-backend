@@ -129,21 +129,12 @@
 			<version>4.0.2</version>
 		</dependency>
 
-		<!-- open-source database migration tool -->
+		<!-- HikariCP is a reliable, high-performance JDBC connection pool -->
 		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-maven-plugin</artifactId>
-			<version>8.5.13</version>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>5.0.1</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
-			<version>8.5.13</version>
-		</dependency>
-
-
 
 	</dependencies>
 

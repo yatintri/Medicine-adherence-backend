@@ -6,12 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends PagingAndSortingRepository<UserEntity, Integer> {
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query("select u from UserEntity u where lower(u.userName) like lower(concat(?1,'%'))")
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userDetail_graph")

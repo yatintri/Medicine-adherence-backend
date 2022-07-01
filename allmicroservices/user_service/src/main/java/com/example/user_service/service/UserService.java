@@ -7,8 +7,8 @@ import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserResponse;
 import com.example.user_service.pojos.response.UserResponsePage;
+import org.springframework.messaging.MessagingException;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
