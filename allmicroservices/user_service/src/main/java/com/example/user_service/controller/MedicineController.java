@@ -1,7 +1,6 @@
 package com.example.user_service.controller;
 
 
-import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.model.*;
@@ -11,15 +10,12 @@ import com.example.user_service.pojos.dto.MedicinePojo;
 import com.example.user_service.pojos.response.*;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
-import com.example.user_service.service.CareTakerService;
 import com.example.user_service.service.UserMedicineService;
-import com.example.user_service.service.UserService;
 import com.example.user_service.util.Messages;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +52,7 @@ public class MedicineController {
 
 
     // save caretaker for a patients
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/medicines/sync", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<SyncResponse> syncData(@NotBlank @NotNull @RequestParam("userId") String userId, @Valid @RequestBody List<MedicinePojo> medicinePojo, BindingResult bindingResult)
             throws UserMedicineException , UserExceptions {
@@ -96,7 +93,7 @@ public class MedicineController {
         }
 
     }
-
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/medicine-history/sync", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<SyncResponse> syncMedicineHistory(@NotNull @NotBlank @RequestParam(name = "medId") Integer medId,
                                                  @Valid @RequestBody List<MedicineHistoryDTO> medicineHistory,BindingResult bindingResult) throws UserMedicineException , UserExceptions{
@@ -112,7 +109,7 @@ public class MedicineController {
         }
 
     }
-
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/medicine-histories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MedicineResponse> getMedicineHistories(@NotBlank @NotNull @RequestParam(name = "medId") Integer medId,
                                                                      @RequestParam(value = "page", defaultValue = "0") int page,
@@ -125,7 +122,7 @@ public class MedicineController {
 
 
     }
-
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/medicine-images", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImageListResponse> getMedicineImages(@NotBlank @NotNull @RequestParam(name = "medId") Integer medId, @RequestParam(value = "page", defaultValue = "0") int page,
                                                                         @RequestParam(value = "limit", defaultValue = "30") int limit, BindingResult bindingResult) throws UserExceptions{

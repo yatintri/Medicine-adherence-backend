@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @Data
@@ -17,5 +18,5 @@ public class UserResponsePage {
     private long totalItems;
     private int totalPage;
     private int currentPage;
-    private Stream<UserEntity> userEntityStream;
+    private List<UserEntity> userEntityStream;
 }

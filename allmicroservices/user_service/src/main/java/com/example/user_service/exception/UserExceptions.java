@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.validation.ConstraintViolationException;
+
 
 /**
  * This class is used to send error response
@@ -39,7 +41,12 @@ public class UserExceptions extends Throwable {
         return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 
     }
+    @ExceptionHandler({ConstraintViolationException.class})
+    public ResponseEntity<CaretakerResponse> SendImageException(ConstraintViolationException uce, WebRequest webRequest) {
+        CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getMessage(), null);
+        return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 
+    }
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<CaretakerResponse> getcaretakernotvalidexception(MethodArgumentNotValidException uce, WebRequest webRequest) {
         CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getFieldError().getDefaultMessage(), null);

@@ -35,9 +35,12 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     @Override
     public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO) throws UserExceptionMessage, UserExceptions {
+
+        logger.info("Save user details");
         try {
             Optional<UserEntity> user = Optional.ofNullable(userRepository.getUserById(id));
             if (user.isEmpty()) {
+                logger.error("Save user details: User not found");
                 throw new UserExceptionMessage(Messages.USER_NOT_FOUND);
             }
             UserDetails userDetails1 = user.get().getUserDetails();

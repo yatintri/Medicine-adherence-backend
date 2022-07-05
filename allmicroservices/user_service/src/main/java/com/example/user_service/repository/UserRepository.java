@@ -26,4 +26,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "userDetail_graph")
     Page<UserEntity> findAllUsers(Pageable pageable);
 
-}////
+}

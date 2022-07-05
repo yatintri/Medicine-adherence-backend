@@ -8,7 +8,6 @@ import com.example.user_service.model.*;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
 import com.example.user_service.pojos.response.ImageListResponse;
 import com.example.user_service.pojos.response.MedicineResponse;
-import com.example.user_service.pojos.response.MedicineResponsePage;
 import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserMedHistoryRepository;
 import com.example.user_service.repository.UserMedicineRepository;
@@ -19,9 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -54,13 +50,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Async
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId,int page,int limit) throws UserMedicineException, UserExceptionMessage, UserExceptions {
 
-//        Pageable pageableRequest = PageRequest.of(page, limit);
-//        Page<UserMedicines> users = userMedicineRepository.findAll(pageableRequest);
-//        List<UserMedicines> userEntities = users.getContent();
+        logger.info("Get all user medicines ");
 
         try {
             UserEntity user = userRepository.getUserById(userId);
             if (user == null) {
+                logger.error("Get user medicines: Provide valid id");
                 throw new UserExceptionMessage(Messages.PROVIDE_VALID_ID);
             }
             List<UserMedicines> list = user.getUserMedicines().subList(0,2);
@@ -76,9 +71,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     @Override
     public boolean syncData(String userId, List<UserMedicines> list) throws UserMedicineException, UserExceptions {
+
+        logger.info("Sync Data ");
         try {
             UserEntity user = userRepository.getUserById(userId);
             if (user.getUserMedicines().isEmpty()) {
+                logger.error("Sync data:Unable to sync");
                 throw new UserMedicineException(Messages.UNABLE_TO_SYNC);
             }
             for (UserMedicines userMedicines : list) {
@@ -98,9 +96,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
 
     public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS) throws UserMedicineException, UserExceptions {
+
+        logger.info("Sync medicine history ");
         try {
             UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
             if (userMedicines == null) {
+                logger.error("Sync medicine History: Unable to sync");
                 throw new UserMedicineException(Messages.UNABLE_TO_SYNC);
 
             }
@@ -126,13 +127,11 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
     public MedicineResponse getMedicineHistory(Integer medId, int page, int limit) throws UserMedicineException, UserExceptions {
 
-        Pageable pageableRequest = PageRequest.of(page, limit);
-        Page<UserMedicines> users = userMedicineRepository.findAll(pageableRequest);
-        List<UserMedicines> userEntities = users.getContent();
-
+        logger.info("Get medicine history ");
         try {
             List<MedicineHistory> medicineHistories = userMedicineRepository.getMedById(medId).getMedicineHistories().subList(0,2);
             if (medicineHistories.isEmpty()) {
+                logger.error("Get Medicine history: Data not found");
                 throw new UserMedicineException(Messages.MSG);
             }
             return new MedicineResponse("OK", "Medicine History",medicineHistories);
@@ -141,6 +140,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
             throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
         catch (NullPointerException exception){
+            logger.error(Messages.NO_MEDICINE_FOUND);
             throw new UserMedicineException(Messages.NO_MEDICINE_FOUND);
         }
     }
@@ -148,10 +148,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
     public ImageListResponse getUserMedicineImages(Integer medId, int page, int limit)throws UserExceptions {
 
-        Pageable pageableRequest = PageRequest.of(page, limit);
-        Page<UserMedicines> users = userMedicineRepository.findAll(pageableRequest);
-        List<UserMedicines> userEntities = users.getContent();
-
+        logger.info("Get user medicine images");
         try {
             return new ImageListResponse("","",userMedicineRepository.getMedById(medId)
                     .getImages()

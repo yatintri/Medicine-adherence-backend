@@ -40,7 +40,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,6 +70,7 @@ public class CareTakerServiceImpl implements CareTakerService {
     @Override
     public CaretakerResponse saveCareTaker(@Valid UserCaretakerDTO userCaretakerDTO, BindingResult bindingResult) throws UserCaretakerException , UserExceptions {
 
+        logger.info("Save Caretaker");
         if(bindingResult.hasErrors()){
             return new CaretakerResponse() ;
         }
@@ -78,59 +78,64 @@ public class CareTakerServiceImpl implements CareTakerService {
             UserCaretaker userCaretaker = mapToEntity(userCaretakerDTO);
             userCaretaker.setCreatedAt(Datehelper.getcurrentdatatime());
             if (userCaretakerRepository.check(userCaretaker.getPatientId(), userCaretaker.getCaretakerId()) != null) {
+                logger.error("Save Caretaker: Caretaker already present");
                 throw new UserCaretakerException(Messages.ALREADY_PRESENT);
             } else {
                 return new CaretakerResponse(Messages.SUCCESS,Messages.REQ_SENT_SUCCESS,userCaretakerRepository.save(userCaretaker));
             }
         } catch (DataAccessException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
+            logger.error("Caretaker :" + Messages.SQL_ERROR_MSG);
             throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
     @Override
     public CaretakerResponse updateCaretakerStatus(String cId,BindingResult bindingResult) throws UserCaretakerException, UserExceptions {
+        logger.info("Update request status");
         try {
             Optional<UserCaretaker> uc = userCaretakerRepository.findById(cId);
             if (uc.isEmpty()) {
+                logger.error("Update Caretaker Status: Data not found");
                 throw new UserCaretakerException(Messages.MSG);
             }
             uc.get().setReqStatus(true);
             return new CaretakerResponse(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretakerRepository.save(uc.get()));
         } catch (DataAccessException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
+            logger.error("Update Status" + Messages.SQL_ERROR_MSG);
             throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
     @Override
     public CaretakerResponsePage getPatientsUnderMe(String userId, int page, int limit) throws UserCaretakerException , UserExceptions{
-
+        logger.info("Get my patients");
         Pageable pageableRequest = PageRequest.of(page, limit);
         try {
             Page<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientsUnderMe(userId,pageableRequest);
             if (userCaretaker.isEmpty()) {
+                logger.error("Get my patients: Data not found");
                 throw new UserCaretakerException(Messages.MSG);
             }
             return new CaretakerResponsePage(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretaker.getTotalElements(), userCaretaker.getTotalPages(), page,userCaretaker.get());
         } catch (DataAccessException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
+            logger.error("Get patients" +Messages.SQL_ERROR_MSG);
             throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
     @Override
     public CaretakerResponsePage getPatientRequests(String userId,int page,int limit) throws UserCaretakerException , UserExceptions{
-
+        logger.info("Get patients ");
         Pageable pageableRequest = PageRequest.of(page, limit);
         try {
            Page<UserCaretaker> userCaretaker = userCaretakerRepository.getPatientRequests(userId,pageableRequest);
             if (userCaretaker.isEmpty()) {
+                logger.error("Get Patients Request: Data not found");
                 throw new UserCaretakerException(Messages.MSG);
             }
             return new CaretakerResponsePage(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretaker.getTotalElements(), userCaretaker.getTotalPages(), page,userCaretaker.get());
         } catch (DataAccessException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
+            logger.error("Get patients requests" +Messages.SQL_ERROR_MSG);
             throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
@@ -138,28 +143,29 @@ public class CareTakerServiceImpl implements CareTakerService {
     @Override
     public CaretakerResponsePage getMyCaretakers(String userId,int page, int limit) throws UserCaretakerException , UserExceptions{
 
+        logger.info("Get my caretakers ");
         Pageable pageableRequest = PageRequest.of(page, limit);
-        List<UserCaretaker> userEntities = userCaretakerRepository.findAll(pageableRequest).getContent();
 
         try {
             Page<UserCaretaker> userCaretaker = userCaretakerRepository.getMyCaretakers(userId,pageableRequest);
             if (userCaretaker.isEmpty()) {
+                logger.error("Get Caretakers: Data not found");
                 throw new UserCaretakerException(Messages.MSG);
             }
             return new CaretakerResponsePage(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretaker.getTotalElements(), userCaretaker.getTotalPages(), page,userCaretaker.get());
         } catch (DataAccessException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
+            logger.error("Get caretakers" +Messages.SQL_ERROR_MSG);
             throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
 
     @Override
     public CaretakerResponse1 getCaretakerRequestStatus(String userId) {
+        logger.info("Get caretaker request status ");
         try {
-            //return userCaretakerRepository.getCaretakerRequestStatus(userId);
             return new CaretakerResponse1(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretakerRepository.getCaretakerRequestStatus(userId));
         } catch (DataAccessException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
+            logger.error("Get caretaker request status" +Messages.SQL_ERROR_MSG);
             throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
@@ -173,11 +179,12 @@ public class CareTakerServiceImpl implements CareTakerService {
         try {
             Page<UserCaretaker> userCaretaker = userCaretakerRepository.getCaretakerRequestsP(userId,pageableRequest);
             if (userCaretaker.isEmpty()) {
+                logger.error("Get Caretaker Requests for patient: Data not found");
                 throw new UserCaretakerException(Messages.MSG);
             }
             return new CaretakerResponsePage(Messages.SUCCESS,Messages.STATUS_UPDATED,userCaretaker.getTotalElements(), userCaretaker.getTotalPages(), page,userCaretaker.get());
         } catch (DataAccessException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
+            logger.error("Get caretaker request for patients"+ Messages.SQL_ERROR_MSG);
             throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG + dataAccessException.getMessage());
         }
     }
@@ -185,7 +192,7 @@ public class CareTakerServiceImpl implements CareTakerService {
     @Override
     public String delPatientReq(String cId) throws UserExceptionMessage, UserCaretakerException , UserExceptions{
 
-
+        logger.info("Delete patient request ");
         try {
             Optional<UserCaretaker> userCaretaker = userCaretakerRepository.findById(cId);
             if (userCaretaker.isPresent()) {
@@ -193,9 +200,10 @@ public class CareTakerServiceImpl implements CareTakerService {
                 return "Success";
 
             }
+            logger.error("Delete Request: Data not found");
             throw new UserCaretakerException(Messages.MSG);
         } catch (Exception e) {
-            logger.error(Messages.MSG);
+            logger.error("Delete patient request "+ Messages.MSG);
             throw new UserCaretakerException(Messages.MSG);
         }
     }
@@ -203,6 +211,7 @@ public class CareTakerServiceImpl implements CareTakerService {
     @Override
     public SendImageResponse sendImageToCaretaker(MultipartFile multipartFile, String filename, String caretakerid, String medName, Integer medId) throws IOException, UserCaretakerException , UserExceptions{
 
+        logger.info("Send image to caretaker");
         try {
             File file = new File(System.getProperty("user.dir") + "/src/main/upload/static/images");
             if (!file.exists()) {

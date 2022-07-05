@@ -1,5 +1,6 @@
 package com.example.user_service.pojos.dto;
 
+import com.example.user_service.validators.ImageValidator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 public class SendImageDto {
 
     @NotNull(message = "Image is mandatory")
+    @ImageValidator
     private MultipartFile image;
 
     @NotBlank(message = "Name is mandatory")
@@ -28,7 +30,6 @@ public class SendImageDto {
     @NotNull(message = "Id is mandatory")
     private String id; //caretaker id
 
-    @NotBlank(message = "MedId is mandatory")
     @NotNull(message = "MedId is mandatory")
     private Integer medId;
 }

@@ -12,7 +12,6 @@ import com.example.user_service.pojos.dto.UserEntityDTO;
 import com.example.user_service.pojos.response.UserProfileResponse;
 import com.example.user_service.pojos.response.UserResponse;
 import com.example.user_service.pojos.response.UserResponsePage;
-import com.example.user_service.service.CareTakerService;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
@@ -24,7 +23,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.MessagingException;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 
@@ -74,6 +74,7 @@ public class UserController {
     private String topicExchange;
 
     // saving the user when they signup
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<UserResponse> saveUser(@NotNull @NotBlank @RequestParam(name = "fcmToken") String fcmToken,@NotNull @NotBlank
                                                 @RequestParam(name = "picPath") String picPath,
@@ -84,6 +85,8 @@ public class UserController {
 
     }
 
+
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/refreshToken",produces =  MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<String> refreshToken(@NotNull @NotBlank @RequestParam(name = "uid") String uid,
                                                HttpServletRequest httpServletRequest, BindingResult bindingResult)
@@ -100,6 +103,8 @@ public class UserController {
 
     }
 
+
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginDTO loginDTO,BindingResult bindingResult) throws UserExceptionMessage, UserExceptions {
 
@@ -113,6 +118,7 @@ public class UserController {
 
 
     // fetching all the users along with details
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 
     public ResponseEntity<UserResponsePage> getUsers(@RequestParam(value = "page") int page,
@@ -124,6 +130,8 @@ public class UserController {
     }
 
     // fetching user by id
+
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserProfileResponse> getUserById(@NotNull @NotBlank @RequestParam("userId") String userId,BindingResult bindingResult)
             throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException, UserExceptions {
@@ -141,6 +149,8 @@ public class UserController {
     }
 
     // fetching the user with email if not present then sending to that email address
+
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/email", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<? extends Object> getUserByEmail(@NotNull @NotBlank @RequestParam("email") String email
             , @RequestParam("sender") String sender)
@@ -159,6 +169,8 @@ public class UserController {
 
 
     @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional(timeout = 10)
+    @Retryable(maxAttempts = 3)// retrying up to 3 times
     public ResponseEntity<UserResponse> sendPdf(@NotNull @NotBlank @RequestParam(name = "medId") Integer medId,BindingResult bindingResult)
             throws IOException, MessagingException, UserExceptionMessage, UserExceptions {
 
