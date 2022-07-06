@@ -2,6 +2,7 @@ package com.example.user_service.util;
 
 public class Messages {
 
+    private Messages(){}
     public static final String MSG = "Data not found";
     public static final String DATA_FOUND = "Data Found";
     public static final String REQ_SENT_SUCCESS = "Request sent successfully";

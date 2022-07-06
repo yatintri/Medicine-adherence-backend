@@ -111,7 +111,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                 medicineHistory1.setHistoryId(medHid.getRemId());
                 medicineHistory1.setDate(medHid.getDate());
                 medicineHistory1.setTaken(String.join(",", medHid.getTaken()));
-                medicineHistory1.setNotTaken(String.join(",", medHid.getNot_taken()));
+                medicineHistory1.setNotTaken(String.join(",", medHid.getNotTaken()));
                 medicineHistory1.setUserMedicines(userMedicines);
                 return medicineHistory1;
             }).collect(Collectors.toList());

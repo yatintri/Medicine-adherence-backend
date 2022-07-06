@@ -2,7 +2,6 @@ package com.example.user_service.repository;
 
 import com.example.user_service.model.UserMedicines;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

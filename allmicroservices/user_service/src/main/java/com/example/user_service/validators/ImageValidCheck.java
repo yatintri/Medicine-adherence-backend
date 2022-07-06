@@ -19,7 +19,7 @@ public class ImageValidCheck implements ConstraintValidator<ImageValidator, Mult
             return false;
         }
         String file = value.getContentType();
-        if(!(file.equals("image/jpg")|| file.equals("image/png")|| file.equals("image/jpeg"))){
+        if(! (file!=null && !(file.equals("image/png")|| file.equals("image/jpeg")))){
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("Only png,jpg,or jpeg files are allowed").addConstraintViolation();
             return false;

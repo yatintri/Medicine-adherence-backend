@@ -96,7 +96,6 @@ public class UserController {
             return new ResponseEntity<>(Messages.VALIDATION,HttpStatus.BAD_REQUEST);
         }
 
-        String token = httpServletRequest.getHeader("Authorization").substring(7);
         String jwtToken = jwtUtil.generateToken(userService.getUserById(uid).getUserName());
 
         return new ResponseEntity<>(jwtToken, HttpStatus.CREATED);
@@ -168,7 +167,7 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.ALL_VALUE)
     @Transactional(timeout = 10)
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     public ResponseEntity<UserResponse> sendPdf(@NotNull @NotBlank @RequestParam(name = "medId") Integer medId,BindingResult bindingResult)

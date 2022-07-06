@@ -9,7 +9,6 @@ import com.example.user_service.pojos.dto.SendImageDto;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
 import com.example.user_service.pojos.response.*;
 import com.example.user_service.service.CareTakerService;
-import com.example.user_service.service.UserService;
 import com.example.user_service.util.Messages;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,6 @@ public class CaretakerController {
 
     private final CareTakerService careTakerService;
 
-    private final UserService userService;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -48,9 +46,8 @@ public class CaretakerController {
     @Value("${project.rabbitmq.routingkey2}")
     private String routingKey2;
 
-    public CaretakerController(CareTakerService careTakerService, UserService userService){
+    public CaretakerController(CareTakerService careTakerService){
         this.careTakerService = careTakerService;
-        this.userService = userService;
     }
 
     // save caretaker for a patients
@@ -158,7 +155,7 @@ public class CaretakerController {
 
     }
     @Retryable(maxAttempts = 3)// retrying up to 3 times
-    @PostMapping(value = "/image",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/image",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.ALL_VALUE)
     @Transactional(timeout = 10)
     public ResponseEntity<SendImageResponse> sendImageToCaretaker(@Valid @ModelAttribute SendImageDto sendImageDto,BindingResult bindingResult)
             throws IOException, UserCaretakerException , UserExceptions{

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Objects;
 
 
 /**
@@ -49,7 +50,7 @@ public class UserExceptions extends Throwable {
     }
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<CaretakerResponse> getcaretakernotvalidexception(MethodArgumentNotValidException uce, WebRequest webRequest) {
-        CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getFieldError().getDefaultMessage(), null);
+        CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, Objects.requireNonNull(uce.getFieldError()).getDefaultMessage(), null);
         return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 
     }

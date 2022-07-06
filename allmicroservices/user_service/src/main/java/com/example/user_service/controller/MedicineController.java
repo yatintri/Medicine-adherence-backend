@@ -58,7 +58,7 @@ public class MedicineController {
             throws UserMedicineException , UserExceptions {
 
         if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION,bindingResult.getFieldError().getDefaultMessage()),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()),HttpStatus.BAD_REQUEST);
         }
 
         try {
@@ -98,7 +98,7 @@ public class MedicineController {
     public ResponseEntity<SyncResponse> syncMedicineHistory(@NotNull @NotBlank @RequestParam(name = "medId") Integer medId,
                                                  @Valid @RequestBody List<MedicineHistoryDTO> medicineHistory,BindingResult bindingResult) throws UserMedicineException , UserExceptions{
         if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION,bindingResult.getFieldError().getDefaultMessage()),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()),HttpStatus.BAD_REQUEST);
         }
         try {
 

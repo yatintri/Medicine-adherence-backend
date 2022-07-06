@@ -3,12 +3,10 @@ package com.example.user_service.service;
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.model.Image;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
 import com.example.user_service.pojos.response.ImageListResponse;
 import com.example.user_service.pojos.response.MedicineResponse;
-import com.example.user_service.pojos.response.MedicineResponsePage;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

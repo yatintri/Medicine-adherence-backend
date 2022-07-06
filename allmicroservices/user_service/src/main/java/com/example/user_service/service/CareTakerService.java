@@ -3,7 +3,6 @@ package com.example.user_service.service;
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
-import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
 import com.example.user_service.pojos.response.CaretakerResponse;
 import com.example.user_service.pojos.response.CaretakerResponse1;
@@ -13,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface CareTakerService {
 

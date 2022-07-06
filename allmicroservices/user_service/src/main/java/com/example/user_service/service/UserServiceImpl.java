@@ -55,9 +55,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final PdfMailSender pdfMailSender;
 
-//    @Autowired
-//    private final UserMedicineService userMedicineService;
-
     @Autowired
     UserMedicineRepository userMedicineRepository;
 

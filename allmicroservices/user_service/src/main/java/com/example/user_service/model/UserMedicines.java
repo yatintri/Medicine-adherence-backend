@@ -4,12 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +33,7 @@ public class UserMedicines {
     private String days;
 
     @Column(name = "end_date",nullable = false)
-    private Date EndDate;
+    private Date endDate;
 
     @Column(name = "time",nullable = false,length = 200)
     private String time;
