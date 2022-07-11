@@ -9,11 +9,11 @@ import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.MailInfo;
 import com.example.user_service.pojos.dto.LoginDTO;
 import com.example.user_service.pojos.dto.UserEntityDTO;
-import com.example.user_service.pojos.response.UserProfileResponse;
-import com.example.user_service.pojos.response.UserResponse;
-import com.example.user_service.pojos.response.UserResponsePage;
-import com.example.user_service.service.UserMedicineService;
-import com.example.user_service.service.UserService;
+import com.example.user_service.pojos.response.user.UserProfileResponse;
+import com.example.user_service.pojos.response.user.UserResponse;
+import com.example.user_service.pojos.response.user.UserResponsePage;
+import com.example.user_service.service.usermedicine.UserMedicineService;
+import com.example.user_service.service.user.UserService;
 import com.example.user_service.util.JwtUtil;
 import com.example.user_service.util.Messages;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -53,7 +53,7 @@ public class UserController {
 
     UserMedicineService userMedicineService;
 
-    @Autowired
+
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
@@ -62,9 +62,10 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, UserMedicineService userMedicineService){
+    public UserController(UserService userService, UserMedicineService userMedicineService, RabbitTemplate rabbitTemplate){
         this.userMedicineService = userMedicineService;
         this.userService = userService;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Value("${project.rabbitmq.routingkey}")
@@ -132,12 +133,9 @@ public class UserController {
 
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserProfileResponse> getUserById(@NotNull @NotBlank @RequestParam("userId") String userId,BindingResult bindingResult)
+    public ResponseEntity<UserProfileResponse> getUserById(@NotNull @NotBlank @RequestParam("userId") String userId)
             throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException, UserExceptions {
 
-        if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(new UserProfileResponse(Messages.VALIDATION,null,null),HttpStatus.BAD_REQUEST);
-        }
         List<UserEntity> user = Arrays.asList(userService.getUserById(userId));
         List<UserMedicines> list = user.get(0).getUserMedicines();
 
@@ -151,7 +149,7 @@ public class UserController {
 
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/email", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<? extends Object> getUserByEmail(@NotNull @NotBlank @RequestParam("email") String email
+    public ResponseEntity<Object> getUserByEmail(@NotNull @NotBlank @RequestParam("email") String email
             , @RequestParam("sender") String sender)
             throws UserExceptionMessage, UserExceptions {
 
@@ -170,12 +168,9 @@ public class UserController {
     @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.ALL_VALUE)
     @Transactional(timeout = 10)
     @Retryable(maxAttempts = 3)// retrying up to 3 times
-    public ResponseEntity<UserResponse> sendPdf(@NotNull @NotBlank @RequestParam(name = "medId") Integer medId,BindingResult bindingResult)
+    public ResponseEntity<UserResponse> sendPdf(@NotNull @NotBlank @RequestParam(name = "medId") Integer medId)
             throws IOException, MessagingException, UserExceptionMessage, UserExceptions {
 
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new UserResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),null,null,""),HttpStatus.BAD_REQUEST);
-        }
        if(userService.sendUserMedicines(medId).equals(Messages.FAILED)){
            throw new UserExceptionMessage(Messages.MEDICINE_NOT_FOUND);
        }

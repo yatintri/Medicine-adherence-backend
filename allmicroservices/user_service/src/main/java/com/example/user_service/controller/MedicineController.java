@@ -3,14 +3,15 @@ package com.example.user_service.controller;
 
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.model.*;
 import com.example.user_service.pojos.dto.MedicineHistoryDTO;
 
 import com.example.user_service.pojos.dto.MedicinePojo;
-import com.example.user_service.pojos.response.*;
+import com.example.user_service.pojos.response.image.ImageListResponse;
+import com.example.user_service.pojos.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.response.medicine.SyncResponse;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
-import com.example.user_service.service.UserMedicineService;
+import com.example.user_service.service.usermedicine.UserMedicineService;
 import com.example.user_service.util.Messages;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +27,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @Validated
@@ -61,36 +61,7 @@ public class MedicineController {
             return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()),HttpStatus.BAD_REQUEST);
         }
 
-        try {
-            UserEntity userEntity = userRepository.getUserById(userId);
-
-            List<UserMedicines> userMedicinesList = medicinePojo.stream().map(medicinePojo1 -> {
-                        UserMedicines userMedicines = new UserMedicines();
-
-                        userMedicines.setMedicineDes(medicinePojo1.getMedicineDes());
-                        userMedicines.setMedicineName(medicinePojo1.getMedicineName());
-                        userMedicines.setDays(medicinePojo1.getDays());
-                        userMedicines.setMedicineId(medicinePojo1.getUserId());
-                        userMedicines.setEndDate(medicinePojo1.getEndDate());
-                        userMedicines.setTitle(medicinePojo1.getTitle());
-                        userMedicines.setCurrentCount(medicinePojo1.getCurrentCount());
-                        userMedicines.setTotalMedReminders(medicinePojo1.getTotalMedReminders());
-                        userMedicines.setStartDate(medicinePojo1.getStartDate());
-                        userMedicines.setTime(medicinePojo1.getTime());
-                        userMedicines.setUserEntity(userEntity);
-
-                        return userMedicines;
-                    })
-                    .collect(Collectors.toList());
-
-            userMedicineRepository.saveAll(userMedicinesList);
-            return new ResponseEntity<>(new SyncResponse(Messages.SUCCESS, Messages.SYNC), HttpStatus.OK);
-        }
-        catch (Exception exception){
-            exception.printStackTrace();
-            throw new UserMedicineException("Sync failed");
-
-        }
+        return new ResponseEntity<>(userMedicineService.syncData(userId,medicinePojo),HttpStatus.OK);
 
     }
     @Retryable(maxAttempts = 3)// retrying up to 3 times
@@ -112,11 +83,8 @@ public class MedicineController {
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/medicine-histories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MedicineResponse> getMedicineHistories(@NotBlank @NotNull @RequestParam(name = "medId") Integer medId,
-                                                                     @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                     @RequestParam(value = "limit", defaultValue = "30") int limit, BindingResult bindingResult) throws UserMedicineException, UserExceptions {
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new MedicineResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),null),HttpStatus.BAD_REQUEST);
-        }
+                                                                 @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                 @RequestParam(value = "limit", defaultValue = "30") int limit) throws UserMedicineException, UserExceptions {
 
      return new ResponseEntity<>(userMedicineService.getMedicineHistory(medId,page,limit),HttpStatus.OK);
 
@@ -125,11 +93,9 @@ public class MedicineController {
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/medicine-images", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImageListResponse> getMedicineImages(@NotBlank @NotNull @RequestParam(name = "medId") Integer medId, @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                        @RequestParam(value = "limit", defaultValue = "30") int limit, BindingResult bindingResult) throws UserExceptions{
+                                                               @RequestParam(value = "limit", defaultValue = "30") int limit) throws UserExceptions, UserMedicineException {
 
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new ImageListResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),null),HttpStatus.BAD_REQUEST);
-        }
+
         return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medId,page,limit),HttpStatus.OK);
 
 

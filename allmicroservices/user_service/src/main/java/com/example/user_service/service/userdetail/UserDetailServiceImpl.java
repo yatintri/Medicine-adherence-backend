@@ -1,6 +1,5 @@
-package com.example.user_service.service;
+package com.example.user_service.service.userdetail;
 
-import com.example.user_service.exception.DataAccessExceptionMessage;
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserDetails;
@@ -9,6 +8,7 @@ import com.example.user_service.pojos.dto.UserDetailsDTO;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Messages;
+import org.hibernate.exception.JDBCConnectionException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +22,20 @@ import java.util.Optional;
 public class UserDetailServiceImpl implements UserDetailService {
 
     @Autowired
-    private UserDetailsRepository userDetailsRepository;
+    private final UserDetailsRepository userDetailsRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private ModelMapper mapper;
 
     Logger logger = LoggerFactory.getLogger(UserDetailServiceImpl.class);
+
+    public UserDetailServiceImpl(UserDetailsRepository userDetailsRepository, UserRepository userRepository) {
+        this.userDetailsRepository = userDetailsRepository;
+        this.userRepository = userRepository;
+    }
 
 
     @Override
@@ -52,10 +57,11 @@ public class UserDetailServiceImpl implements UserDetailService {
             userDetails1.setWeight(userDetailsDTO.getWeight());
             userDetails1.setMartialStatus(userDetailsDTO.getMartialStatus());
             userDetails1.setUserContact(userDetailsDTO.getUserContact());
-            return userDetailsRepository.save(userDetails1);
-        } catch (DataAccessException dataAccessException) {
+            userDetailsRepository.save(userDetails1);
+            return userDetails1;
+        } catch (DataAccessException | JDBCConnectionException dataAccessException) {
             logger.error(Messages.SQL_ERROR_MSG);
-            throw new DataAccessExceptionMessage(Messages.SQL_ERROR_MSG+ dataAccessException.getMessage());
+            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
         }
 
 

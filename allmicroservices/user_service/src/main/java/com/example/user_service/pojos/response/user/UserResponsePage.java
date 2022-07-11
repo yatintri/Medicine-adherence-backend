@@ -1,21 +1,21 @@
-package com.example.user_service.pojos.response;
+package com.example.user_service.pojos.response.user;
 
-import com.example.user_service.model.MedicineHistory;
+import com.example.user_service.model.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MedicineResponsePage {
+public class UserResponsePage {
 
     private String status;
     private String message;
     private long totalItems;
     private int totalPage;
     private int currentPage;
-    private Stream<MedicineHistory> userMedicinesList;
+    private List<UserEntity> userEntityStream;
 }

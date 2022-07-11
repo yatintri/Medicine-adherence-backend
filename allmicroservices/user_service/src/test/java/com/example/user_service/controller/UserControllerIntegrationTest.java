@@ -2,7 +2,7 @@
 //
 //import com.example.user_service.model.UserDetails;
 //import com.example.user_service.model.UserEntity;
-//import com.example.user_service.pojos.response.UserResponse;
+//import com.example.user_service.pojos.response.user.UserResponse;
 //import org.json.JSONException;
 //import org.junit.jupiter.api.Assertions;
 //import org.junit.jupiter.api.Test;

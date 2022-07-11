@@ -1,4 +1,4 @@
-package com.example.user_service.pojos.response;
+package com.example.user_service.pojos.response.user;
 
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;

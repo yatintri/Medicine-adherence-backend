@@ -6,8 +6,8 @@ import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.pojos.dto.UserDetailsDTO;
-import com.example.user_service.pojos.response.UserDetailResponse;
-import com.example.user_service.service.UserDetailService;
+import com.example.user_service.pojos.response.user.UserDetailResponse;
+import com.example.user_service.service.userdetail.UserDetailService;
 import com.example.user_service.util.Messages;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +32,7 @@ public class UserDetailController {
     private final UserDetailService userDetailService;
 
     public UserDetailController(UserDetailService userDetailService){
+
         this.userDetailService = userDetailService;
     }
 

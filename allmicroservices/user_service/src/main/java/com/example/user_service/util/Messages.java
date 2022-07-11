@@ -2,6 +2,8 @@ package com.example.user_service.util;
 
 public class Messages {
 
+    public static final String NO_RECORD_FOUND = "No Record found";
+
     private Messages(){}
     public static final String MSG = "Data not found";
     public static final String DATA_FOUND = "Data Found";

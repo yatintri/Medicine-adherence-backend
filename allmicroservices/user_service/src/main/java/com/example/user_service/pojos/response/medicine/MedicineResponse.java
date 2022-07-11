@@ -1,4 +1,4 @@
-package com.example.user_service.pojos.response;
+package com.example.user_service.pojos.response.medicine;
 
 
 import com.example.user_service.model.MedicineHistory;

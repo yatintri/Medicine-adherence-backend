@@ -1,20 +1,19 @@
-package com.example.user_service.pojos.response;
+package com.example.user_service.pojos.response.caretaker;
+
 
 import com.example.user_service.model.UserCaretaker;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CaretakerResponse {
+public class CaretakerResponse1 {
 
     private String status;
-
     private String message;
-
-    private UserCaretaker userCaretaker;
+    private List<UserCaretaker> userCaretakerList;
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -29,9 +30,7 @@ public class UserCaretakerDTO {
     @NotNull(message = "Caretaker Name is mandatory")
     private String caretakerUsername;
 
-    @NotBlank(message = "Created At is mandatory")
-    @NotNull(message = "Created At is mandatory")
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @NotBlank(message = "Sent by is mandatory")
     @NotNull(message = "Sent by is mandatory")

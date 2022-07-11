@@ -1,9 +1,9 @@
 package com.example.user_service.exception;
 
-import com.example.user_service.pojos.response.CaretakerResponse;
-import com.example.user_service.pojos.response.MedicineResponse;
-import com.example.user_service.pojos.response.SqlErrorResponse;
-import com.example.user_service.pojos.response.UserResponse;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.response.sql.SqlErrorResponse;
+import com.example.user_service.pojos.response.user.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,7 +43,7 @@ public class UserExceptions extends Throwable {
 
     }
     @ExceptionHandler({ConstraintViolationException.class})
-    public ResponseEntity<CaretakerResponse> SendImageException(ConstraintViolationException uce, WebRequest webRequest) {
+    public ResponseEntity<CaretakerResponse> imageException(ConstraintViolationException uce, WebRequest webRequest) {
         CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getMessage(), null);
         return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 

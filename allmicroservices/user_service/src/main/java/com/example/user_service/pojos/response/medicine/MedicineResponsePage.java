@@ -1,6 +1,6 @@
-package com.example.user_service.pojos.response;
+package com.example.user_service.pojos.response.medicine;
 
-import com.example.user_service.model.UserCaretaker;
+import com.example.user_service.model.MedicineHistory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,12 +10,12 @@ import java.util.stream.Stream;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CaretakerResponsePage {
+public class MedicineResponsePage {
 
     private String status;
     private String message;
     private long totalItems;
     private int totalPage;
     private int currentPage;
-    private Stream<UserCaretaker> userCaretakerStream;
+    private Stream<MedicineHistory> userMedicinesList;
 }

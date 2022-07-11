@@ -24,15 +24,19 @@
 			**/com/example/user_service/batch/*,
 			**/com/example/user_service/config/*,
 			**/com/example/user_service/config/filter/*,
-			**/com/example/user_service/controller/*,
 			**/com/example/user_service/exception/*,
 			**/com/example/user_service/model/*,
 			**/com/example/user_service/model/user/*,
 			**/com/example/user_service/pojos/*,
 			**/com/example/user_service/pojos/dto/*,
+			**/com/example/user_service/pojos/authentication/*,
 			**/com/example/user_service/pojos/dto/user/*,
 			**/com/example/user_service/pojos/response/*,
 			**/com/example/user_service/pojos/response/user/*,
+			**/com/example/user_service/pojos/response/caretaker/*,
+			**/com/example/user_service/pojos/response/image/*,
+			**/com/example/user_service/pojos/response/medicine/*,
+			**/com/example/user_service/pojos/response/sql/*,
 			**/com/example/user_service/repository/*,
 			**/com/example/user_service/security/*,
 			**/com/example/user_service/util/*,
@@ -132,6 +136,24 @@
 			<artifactId>modelmapper</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-parameter-names</artifactId>
+		</dependency>
+
+		<!--	Java 8 Date/time	-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
+		<!--	Java 8 Datatypes	-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+		</dependency>
+
 
 		<!-- Actuator which provides production ready features to help you monitor and manage your application  -->
 		<dependency>
@@ -234,32 +256,32 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.13</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<repository>medicine-adherence-backend/docker_image</repository>
-					<tag>${project.version}</tag>
-				</configuration>
-				<dependencies>
-					<!-- To make this work on JDK 9+ -->
-					<dependency>
-						<groupId>javax.activation</groupId>
-						<artifactId>javax.activation-api</artifactId>
-						<version>1.2.0</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>com.spotify</groupId>-->
+<!--				<artifactId>dockerfile-maven-plugin</artifactId>-->
+<!--				<version>1.4.13</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>default</id>-->
+<!--						<goals>-->
+<!--							<goal>build</goal>-->
+<!--							<goal>push</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--				<configuration>-->
+<!--					<repository>medicine-adherence-backend/docker_image</repository>-->
+<!--					<tag>${project.version}</tag>-->
+<!--				</configuration>-->
+<!--				<dependencies>-->
+<!--					&lt;!&ndash; To make this work on JDK 9+ &ndash;&gt;-->
+<!--					<dependency>-->
+<!--						<groupId>javax.activation</groupId>-->
+<!--						<artifactId>javax.activation-api</artifactId>-->
+<!--						<version>1.2.0</version>-->
+<!--					</dependency>-->
+<!--				</dependencies>-->
+<!--			</plugin>-->
 
 			<plugin>
 				<groupId>org.jacoco</groupId>

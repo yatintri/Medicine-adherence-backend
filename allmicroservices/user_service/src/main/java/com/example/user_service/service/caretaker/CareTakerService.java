@@ -1,23 +1,24 @@
-package com.example.user_service.service;
+package com.example.user_service.service.caretaker;
 
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
-import com.example.user_service.pojos.response.CaretakerResponse;
-import com.example.user_service.pojos.response.CaretakerResponse1;
-import com.example.user_service.pojos.response.CaretakerResponsePage;
-import com.example.user_service.pojos.response.SendImageResponse;
-import org.springframework.validation.BindingResult;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse1;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponsePage;
+import com.example.user_service.pojos.response.image.SendImageResponse;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 public interface CareTakerService {
 
-     CaretakerResponse saveCareTaker(UserCaretakerDTO userCaretakerDTO, BindingResult bindingResult) throws UserCaretakerException, UserExceptions;
 
-     CaretakerResponse updateCaretakerStatus(String cId,BindingResult bindingResult) throws UserCaretakerException, UserExceptions;
+    CaretakerResponse saveCareTaker(@Valid UserCaretakerDTO userCaretakerDTO) throws UserCaretakerException, UserExceptions, UserExceptionMessage;
+
+    CaretakerResponse updateCaretakerStatus(String cId) throws UserCaretakerException, UserExceptions;
 
      CaretakerResponsePage getPatientsUnderMe(String userId, int page, int limit)throws UserCaretakerException, UserExceptions;
 
@@ -25,11 +26,11 @@ public interface CareTakerService {
 
      CaretakerResponsePage getMyCaretakers(String userId, int page, int limit) throws UserCaretakerException, UserExceptions;
 
-     CaretakerResponse1 getCaretakerRequestStatus(String userId);
+     CaretakerResponse1 getCaretakerRequestStatus(String userId) throws UserCaretakerException;
 
      CaretakerResponsePage getCaretakerRequestsP(String userId, int page, int limit) throws UserCaretakerException, UserExceptions;
 
      String delPatientReq(String cId) throws UserExceptionMessage, UserCaretakerException, UserExceptions;
 
-    SendImageResponse sendImageToCaretaker(MultipartFile multipartFile , String filename , String caretakerId , String medName, Integer medId) throws IOException , UserCaretakerException, UserExceptions;
+    SendImageResponse sendImageToCaretaker(MultipartFile multipartFile , String filename , String medName, String caretakerId , Integer medId) throws IOException , UserCaretakerException, UserExceptions;
 }

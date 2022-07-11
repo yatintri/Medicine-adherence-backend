@@ -7,11 +7,13 @@ import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.SendImageDto;
 import com.example.user_service.pojos.dto.UserCaretakerDTO;
-import com.example.user_service.pojos.response.*;
-import com.example.user_service.service.CareTakerService;
+import com.example.user_service.pojos.response.caretaker.CaretakerDelete;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponsePage;
+import com.example.user_service.pojos.response.image.SendImageResponse;
+import com.example.user_service.service.caretaker.CareTakerService;
 import com.example.user_service.util.Messages;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,7 +39,7 @@ public class CaretakerController {
     private final CareTakerService careTakerService;
 
 
-    @Autowired
+
     RabbitTemplate rabbitTemplate;
 
     @Value("${project.rabbitmq.exchange}")
@@ -46,19 +48,20 @@ public class CaretakerController {
     @Value("${project.rabbitmq.routingkey2}")
     private String routingKey2;
 
-    public CaretakerController(CareTakerService careTakerService){
+    public CaretakerController(CareTakerService careTakerService,RabbitTemplate rabbitTemplate){
+
         this.careTakerService = careTakerService;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     // save caretaker for a patients
     @Retryable(maxAttempts = 3)// retrying up to 3 times
-    @PostMapping(value = "/request", produces = MediaType.APPLICATION_JSON_VALUE,consumes = "application/json")
-
-    public ResponseEntity<CaretakerResponse> saveCaretaker(@Valid @RequestBody UserCaretakerDTO userCaretakerDTO, BindingResult bindingResult) throws UserCaretakerException , UserExceptions {
+    @PostMapping(value = "/request", produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CaretakerResponse> saveCaretaker(@Valid @RequestBody UserCaretakerDTO userCaretakerDTO, BindingResult bindingResult) throws UserCaretakerException, UserExceptions, UserExceptionMessage {
         if(bindingResult.hasErrors()){
           return  new ResponseEntity<>(new CaretakerResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),null),HttpStatus.BAD_REQUEST);
         }
-        CaretakerResponse userCaretaker = careTakerService.saveCareTaker(userCaretakerDTO,bindingResult);
+        CaretakerResponse userCaretaker = careTakerService.saveCareTaker(userCaretakerDTO);
         return new ResponseEntity<>(userCaretaker, HttpStatus.OK);
 
     }
@@ -66,12 +69,10 @@ public class CaretakerController {
     // update request status if request is accepted or rejected
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PutMapping(value = "/accept",produces = MediaType.APPLICATION_JSON_VALUE,consumes = "application/json")
-    public ResponseEntity<CaretakerResponse> updateCaretakerStatus(@NotNull @NotBlank @RequestParam(name = "cId") String cId,BindingResult bindingResult)
+    public ResponseEntity<CaretakerResponse> updateCaretakerStatus(@NotNull @NotBlank @RequestParam(name = "cId") String cId)
             throws UserCaretakerException, UserExceptions {
-        if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(new CaretakerResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),null),HttpStatus.BAD_REQUEST);
-        }
-        CaretakerResponse userCaretaker = careTakerService.updateCaretakerStatus(cId,bindingResult);
+
+        CaretakerResponse userCaretaker = careTakerService.updateCaretakerStatus(cId);
 
         return new ResponseEntity<>(userCaretaker, HttpStatus.OK);
 
@@ -82,12 +83,10 @@ public class CaretakerController {
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/patients",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponsePage> getPatientsUnderMe(@NotBlank @NotNull @RequestParam(name = "caretakerId") String userId,
-                                                                 @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                 @RequestParam(value = "limit", defaultValue = "30") int limit,BindingResult bindingResult)
+                                                                    @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                    @RequestParam(value = "limit", defaultValue = "30") int limit)
             throws UserCaretakerException , UserExceptions{
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new CaretakerResponsePage(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),0,0,0,null),HttpStatus.BAD_REQUEST);
-        }
+
         CaretakerResponsePage userCaretakerList = careTakerService.getPatientsUnderMe(userId,page,limit);
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
     }
@@ -96,12 +95,9 @@ public class CaretakerController {
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/patient/requests",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponsePage> getPatientRequestsC(@NotNull @NotBlank @RequestParam(name = "caretakerId") String userId,
-                                                                  @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                  @RequestParam(value = "limit", defaultValue = "30") int limit,BindingResult bindingResult)
+                                                                  @RequestParam(value = "page") int page,
+                                                                  @RequestParam(value = "limit") int limit)
                                                                   throws UserCaretakerException, UserExceptions {
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new CaretakerResponsePage(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),0,0,0,null),HttpStatus.BAD_REQUEST);
-        }
         CaretakerResponsePage userCaretakerList = careTakerService.getPatientRequests(userId,page,limit);
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
 
@@ -111,11 +107,9 @@ public class CaretakerController {
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/caretakers",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponsePage> getMyCaretakers(@NotBlank @NotNull @RequestParam(name = "patientId") String userId,
-                                                              @RequestParam(value = "page", defaultValue = "0") int page,
-                                                              @RequestParam(value = "limit", defaultValue = "30") int limit,BindingResult bindingResult) throws UserCaretakerException , UserExceptions{
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new CaretakerResponsePage(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),0,0,0,null),HttpStatus.BAD_REQUEST);
-        }
+                                                              @RequestParam(value = "page") int page,
+                                                              @RequestParam(value = "limit") int limit) throws UserCaretakerException , UserExceptions{
+
         CaretakerResponsePage userCaretakerList = careTakerService.getMyCaretakers(userId,page,limit);
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
     }
@@ -125,22 +119,18 @@ public class CaretakerController {
     @GetMapping(value = "/caretaker/requests",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponsePage> getCaretakerRequestsP(@NotNull @NotBlank @RequestParam(name = "patientId") String userId,
                                                                     @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                    @RequestParam(value = "limit", defaultValue = "30") int limit,BindingResult bindingResult) throws UserCaretakerException , UserExceptions{
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity<>(new CaretakerResponsePage(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage(),0,0,0,null),HttpStatus.BAD_REQUEST);
-        }
+                                                                    @RequestParam(value = "limit", defaultValue = "30") int limit) throws UserCaretakerException , UserExceptions{
+
         CaretakerResponsePage userCaretakerList = careTakerService.getCaretakerRequestsP(userId,page,limit);
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
 
     }
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/delete",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CaretakerDelete> delPatientReq(@NotBlank @NotNull @RequestParam(name = "cId") String cId,BindingResult bindingResult)
+    public ResponseEntity<CaretakerDelete> delPatientReq(@NotBlank @NotNull @RequestParam(name = "cId") String cId)
             throws UserExceptionMessage, UserCaretakerException, UserExceptions {
 
-        if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(new CaretakerDelete(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()),HttpStatus.BAD_REQUEST);
-        }
+
         String delPatientStatus = careTakerService.delPatientReq(cId);
         CaretakerDelete caretakerDelete = new CaretakerDelete(delPatientStatus, Messages.DELETED_SUCCESS);
         return new ResponseEntity<>(caretakerDelete, HttpStatus.OK);
@@ -157,12 +147,9 @@ public class CaretakerController {
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/image",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.ALL_VALUE)
     @Transactional(timeout = 10)
-    public ResponseEntity<SendImageResponse> sendImageToCaretaker(@Valid @ModelAttribute SendImageDto sendImageDto,BindingResult bindingResult)
+    public ResponseEntity<SendImageResponse> sendImageToCaretaker(@Valid @ModelAttribute SendImageDto sendImageDto, BindingResult bindingResult)
             throws IOException, UserCaretakerException , UserExceptions{
 
-        if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(new SendImageResponse(Messages.VALIDATION, Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage()),HttpStatus.BAD_REQUEST);
-        }
 
         SendImageResponse sendImageResponse = careTakerService.sendImageToCaretaker(sendImageDto.getImage(),sendImageDto.getName(),sendImageDto.getMedName(),sendImageDto.getId(),sendImageDto.getMedId());
             return new ResponseEntity<>(sendImageResponse,HttpStatus.OK);

@@ -1,132 +1,59 @@
-2022-07-06 15:16:27,969 INFO com.example.user_service.UserServiceApplication [main] Started UserServiceApplication in 4.718 seconds (JVM running for 5.398)
-2022-07-06 15:17:06,511 INFO com.example.user_service.service.CareTakerServiceImpl [http-nio-8080-exec-3] Send image to caretaker
-2022-07-06 15:28:49,170 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 15:28:49,173 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 15:43:03,571 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 15:43:03,574 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 15:47:17,814 INFO com.example.user_service.service.UserServiceImpl [main] Get user by name
-2022-07-06 15:47:57,772 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 15:52:34,459 INFO com.example.user_service.service.UserServiceImpl [main] Send user medicines 
-2022-07-06 15:58:02,160 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 15:58:02,175 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 15:58:02,175 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 15:58:02,177 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 15:59:24,930 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 15:59:24,941 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 15:59:24,941 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:14:20,320 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:14:28,754 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 16:14:49,440 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:15:03,251 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:15:18,855 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 16:15:32,124 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:16:28,393 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:16:28,407 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 16:16:28,407 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:16:28,409 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 16:16:39,615 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:16:42,108 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 16:16:42,110 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:16:42,168 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 16:16:55,381 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:17:01,525 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 16:17:02,444 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 16:17:09,831 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:01:03,109 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:01:03,139 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:01:03,139 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:01:03,171 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:01:03,175 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:01:03,181 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:01:03,181 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:01:03,181 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:01:03,197 INFO com.example.user_service.service.UserServiceImpl [main] Get users
-2022-07-06 18:01:03,197 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:01:03,202 INFO com.example.user_service.service.UserServiceImpl [main] Get user by name
-2022-07-06 18:01:03,219 INFO com.example.user_service.service.UserServiceImpl [main] Send user medicines 
-2022-07-06 18:01:03,224 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 18:01:03,224 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:04:10,465 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:10,501 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:04:10,501 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:10,533 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:10,536 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:10,541 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:04:10,541 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:10,542 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:04:10,555 INFO com.example.user_service.service.UserServiceImpl [main] Get users
-2022-07-06 18:04:10,556 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:04:10,559 INFO com.example.user_service.service.UserServiceImpl [main] Get user by name
-2022-07-06 18:04:10,570 INFO com.example.user_service.service.UserServiceImpl [main] Send user medicines 
-2022-07-06 18:04:10,573 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 18:04:10,574 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:04:45,851 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:45,896 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:04:45,896 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:45,935 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:45,939 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:45,944 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:04:45,944 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:04:45,944 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:04:45,960 INFO com.example.user_service.service.UserServiceImpl [main] Get users
-2022-07-06 18:04:45,961 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:04:45,964 INFO com.example.user_service.service.UserServiceImpl [main] Get user by name
-2022-07-06 18:04:45,977 INFO com.example.user_service.service.UserServiceImpl [main] Send user medicines 
-2022-07-06 18:04:45,982 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 18:04:45,982 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:05:44,122 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:05:44,158 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:05:44,158 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:05:44,190 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:05:44,194 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:05:44,200 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:05:44,200 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:05:44,200 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:05:44,218 INFO com.example.user_service.service.UserServiceImpl [main] Get users
-2022-07-06 18:05:44,219 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:05:44,224 INFO com.example.user_service.service.UserServiceImpl [main] Get user by name
-2022-07-06 18:05:44,241 INFO com.example.user_service.service.UserServiceImpl [main] Send user medicines 
-2022-07-06 18:05:44,246 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 18:05:44,247 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:24:20,198 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:24:20,231 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:24:20,231 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:24:20,258 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:24:20,262 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:24:20,266 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:24:20,266 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:24:20,267 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:24:20,282 INFO com.example.user_service.service.UserServiceImpl [main] Get users
-2022-07-06 18:24:20,282 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:24:20,285 INFO com.example.user_service.service.UserServiceImpl [main] Get user by name
-2022-07-06 18:24:20,296 INFO com.example.user_service.service.UserServiceImpl [main] Send user medicines 
-2022-07-06 18:24:20,299 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 18:24:20,300 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:32:41,687 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:32:41,723 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:32:41,723 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:32:41,754 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:32:41,757 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:32:41,762 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:32:41,763 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:32:41,763 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:32:41,778 INFO com.example.user_service.service.UserServiceImpl [main] Get users
-2022-07-06 18:32:41,779 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:32:41,782 INFO com.example.user_service.service.UserServiceImpl [main] Get user by name
-2022-07-06 18:32:41,794 INFO com.example.user_service.service.UserServiceImpl [main] Send user medicines 
-2022-07-06 18:32:41,797 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 18:32:41,798 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:40:38,833 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:40:38,869 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:40:38,870 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:40:38,903 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:40:38,909 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:40:38,915 INFO com.example.user_service.service.UserServiceImpl [main] Save user 
-2022-07-06 18:40:38,916 INFO com.example.user_service.service.UserServiceImpl [main] Get user by email
-2022-07-06 18:40:38,916 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:40:38,930 INFO com.example.user_service.service.UserServiceImpl [main] Get users
-2022-07-06 18:40:38,930 INFO com.example.user_service.service.UserServiceImpl [main] main
-2022-07-06 18:40:38,935 INFO com.example.user_service.service.UserServiceImpl [main] Get user by name
-2022-07-06 18:40:38,953 INFO com.example.user_service.service.UserServiceImpl [main] Send user medicines 
-2022-07-06 18:40:38,958 INFO com.example.user_service.service.UserServiceImpl [main] Get user by id
-2022-07-06 18:40:38,958 INFO com.example.user_service.service.UserServiceImpl [main] main
+2022-07-11 18:09:28,612 INFO com.example.user_service.service.user.UserServiceImpl [main] Login
+2022-07-11 18:09:28,614 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,615 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,615 ERROR com.example.user_service.service.user.UserServiceImpl [main] LOGIN: Error logging in!
+2022-07-11 18:09:28,621 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,626 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,627 INFO com.example.user_service.service.user.UserServiceImpl [main] Save user 
+2022-07-11 18:09:28,627 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,627 INFO com.example.user_service.service.user.UserServiceImpl [main] main
+2022-07-11 18:09:28,633 INFO com.example.user_service.service.user.UserServiceImpl [main] Get users
+2022-07-11 18:09:28,633 INFO com.example.user_service.service.user.UserServiceImpl [main] main
+2022-07-11 18:09:28,638 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,639 INFO com.example.user_service.service.user.UserServiceImpl [main] Login
+2022-07-11 18:09:28,639 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,639 ERROR com.example.user_service.service.user.UserServiceImpl [main] SQL error!
+2022-07-11 18:09:28,644 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by name
+2022-07-11 18:09:28,655 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,656 INFO com.example.user_service.service.user.UserServiceImpl [main] Save user 
+2022-07-11 18:09:28,656 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,656 INFO com.example.user_service.service.user.UserServiceImpl [main] main
+2022-07-11 18:09:28,657 ERROR com.example.user_service.service.user.UserServiceImpl [main] Save user:SQL error!
+2022-07-11 18:09:28,665 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,666 INFO com.example.user_service.service.user.UserServiceImpl [main] Save user 
+2022-07-11 18:09:28,666 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
+2022-07-11 18:09:28,666 INFO com.example.user_service.service.user.UserServiceImpl [main] main
+2022-07-11 18:09:28,666 ERROR com.example.user_service.service.user.UserServiceImpl [main] Save user: Error try again!
+2022-07-11 18:09:28,672 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by name
+2022-07-11 18:09:28,673 ERROR com.example.user_service.service.user.UserServiceImpl [main] Save user: Error try again!
+2022-07-11 18:09:28,679 INFO com.example.user_service.service.user.UserServiceImpl [main] Send user medicines 
+2022-07-11 18:09:28,685 INFO com.example.user_service.service.user.UserServiceImpl [main] Send user medicines 
+2022-07-11 18:09:28,691 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by id
+2022-07-11 18:09:28,691 INFO com.example.user_service.service.user.UserServiceImpl [main] main
+2022-07-11 18:09:28,697 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by id
+2022-07-11 18:09:28,697 INFO com.example.user_service.service.user.UserServiceImpl [main] main
+2022-07-11 18:09:28,702 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by name
+2022-07-11 18:09:28,702 ERROR com.example.user_service.service.user.UserServiceImpl [main] Get user by nameSQL error!
+2022-07-11 18:09:28,732 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync medicine history 
+2022-07-11 18:09:28,732 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
+2022-07-11 18:09:28,736 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get all user medicines 
+2022-07-11 18:09:28,737 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get user medicines: Provide valid id
+2022-07-11 18:09:28,741 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync Data 
+2022-07-11 18:09:28,746 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get medicine history 
+2022-07-11 18:09:28,746 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
+2022-07-11 18:09:28,750 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync medicine history 
+2022-07-11 18:09:28,755 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync Data 
+2022-07-11 18:09:28,755 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
+2022-07-11 18:09:28,760 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get all user medicines 
+2022-07-11 18:09:28,764 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get user medicine images
+2022-07-11 18:09:28,769 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get medicine history 
+2022-07-11 18:09:28,773 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync medicine history 
+2022-07-11 18:09:28,773 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync medicine History: Unable to sync
+2022-07-11 18:09:28,777 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync Data 
+2022-07-11 18:09:28,778 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync data:Unable to sync
+2022-07-11 18:09:28,782 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get all user medicines 
+2022-07-11 18:09:28,782 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
+2022-07-11 18:09:28,787 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get user medicine images
+2022-07-11 18:09:28,787 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
+2022-07-11 18:09:28,792 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get medicine history 
+2022-07-11 18:09:28,792 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get Medicine history: Data not found

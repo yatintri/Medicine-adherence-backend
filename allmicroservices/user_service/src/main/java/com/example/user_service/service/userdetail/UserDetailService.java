@@ -1,4 +1,4 @@
-package com.example.user_service.service;
+package com.example.user_service.service.userdetail;
 
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;

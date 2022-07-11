@@ -1,12 +1,12 @@
-package com.example.user_service.service;
+package com.example.user_service.service.user;
 
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.model.UserEntity;
 import com.example.user_service.pojos.dto.UserEntityDTO;
-import com.example.user_service.pojos.response.UserResponse;
-import com.example.user_service.pojos.response.UserResponsePage;
+import com.example.user_service.pojos.response.user.UserResponse;
+import com.example.user_service.pojos.response.user.UserResponsePage;
 import org.springframework.messaging.MessagingException;
 
 import java.io.IOException;
@@ -23,13 +23,11 @@ public interface UserService {
 
      UserEntity getUserById(String userId) throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException, UserExceptions;
 
-     UserEntity updateUser(String userId, UserEntityDTO userEntityDTO)throws UserExceptionMessage, UserExceptions;
-
      List<UserEntity> getUserByName(String userName)throws UserExceptionMessage, UserExceptions;
 
      UserEntity getUserByEmail(String email) throws UserExceptionMessage, UserExceptions;
 
-     String sendUserMedicines(Integer userId) throws MessagingException, IOException, UserExceptions;
+     String sendUserMedicines(Integer userId) throws MessagingException, IOException, UserExceptions, UserExceptionMessage;
 
      UserResponse login(String mail , String fcmToken) throws UserExceptionMessage, UserExceptions;
 

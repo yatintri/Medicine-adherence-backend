@@ -1,7 +1,6 @@
 package com.example.user_service.util;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Datehelper {
     private Datehelper(){}
@@ -13,13 +12,7 @@ public class Datehelper {
 
     }
 
-    public static String getDay(){
 
-        String[] days = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
-        return days[new Date().getDay()];
-
-
-    }
     public static LocalDateTime getcurrentdatatime(){
 
         return (LocalDateTime.now());
