@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+/**
+ * This is a response class for medicine
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

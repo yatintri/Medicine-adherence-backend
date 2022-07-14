@@ -12,7 +12,10 @@ import com.example.user_service.pojos.response.medicine.SyncResponse;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-//
+
+/**
+ * This is an interface for user medicine service
+ */
 public interface UserMedicineService {
 
 

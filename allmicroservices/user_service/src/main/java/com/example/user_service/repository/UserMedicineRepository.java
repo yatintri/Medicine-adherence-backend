@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
-
+/**
+ * This is a medicine repository class
+ */
 public interface UserMedicineRepository extends PagingAndSortingRepository<UserMedicines,Integer> {
 
 

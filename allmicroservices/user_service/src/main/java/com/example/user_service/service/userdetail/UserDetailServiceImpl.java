@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * This class contains all the business logic for the user detail controller
+ */
 @Service
 public class UserDetailServiceImpl implements UserDetailService {
 
@@ -37,7 +40,9 @@ public class UserDetailServiceImpl implements UserDetailService {
         this.userRepository = userRepository;
     }
 
-
+    /**
+     * This class contains the business logic to save all the details of a user by its user id
+     */
     @Override
     public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO) throws UserExceptionMessage, UserExceptions {
 

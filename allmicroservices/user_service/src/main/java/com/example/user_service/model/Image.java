@@ -10,6 +10,9 @@ import javax.persistence.*;
 
 import java.util.Date;
 
+/**
+ * This is entity class for image
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

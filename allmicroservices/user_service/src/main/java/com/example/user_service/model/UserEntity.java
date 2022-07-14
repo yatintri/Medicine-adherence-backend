@@ -10,7 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**
+ * This is entity class for User
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
+/**
+ * This is Pojo class for only Some Details used
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -5,6 +5,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * This is a pojo class for sending mails using message broker
+ */
 public class MailInfo {
 
     @Email

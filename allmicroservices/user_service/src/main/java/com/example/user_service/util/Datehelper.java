@@ -1,7 +1,9 @@
 package com.example.user_service.util;
 
 import java.time.LocalDateTime;
-
+/**
+ * This is a Date helper class for getting dates and time
+ */
 public class Datehelper {
     private Datehelper(){}
 

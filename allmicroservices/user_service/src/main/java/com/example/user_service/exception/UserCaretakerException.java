@@ -10,9 +10,4 @@ public class UserCaretakerException extends Exception{
         super(error);
 
     }
-
-
-
-
 }
-//

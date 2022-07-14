@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-
+/**
+ * This is a Pojo class for Caretaker
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

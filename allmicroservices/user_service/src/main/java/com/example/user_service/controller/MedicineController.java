@@ -28,6 +28,9 @@ import java.util.List;
 
 import java.util.Objects;
 
+/**
+ * This controller is used to create restful web services for user medicines
+ */
 @RestController
 @Validated
 @RequestMapping(path = "/api/v1/")
@@ -42,8 +45,6 @@ public class MedicineController {
 
     UserMedicineRepository userMedicineRepository;
 
-
-
     public MedicineController(UserMedicineService userMedicineService, UserRepository userRepository, UserMedicineRepository userMedicineRepository){
         this.userMedicineService = userMedicineService;
         this.userRepository = userRepository;
@@ -51,7 +52,9 @@ public class MedicineController {
     }
 
 
-    // save caretaker for a patients
+    /**
+     * Syncs local storage data of the application with the server
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/medicines/sync", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<SyncResponse> syncData(@NotBlank @NotNull @RequestParam("userId") String userId, @Valid @RequestBody List<MedicinePojo> medicinePojo, BindingResult bindingResult)
@@ -64,6 +67,10 @@ public class MedicineController {
         return new ResponseEntity<>(userMedicineService.syncData(userId,medicinePojo),HttpStatus.OK);
 
     }
+
+    /**
+     * Syncs medicine history of all the medicines from local storage to backend
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/medicine-history/sync", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<SyncResponse> syncMedicineHistory(@NotNull @NotBlank @RequestParam(name = "medId") Integer medId,
@@ -80,6 +87,9 @@ public class MedicineController {
         }
 
     }
+    /**
+     * Fetch all medicines for a user by id
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/medicine-histories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MedicineResponse> getMedicineHistories(@NotBlank @NotNull @RequestParam(name = "medId") Integer medId,
@@ -90,6 +100,10 @@ public class MedicineController {
 
 
     }
+
+    /**
+     * Fetches all the images stored for that medicine
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/medicine-images", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ImageListResponse> getMedicineImages(@NotBlank @NotNull @RequestParam(name = "medId") Integer medId, @RequestParam(value = "page", defaultValue = "0") int page,

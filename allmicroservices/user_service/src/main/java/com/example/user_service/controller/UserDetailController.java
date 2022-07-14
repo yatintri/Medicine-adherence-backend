@@ -22,6 +22,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * The controller class is responsible for processing incoming REST API requests
+ */
 @RestController
 @Validated
 @RequestMapping("/api/v1")
@@ -36,7 +39,9 @@ public class UserDetailController {
         this.userDetailService = userDetailService;
     }
 
-
+    /**
+     * Updates user details with respect to its id
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PutMapping(value = "/user-details" , produces = MediaType.APPLICATION_JSON_VALUE,consumes = "application/json")
     public ResponseEntity<UserDetailResponse> updateUserDetails(@NotBlank @NotNull @RequestParam("userId") String id,

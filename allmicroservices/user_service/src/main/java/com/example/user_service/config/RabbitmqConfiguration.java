@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * This is config class for RabbitMQ message broker
+ */
 @Configuration
 public class RabbitmqConfiguration {
 

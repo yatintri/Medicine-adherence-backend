@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-
+/**
+ * @Deprecated
+ */
 public interface Medrepo extends JpaRepository<MedicineEntity , Integer> {
 
     @Query("select meds from MedicineEntity meds where lower(meds.medName) like lower(concat(?1,'%'))")

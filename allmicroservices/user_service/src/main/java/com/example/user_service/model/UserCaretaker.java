@@ -8,7 +8,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
+/**
+ * This is entity class for Caretaker
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

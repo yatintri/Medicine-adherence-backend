@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+/**
+ * This class contains all the business logic for the medicine controller
+ */
 @Service
 public class UserMedicineServiceImpl implements UserMedicineService {
 
@@ -56,6 +59,9 @@ public class UserMedicineServiceImpl implements UserMedicineService {
         this.userMedHistoryRepository=userMedHistoryRepository;
     }
 
+    /**
+     * This method contains logic to fetch all the medicine for a particular user
+     */
     @Override
     @Async
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId,int page,int limit) throws UserMedicineException, UserExceptionMessage {
@@ -78,7 +84,9 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     }
 
-
+    /**
+     * This method contains logic to sync data from local storage to backend
+     */
     @Override
     public SyncResponse syncData(String userId, List<MedicinePojo> medicinePojo) throws UserMedicineException, UserExceptions {
 
@@ -119,9 +127,10 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     }
 
-
+    /**
+     * This method contains logic to sync medicine history from local storage to backend
+     */
     @Override
-
     public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS) throws UserMedicineException, UserExceptions {
 
         logger.info("Sync medicine history ");
@@ -150,7 +159,9 @@ public class UserMedicineServiceImpl implements UserMedicineService {
             throw new UserMedicineException(Messages.SQL_ERROR_MSG);
         }
     }
-
+    /**
+     * This method contains logic to fetch all the medicine history for a particular user
+     */
     @Override
     public MedicineResponse getMedicineHistory(Integer medId, int page, int limit) throws UserMedicineException {
 
@@ -169,6 +180,9 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     }
 
+    /**
+     * This method contains logic to fetch all the medicine images for a particular user
+     */
     @Override
     public ImageListResponse getUserMedicineImages(Integer medId, int page, int limit) throws UserExceptions, UserMedicineException {
 

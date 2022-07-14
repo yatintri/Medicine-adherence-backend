@@ -10,7 +10,9 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-
+/**
+ * This is entity class for User details
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -81,5 +83,6 @@ public class UserDetails {
             referencedColumnName = "user_id"
     )
     @JsonIgnore
+    @ToString.Exclude
     private UserEntity user;
 }

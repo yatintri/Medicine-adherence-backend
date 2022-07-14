@@ -41,20 +41,23 @@ import java.util.Calendar;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * This class contains all the business logic for the caretaker controller
+ */
 @Service
 public class CareTakerServiceImpl implements CareTakerService {
 
     @Autowired
-    private UserCaretakerRepository userCaretakerRepository;
+    private final UserCaretakerRepository userCaretakerRepository;
 
     @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
 
     @Autowired
-    private ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
 
     @Autowired
-    private UserMedicineRepository userMedicineRepository;
+    private final UserMedicineRepository userMedicineRepository;
     @Autowired
     RabbitTemplate rabbitTemplate;
 
@@ -74,6 +77,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         this.mapper=mapper;
     }
 
+    /**
+     * This method contains the logic to save a caretaker
+     */
     @Override
     public CaretakerResponse saveCareTaker(@Valid UserCaretakerDTO userCaretakerDTO) throws UserCaretakerException, UserExceptionMessage {
 
@@ -95,6 +101,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         }
     }
 
+    /**
+     * This method contains logic which updates caretaker request status
+     */
     @Override
     public CaretakerResponse updateCaretakerStatus(String cId) throws UserCaretakerException {
         logger.info("Update request status");
@@ -113,6 +122,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         }
     }
 
+    /**
+     * This method fetches all the patients under a caretaker
+     */
     @Override
     public CaretakerResponsePage getPatientsUnderMe(String userId, int page, int limit) throws UserCaretakerException , UserExceptions{
         logger.info("Get my patients");
@@ -130,6 +142,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         }
     }
 
+    /**
+     * This method fetches all the patient request to a caretaker
+     */
     @Override
     public CaretakerResponsePage getPatientRequests(String userId,int page,int limit) throws UserCaretakerException , UserExceptions{
         logger.info("Get patients ");
@@ -147,6 +162,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         }
     }
 
+    /**
+     * This method fetches all the caretakers for a patient
+     */
     @Override
     public CaretakerResponsePage getMyCaretakers(String userId,int page, int limit) throws UserCaretakerException {
 
@@ -166,6 +184,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         }
     }
 
+    /**
+     * @Deprecated This method is not in use
+     */
     @Override
     public CaretakerResponse1 getCaretakerRequestStatus(String userId) throws UserCaretakerException {
         logger.info("Get caretaker request status ");
@@ -177,7 +198,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         }
     }
 
-
+    /**
+     * This method fetches all the caretaker request to a patient
+     */
     @Override
     public CaretakerResponsePage getCaretakerRequestsP(String userId,int page,int limit) throws UserCaretakerException , UserExceptions{
 
@@ -196,6 +219,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         }
     }
 
+    /**
+     * This method deletes patient request sent to a caretaker
+     */
     @Override
     public String delPatientReq(String cId) throws UserExceptionMessage, UserCaretakerException , UserExceptions{
 
@@ -215,6 +241,9 @@ public class CareTakerServiceImpl implements CareTakerService {
         }
     }
 
+    /**
+     * This method uses fcm to send image to caretaker as a notification message
+     */
     @Override
     public SendImageResponse sendImageToCaretaker(MultipartFile multipartFile, String filename, String medName, String caretakerid, Integer medId) throws IOException, UserCaretakerException , UserExceptions{
 

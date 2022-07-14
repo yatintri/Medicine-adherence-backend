@@ -30,6 +30,9 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * This controller is used to create restful web services for caretaker
+ */
 @RestController
 @Validated
 @RequestMapping(path = "/api/v1")
@@ -54,7 +57,10 @@ public class CaretakerController {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    // save caretaker for a patients
+    /**
+     * Saves caretaker for patients
+     * @param bindingResult Spring's object that holds the result of the validation and binding and contains errors that may have occurred
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/request", produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponse> saveCaretaker(@Valid @RequestBody UserCaretakerDTO userCaretakerDTO, BindingResult bindingResult) throws UserCaretakerException, UserExceptions, UserExceptionMessage {
@@ -66,7 +72,9 @@ public class CaretakerController {
 
     }
 
-    // update request status if request is accepted or rejected
+    /**
+     * Update request status if request is accepted or rejected
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PutMapping(value = "/accept",produces = MediaType.APPLICATION_JSON_VALUE,consumes = "application/json")
     public ResponseEntity<CaretakerResponse> updateCaretakerStatus(@NotNull @NotBlank @RequestParam(name = "cId") String cId)
@@ -79,7 +87,9 @@ public class CaretakerController {
     }
 
 
-    // fetch all the patients of a particular caretaker
+    /**
+     * Fetch all the patients of a particular caretaker
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/patients",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponsePage> getPatientsUnderMe(@NotBlank @NotNull @RequestParam(name = "caretakerId") String userId,
@@ -91,7 +101,9 @@ public class CaretakerController {
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
     }
 
-    // fetch all the request sent by a patients to a caretaker
+    /**
+     * Fetch all the request sent by patients to a caretaker
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/patient/requests",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponsePage> getPatientRequestsC(@NotNull @NotBlank @RequestParam(name = "caretakerId") String userId,
@@ -103,7 +115,9 @@ public class CaretakerController {
 
     }
 
-    // where the patients can view all his caretakers
+    /**
+     * Fetch all the caretakers for a patient
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/caretakers",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponsePage> getMyCaretakers(@NotBlank @NotNull @RequestParam(name = "patientId") String userId,
@@ -114,7 +128,9 @@ public class CaretakerController {
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
     }
 
-    // to check the status of a request by caretaker
+    /**
+     * To check the status of a request by caretaker
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/caretaker/requests",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerResponsePage> getCaretakerRequestsP(@NotNull @NotBlank @RequestParam(name = "patientId") String userId,
@@ -125,6 +141,10 @@ public class CaretakerController {
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
 
     }
+
+    /**
+     * Deletes Patients Request for a caretaker
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/delete",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CaretakerDelete> delPatientReq(@NotBlank @NotNull @RequestParam(name = "cId") String cId)
@@ -135,6 +155,10 @@ public class CaretakerController {
         CaretakerDelete caretakerDelete = new CaretakerDelete(delPatientStatus, Messages.DELETED_SUCCESS);
         return new ResponseEntity<>(caretakerDelete, HttpStatus.OK);
     }
+
+    /**
+     * Caretaker notifies user to take medicines
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/notifyuser",produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(timeout = 4)
@@ -144,6 +168,11 @@ public class CaretakerController {
         return new ResponseEntity<>("Ok", HttpStatus.OK);
 
     }
+
+    /**
+     * Sends image to caretaker for strict adherence
+     * @param bindingResult Spring's object that holds the result of the validation and binding and contains errors that may have occurred
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/image",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.ALL_VALUE)
     @Transactional(timeout = 10)

@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This is a response class for User
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

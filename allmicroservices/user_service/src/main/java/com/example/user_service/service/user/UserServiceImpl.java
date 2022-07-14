@@ -38,7 +38,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-
+/**
+ * This class contains all the business logic for the User controller
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -74,6 +76,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * Saves a user and runs on a different thread using asynchronous programming
+     */
     @Override
     public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage ,UserExceptions {
 
@@ -109,6 +114,10 @@ public class UserServiceImpl implements UserService {
             throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
         }
     }
+
+    /**
+     * Logs in user
+     */
     @Override
     public UserResponse login(String mail, String fcmToken) throws UserExceptionMessage, UserExceptions {
 
@@ -134,6 +143,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * Fetches all users and runs on a different thread using asynchronous programming
+     */
     @Override
     @Async
     public CompletableFuture<UserResponsePage> getUsers(int page, int limit) throws UserExceptionMessage , UserExceptions{
@@ -150,7 +162,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    /**
+     * This method return values that will be stored in the cache
+     */
     @Override
 
     public UserEntity getUserById(String userId) throws UserExceptionMessage {
@@ -171,7 +185,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    /**
+     * This method fetches user by its name ignoring the case
+     */
     @Override
     public List<UserEntity> getUserByName(String userName) throws UserExceptionMessage, NullPointerException {
 
@@ -191,6 +207,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * This method fetches user by its email ignoring the case
+     */
     @Override
     public UserEntity getUserByEmail(String email) throws UserExceptionMessage , UserExceptions{
 
@@ -204,7 +223,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
+    /**
+     * Fetches medicines by id and then generates pdf and sends it as a response
+     */
     @Override
     public String sendUserMedicines(Integer medId) throws MessagingException, IOException, UserExceptions, UserExceptionMessage {
 

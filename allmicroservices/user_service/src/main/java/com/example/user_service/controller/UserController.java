@@ -40,7 +40,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
-
+/**
+ * This controller is used to create restful web services for user
+ */
 @RestController
 @Validated
 @RequestMapping(path = "/api/v1")
@@ -54,7 +56,7 @@ public class UserController {
     UserMedicineService userMedicineService;
 
 
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -74,7 +76,9 @@ public class UserController {
     @Value("${project.rabbitmq.exchange}")
     private String topicExchange;
 
-    // saving the user when they signup
+    /**
+     * Saves the user when they sign up
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<UserResponse> saveUser(@NotNull @NotBlank @RequestParam(name = "fcmToken") String fcmToken,@NotNull @NotBlank
@@ -86,7 +90,9 @@ public class UserController {
 
     }
 
-
+    /**
+     * This allows you to have short-lived access tokens without having to collect credentials every time one expires.
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/refreshToken",produces =  MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<String> refreshToken(@NotNull @NotBlank @RequestParam(name = "uid") String uid,
@@ -103,7 +109,9 @@ public class UserController {
 
     }
 
-
+    /**
+     * Logins the user when they want to Add a caretaker
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginDTO loginDTO,BindingResult bindingResult) throws UserExceptionMessage, UserExceptions {
@@ -116,8 +124,9 @@ public class UserController {
 
     }
 
-
-    // fetching all the users along with details
+    /**
+     * Fetching all the users along with details
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 
@@ -129,8 +138,9 @@ public class UserController {
 
     }
 
-    // fetching user by id
-
+    /**
+     * Fetching user by id along with list of medicines
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserProfileResponse> getUserById(@NotNull @NotBlank @RequestParam("userId") String userId)
@@ -145,8 +155,9 @@ public class UserController {
 
     }
 
-    // fetching the user with email if not present then sending to that email address
-
+    /**
+     * Fetching the user with email if not present then sending invitation to that email address
+     */
     @Retryable(maxAttempts = 3)// retrying up to 3 times
     @GetMapping(value = "/email", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getUserByEmail(@NotNull @NotBlank @RequestParam("email") String email
@@ -164,7 +175,9 @@ public class UserController {
 
     }
 
-
+    /**
+     * Generates a pdf for the adherence maintained by a user
+     */
     @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.ALL_VALUE)
     @Transactional(timeout = 10)
     @Retryable(maxAttempts = 3)// retrying up to 3 times

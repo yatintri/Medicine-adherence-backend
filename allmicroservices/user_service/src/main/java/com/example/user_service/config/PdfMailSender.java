@@ -12,7 +12,9 @@ import java.io.FileOutputStream;
 import java.util.List;
 import java.util.UUID;
 
-
+/**
+ * This is config class to create pdf
+ */
 @Component
 public class PdfMailSender {
 

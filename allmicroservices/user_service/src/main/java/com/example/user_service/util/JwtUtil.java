@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import io.jsonwebtoken.*;
-
+/**
+ * This is util class to generate and validate token
+ */
 @Service
 public class JwtUtil {
 

@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-
+/**
+ * @Deprecated  This is entity class for Medicine
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

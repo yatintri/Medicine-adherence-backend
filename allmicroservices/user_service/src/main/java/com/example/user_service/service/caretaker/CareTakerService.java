@@ -13,6 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 
+/**
+ * This is an interface for caretaker service
+ */
 public interface CareTakerService {
 
 

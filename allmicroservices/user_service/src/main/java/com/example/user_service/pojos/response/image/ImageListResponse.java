@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
-
+/**
+ * This is a response class for returning a list of images
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

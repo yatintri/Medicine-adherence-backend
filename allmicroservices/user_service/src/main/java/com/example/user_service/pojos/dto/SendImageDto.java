@@ -8,7 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+/**
+ * This is a Pojo class for Image
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

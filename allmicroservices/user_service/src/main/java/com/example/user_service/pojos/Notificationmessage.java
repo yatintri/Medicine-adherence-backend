@@ -2,7 +2,9 @@ package com.example.user_service.pojos;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+/**
+ * This is a pojo class for sending notifications using message broker
+ */
 public class Notificationmessage {
 
     @NotNull

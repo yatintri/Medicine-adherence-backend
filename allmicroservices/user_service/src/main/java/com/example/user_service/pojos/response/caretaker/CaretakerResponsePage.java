@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+/**
+ * This is response class to return total page,current page and total items
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

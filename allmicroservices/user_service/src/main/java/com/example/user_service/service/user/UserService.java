@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-
+/**
+ * This is an interface for user service
+ */
 public interface UserService {
 
      UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage , UserExceptions;

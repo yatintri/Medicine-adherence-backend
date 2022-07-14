@@ -5,6 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * To validate the correct file type of image
+ */
 public class ImageValidCheck implements ConstraintValidator<ImageValidator, MultipartFile> {
 
     @Override

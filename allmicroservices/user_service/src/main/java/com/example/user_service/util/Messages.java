@@ -1,5 +1,7 @@
 package com.example.user_service.util;
-
+/**
+ * This is class for handling all the hardcoded messages
+ */
 public class Messages {
 
     public static final String NO_RECORD_FOUND = "No Record found";

@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
-
+/**
+ * This is a Caretaker repository
+ */
 public interface UserCaretakerRepository extends PagingAndSortingRepository<UserCaretaker, String> {
 
 
@@ -34,4 +36,3 @@ public interface UserCaretakerRepository extends PagingAndSortingRepository<User
 
 
 }
-///

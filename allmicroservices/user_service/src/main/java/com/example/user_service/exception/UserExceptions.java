@@ -42,12 +42,20 @@ public class UserExceptions extends Throwable {
         return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 
     }
+
+    /**
+     * Returns image exception response
+     */
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<CaretakerResponse> imageException(ConstraintViolationException uce, WebRequest webRequest) {
         CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getMessage(), null);
         return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
 
     }
+
+    /**
+     * Returns exception response if caretaker is not valid
+     */
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<CaretakerResponse> getcaretakernotvalidexception(MethodArgumentNotValidException uce, WebRequest webRequest) {
         CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, Objects.requireNonNull(uce.getFieldError()).getDefaultMessage(), null);
@@ -66,13 +74,13 @@ public class UserExceptions extends Throwable {
 
     }
 
+    /**
+     * Returns Sql exception response
+     */
     @ExceptionHandler({DataAccessExceptionMessage.class})
     public ResponseEntity<SqlErrorResponse> getSqlException(DataAccessExceptionMessage dae, WebRequest webRequest) {
         SqlErrorResponse sqlErrorResponse = new SqlErrorResponse(ERROR, dae.getMessage());
         return new ResponseEntity<>(sqlErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
-///
 
 }

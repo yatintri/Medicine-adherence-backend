@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-
+/**
+ * This is entity class for Medicine History
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

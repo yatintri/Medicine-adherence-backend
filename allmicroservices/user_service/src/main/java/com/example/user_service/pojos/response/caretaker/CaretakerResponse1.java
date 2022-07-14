@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+/**
+ * This is a response class to return the list of caretaker
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

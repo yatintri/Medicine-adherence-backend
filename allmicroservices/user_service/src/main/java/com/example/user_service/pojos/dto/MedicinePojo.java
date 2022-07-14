@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-
-
+/**
+ * This is a Pojo class for medicine
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

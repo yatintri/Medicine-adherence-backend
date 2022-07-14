@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 
 import java.util.List;
-
+/**
+ * This is a response class for list of User and medicines
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,4 +21,3 @@ public class UserProfileResponse {
      private List< UserMedicines> medicinesList;
 
 }
-///

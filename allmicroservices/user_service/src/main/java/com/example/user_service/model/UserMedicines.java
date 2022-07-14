@@ -8,7 +8,9 @@ import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * This is entity class for medicines
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
