@@ -6,6 +6,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,7 @@ import com.example.user_service.util.Messages;
 public class UserDetailController {
     private final UserDetailService userDetailService;
 
+    private final Logger logger = LoggerFactory.getLogger(UserDetailController.class);
     public UserDetailController(UserDetailService userDetailService) {
         this.userDetailService = userDetailService;
     }
@@ -49,6 +52,9 @@ public class UserDetailController {
                                                                 @RequestParam("userId") String id, @Valid
                                                                 @RequestBody UserDetailsDTO userDetailsDTO, BindingResult bindingResult)
             throws UserExceptionMessage, UserExceptions {
+
+        logger.info("Updating user details : {} {}",id,userDetailsDTO);
+
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new UserDetailResponse(Messages.VALIDATION,
                     Objects.requireNonNull(

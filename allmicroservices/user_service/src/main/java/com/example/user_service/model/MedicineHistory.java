@@ -1,5 +1,6 @@
 package com.example.user_service.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "medicine_history")
-public class MedicineHistory {
+public class MedicineHistory implements Serializable {
     @Id
     @Column(
             name = "history_id",
@@ -51,6 +52,6 @@ public class MedicineHistory {
             referencedColumnName = "medicine_id"
     )
     @JsonIgnore
-    UserMedicines userMedicines;
+    transient UserMedicines userMedicines;
 }
 

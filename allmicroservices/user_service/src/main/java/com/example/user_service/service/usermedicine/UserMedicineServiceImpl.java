@@ -7,12 +7,10 @@ import java.util.stream.Collectors;
 
 import org.hibernate.exception.JDBCConnectionException;
 
-import org.modelmapper.ModelMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -38,15 +36,13 @@ import com.example.user_service.util.Messages;
 @Service
 public class UserMedicineServiceImpl implements UserMedicineService {
     Logger logger = LoggerFactory.getLogger(UserMedicineServiceImpl.class);
-    @Autowired
+
     UserRepository userRepository;
-    @Autowired
+
     UserMedicineRepository userMedicineRepository;
-    @Autowired
+
     ImageRepository imageRepository;
-    @Autowired
-    private ModelMapper mapper;
-    @Autowired
+
     UserMedHistoryRepository userMedHistoryRepository;
 
     public UserMedicineServiceImpl(UserRepository userRepository, UserMedicineRepository userMedicineRepository,
@@ -64,7 +60,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Async
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId, int page, int limit)
             throws UserMedicineException, UserExceptionMessage {
-        logger.info("Get all user medicines ");
+        logger.info(Messages.STARTING_METHOD_EXECUTION);
 
         try {
             UserEntity user = userRepository.getUserById(userId);
@@ -76,11 +72,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
             }
 
             List<UserMedicines> list = user.getUserMedicines().subList(0, 1);
-
+            logger.debug("Fetching all {} user medicines",userId);
+            logger.info(Messages.EXITING_METHOD_EXECUTION);
             return CompletableFuture.completedFuture(list);
-        } catch (DataAccessException | JDBCConnectionException dataAccessException) {
+        }
+        catch (DataAccessException | JDBCConnectionException dataAccessException) {
             logger.error(Messages.SQL_ERROR_MSG);
-
             throw new UserMedicineException(Messages.SQL_ERROR_MSG);
         }
     }
@@ -91,7 +88,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
     public SyncResponse syncData(String userId, List<MedicinePojo> medicinePojo)
             throws UserMedicineException, UserExceptions {
-        logger.info("Sync Data ");
+        logger.info(Messages.STARTING_METHOD_EXECUTION);
 
         try {
             UserEntity userEntity = userRepository.getUserById(userId);
@@ -133,11 +130,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                     .collect(Collectors.toList());
 
             userMedicineRepository.saveAll(userMedicinesList);
-
+            logger.debug("Syncing {} user {} medicine data",userId,medicinePojo);
+            logger.info(Messages.EXITING_METHOD_EXECUTION);
             return new SyncResponse(Messages.SUCCESS, Messages.SYNC);
-        } catch (DataAccessException | JDBCConnectionException dataAccessException) {
+        }
+        catch (DataAccessException | JDBCConnectionException dataAccessException) {
             logger.error(Messages.SQL_ERROR_MSG);
-
             throw new UserMedicineException(Messages.SQL_ERROR_MSG);
         }
     }
@@ -148,7 +146,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
     public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS)
             throws UserMedicineException, UserExceptions {
-        logger.info("Sync medicine history ");
+        logger.info(Messages.STARTING_METHOD_EXECUTION);
 
         try {
             UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
@@ -183,7 +181,8 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                     .collect(Collectors.toList());
 
             CompletableFuture.completedFuture(userMedHistoryRepository.saveAll(medicineHistories));
-
+            logger.debug("Syncing {} medicine {} histories",medId,medicineHistoryDTOS);
+            logger.info(Messages.EXITING_METHOD_EXECUTION);
             return new MedicineResponse(Messages.SUCCESS, Messages.DATA_FOUND, medicineHistories);
         } catch (DataAccessException | JDBCConnectionException dataAccessException) {
             logger.error(Messages.SQL_ERROR_MSG);
@@ -197,7 +196,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      */
     @Override
     public MedicineResponse getMedicineHistory(Integer medId, int page, int limit) throws UserMedicineException {
-        logger.info("Get medicine history ");
+        logger.info(Messages.STARTING_METHOD_EXECUTION);
 
         try {
             List<MedicineHistory> medicineHistories = userMedicineRepository.getMedById(medId).getMedicineHistories();
@@ -207,11 +206,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
                 throw new UserMedicineException(Messages.MSG);
             }
-
+            logger.debug("Fetching {} medicine history",medId);
+            logger.info(Messages.EXITING_METHOD_EXECUTION);
             return new MedicineResponse("OK", "Medicine History", medicineHistories);
-        } catch (DataAccessException | JDBCConnectionException dataAccessException) {
+        }
+        catch (DataAccessException | JDBCConnectionException dataAccessException) {
             logger.error(Messages.SQL_ERROR_MSG);
-
             throw new UserMedicineException(Messages.SQL_ERROR_MSG);
         }
     }
@@ -222,17 +222,19 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
     public ImageListResponse getUserMedicineImages(Integer medId, int page, int limit)
             throws UserExceptions, UserMedicineException {
-        logger.info("Get user medicine images");
+        logger.info(Messages.STARTING_METHOD_EXECUTION);
 
         try {
+            logger.debug("Fetching images for {} medicines",medId);
+            logger.info(Messages.EXITING_METHOD_EXECUTION);
             return new ImageListResponse("",
                     "",
                     userMedicineRepository.getMedById(medId).getImages().stream().sorted(
                             Comparator.comparing(Image::getDate).reversed()).collect(
                             Collectors.toList()));
-        } catch (DataAccessException | JDBCConnectionException dataAccessException) {
+        }
+            catch (DataAccessException | JDBCConnectionException dataAccessException) {
             logger.error(Messages.SQL_ERROR_MSG);
-
             throw new UserMedicineException(Messages.SQL_ERROR_MSG);
         }
     }

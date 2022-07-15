@@ -4,11 +4,13 @@ import com.example.user_service.model.UserMedicines;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 /**
  * This is a medicine repository class
  */
+@Repository
 public interface UserMedicineRepository extends PagingAndSortingRepository<UserMedicines,Integer> {
 
 

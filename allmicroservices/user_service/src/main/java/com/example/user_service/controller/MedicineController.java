@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,9 @@ public class MedicineController {
     UserRepository userRepository;
     UserMedicineRepository userMedicineRepository;
 
+    private final Logger logger = LoggerFactory.getLogger(MedicineController.class);
+
+
     public MedicineController(UserMedicineService userMedicineService, UserRepository userRepository,
                               UserMedicineRepository userMedicineRepository) {
         this.userMedicineService = userMedicineService;
@@ -59,6 +64,9 @@ public class MedicineController {
                                                  @RequestParam("userId") String userId, @Valid
                                                  @RequestBody List<MedicinePojo> medicinePojo, BindingResult bindingResult)
             throws UserMedicineException, UserExceptions {
+
+        logger.info("Syncing Data : {} {}",userId,medicinePojo);
+
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION,
                     Objects.requireNonNull(
@@ -83,6 +91,9 @@ public class MedicineController {
                                                             @RequestParam(name = "medId") Integer medId, @Valid
                                                             @RequestBody List<MedicineHistoryDTO> medicineHistory, BindingResult bindingResult)
             throws UserMedicineException, UserExceptions {
+
+        logger.info("Syncing medicine history : {} {}",medId,medicineHistory);
+
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION,
                     Objects.requireNonNull(
@@ -109,13 +120,11 @@ public class MedicineController {
     )
     public ResponseEntity<MedicineResponse> getMedicineHistories(@NotBlank
                                                                  @NotNull
-                                                                 @RequestParam(name = "medId") Integer medId, @RequestParam(
-            value = "page",
-            defaultValue = "0"
-    ) int page, @RequestParam(
-            value = "limit",
-            defaultValue = "30"
-    ) int limit) throws UserMedicineException, UserExceptions {
+                                                                 @RequestParam(name = "medId") Integer medId, @RequestParam(value = "page") int page,
+                                                                 @RequestParam(value = "limit") int limit)
+                                                                 throws UserMedicineException, UserExceptions {
+        logger.info("Fetching medicine history : {}",medId);
+
         return new ResponseEntity<>(userMedicineService.getMedicineHistory(medId, page, limit), HttpStatus.OK);
     }
 
@@ -129,13 +138,11 @@ public class MedicineController {
     )
     public ResponseEntity<ImageListResponse> getMedicineImages(@NotBlank
                                                                @NotNull
-                                                               @RequestParam(name = "medId") Integer medId, @RequestParam(
-            value = "page",
-            defaultValue = "0"
-    ) int page, @RequestParam(
-            value = "limit",
-            defaultValue = "30"
-    ) int limit) throws UserExceptions, UserMedicineException {
+                                                               @RequestParam(name = "medId") Integer medId, @RequestParam(value = "page") int page,
+                                                               @RequestParam(value = "limit") int limit)
+                                                               throws UserExceptions, UserMedicineException {
+        logger.info("Fetching medicine images : {}",medId);
+
         return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medId, page, limit), HttpStatus.OK);
     }
 }

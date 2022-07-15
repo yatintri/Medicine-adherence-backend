@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_medicine")
-public class UserMedicines {
+public class UserMedicines implements Serializable {
 
     @Id
     @Column(name = "medicine_id", nullable = false)
@@ -67,13 +68,13 @@ public class UserMedicines {
 
     )
     @JsonIgnore
-    private List<MedicineHistory> medicineHistories;
+    private transient List<MedicineHistory> medicineHistories;
 
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "userMedicines"
     )
     @JsonIgnore
-    private List<Image> images;
+    private transient List<Image> images;
 
 }

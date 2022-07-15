@@ -4,12 +4,10 @@ import java.util.Optional;
 
 import org.hibernate.exception.JDBCConnectionException;
 
-import org.modelmapper.ModelMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +26,11 @@ import com.example.user_service.util.Messages;
 @Service
 public class UserDetailServiceImpl implements UserDetailService {
     Logger logger = LoggerFactory.getLogger(UserDetailServiceImpl.class);
-    @Autowired
+
     private final UserDetailsRepository userDetailsRepository;
-    @Autowired
+
     private final UserRepository userRepository;
-    @Autowired
-    private ModelMapper mapper;
+
 
     public UserDetailServiceImpl(UserDetailsRepository userDetailsRepository, UserRepository userRepository) {
         this.userDetailsRepository = userDetailsRepository;
@@ -46,7 +43,7 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Override
     public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO)
             throws UserExceptionMessage, UserExceptions {
-        logger.info("Save user details");
+        logger.info(Messages.STARTING_METHOD_EXECUTION);
 
         try {
             Optional<UserEntity> user = Optional.ofNullable(userRepository.getUserById(id));
@@ -67,11 +64,12 @@ public class UserDetailServiceImpl implements UserDetailService {
             userDetails1.setMartialStatus(userDetailsDTO.getMartialStatus());
             userDetails1.setUserContact(userDetailsDTO.getUserContact());
             userDetailsRepository.save(userDetails1);
-
+            logger.debug("Saving {} user {} details",id,userDetailsDTO);
+            logger.info(Messages.EXITING_METHOD_EXECUTION);
             return userDetails1;
-        } catch (DataAccessException | JDBCConnectionException dataAccessException) {
+        }
+        catch (DataAccessException | JDBCConnectionException dataAccessException) {
             logger.error(Messages.SQL_ERROR_MSG);
-
             throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
         }
     }

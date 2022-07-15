@@ -1,59 +1,13 @@
-2022-07-14 17:37:20,728 INFO com.example.user_service.service.user.UserServiceImpl [main] Login
-2022-07-14 17:37:20,728 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,728 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,729 ERROR com.example.user_service.service.user.UserServiceImpl [main] LOGIN: Error logging in!
-2022-07-14 17:37:20,734 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,738 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,740 INFO com.example.user_service.service.user.UserServiceImpl [main] Save user 
-2022-07-14 17:37:20,740 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,740 INFO com.example.user_service.service.user.UserServiceImpl [main] main
-2022-07-14 17:37:20,745 INFO com.example.user_service.service.user.UserServiceImpl [main] Get users
-2022-07-14 17:37:20,745 INFO com.example.user_service.service.user.UserServiceImpl [main] main
-2022-07-14 17:37:20,750 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,751 INFO com.example.user_service.service.user.UserServiceImpl [main] Login
-2022-07-14 17:37:20,751 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,751 ERROR com.example.user_service.service.user.UserServiceImpl [main] SQL error!
-2022-07-14 17:37:20,757 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by name
-2022-07-14 17:37:20,767 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,768 INFO com.example.user_service.service.user.UserServiceImpl [main] Save user 
-2022-07-14 17:37:20,768 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,768 INFO com.example.user_service.service.user.UserServiceImpl [main] main
-2022-07-14 17:37:20,769 ERROR com.example.user_service.service.user.UserServiceImpl [main] Save user:SQL error!
-2022-07-14 17:37:20,774 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,775 INFO com.example.user_service.service.user.UserServiceImpl [main] Save user 
-2022-07-14 17:37:20,775 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by email
-2022-07-14 17:37:20,775 INFO com.example.user_service.service.user.UserServiceImpl [main] main
-2022-07-14 17:37:20,775 ERROR com.example.user_service.service.user.UserServiceImpl [main] Save user: Error try again!
-2022-07-14 17:37:20,781 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by name
-2022-07-14 17:37:20,782 ERROR com.example.user_service.service.user.UserServiceImpl [main] Save user: Error try again!
-2022-07-14 17:37:20,788 INFO com.example.user_service.service.user.UserServiceImpl [main] Send user medicines 
-2022-07-14 17:37:20,794 INFO com.example.user_service.service.user.UserServiceImpl [main] Send user medicines 
-2022-07-14 17:37:20,800 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by id
-2022-07-14 17:37:20,801 INFO com.example.user_service.service.user.UserServiceImpl [main] main
-2022-07-14 17:37:20,806 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by id
-2022-07-14 17:37:20,806 INFO com.example.user_service.service.user.UserServiceImpl [main] main
-2022-07-14 17:37:20,812 INFO com.example.user_service.service.user.UserServiceImpl [main] Get user by name
-2022-07-14 17:37:20,812 ERROR com.example.user_service.service.user.UserServiceImpl [main] Get user by nameSQL error!
-2022-07-14 17:37:20,840 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync medicine history 
-2022-07-14 17:37:20,840 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
-2022-07-14 17:37:20,845 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get all user medicines 
-2022-07-14 17:37:20,845 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get user medicines: Provide valid id
-2022-07-14 17:37:20,850 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync Data 
-2022-07-14 17:37:20,855 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get medicine history 
-2022-07-14 17:37:20,855 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
-2022-07-14 17:37:20,860 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync medicine history 
-2022-07-14 17:37:20,865 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync Data 
-2022-07-14 17:37:20,865 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
-2022-07-14 17:37:20,869 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get all user medicines 
-2022-07-14 17:37:20,874 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get user medicine images
-2022-07-14 17:37:20,879 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get medicine history 
-2022-07-14 17:37:20,883 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync medicine history 
-2022-07-14 17:37:20,883 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync medicine History: Unable to sync
-2022-07-14 17:37:20,887 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync Data 
-2022-07-14 17:37:20,888 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Sync data:Unable to sync
-2022-07-14 17:37:20,892 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get all user medicines 
-2022-07-14 17:37:20,892 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
-2022-07-14 17:37:20,897 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get user medicine images
-2022-07-14 17:37:20,897 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] SQL error!
-2022-07-14 17:37:20,901 INFO com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get medicine history 
-2022-07-14 17:37:20,901 ERROR com.example.user_service.service.usermedicine.UserMedicineServiceImpl [main] Get Medicine history: Data not found
+2022-07-15 16:38:50,895 INFO com.example.user_service.UserServiceApplication [main] Started UserServiceApplication in 8.477 seconds (JVM running for 9.167)
+2022-07-15 16:38:52,723 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-2] Fetching user by id : 84d29cd9-b0ca-4470-ad3a-2b820a286fba
+2022-07-15 16:38:53,134 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] Starting of method execution
+2022-07-15 16:38:53,134 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] Get by id
+2022-07-15 16:38:53,207 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] http-nio-8080-exec-2
+2022-07-15 16:38:53,207 DEBUG com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] Fetching user by 84d29cd9-b0ca-4470-ad3a-2b820a286fba id
+2022-07-15 16:38:53,207 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] Exiting of method execution
+2022-07-15 16:39:06,735 INFO com.example.user_service.UserServiceApplication [main] This is Medicine Adherence Project
+2022-07-15 16:39:07,529 INFO com.example.user_service.UserServiceApplication [main] Starting UserServiceApplication using Java 17.0.2 on nineleaps-ThinkPad-E480 with PID 702 (/home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service/target/classes started by nineleaps in /home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service)
+2022-07-15 16:39:07,530 DEBUG com.example.user_service.UserServiceApplication [main] Running with Spring Boot v2.6.3, Spring v5.3.15
+2022-07-15 16:39:07,530 INFO com.example.user_service.UserServiceApplication [main] No active profile set, falling back to default profiles: default
+2022-07-15 16:39:15,077 INFO com.example.user_service.UserServiceApplication [main] Started UserServiceApplication in 8.14 seconds (JVM running for 8.739)
+2022-07-15 16:39:18,136 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-2] Fetching user by id : 84d29cd9-b0ca-4470-ad3a-2b820a286fba

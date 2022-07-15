@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -33,13 +34,10 @@ class UserDetailsServiceTest {
     @Mock
     private UserDetailsRepository userDetailsRepository;
 
-
-
     @BeforeEach
     public void initCase(){
         userDetailServiceImpl = new UserDetailServiceImpl(userDetailsRepository,userRepository);
     }
-
 
     @Test
     @DisplayName("Save user detail Test")

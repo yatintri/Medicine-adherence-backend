@@ -1,0 +1,159 @@
+2022-07-15 16:13:06,791 INFO com.example.user_service.UserServiceApplication [main] Started UserServiceApplication in 7.892 seconds (JVM running for 8.514)
+2022-07-15 16:13:08,554 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-1] Fetching user by id : 6b127984-03dc-49d2-a6f9-78b2ebcd4fca
+2022-07-15 16:13:08,966 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Starting of method execution
+2022-07-15 16:13:08,966 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Get by id
+2022-07-15 16:13:09,022 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] http-nio-8080-exec-1
+2022-07-15 16:13:09,022 DEBUG com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Fetching user by 6b127984-03dc-49d2-a6f9-78b2ebcd4fca id
+2022-07-15 16:13:09,022 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Exiting of method execution
+2022-07-15 16:13:13,505 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-3] Fetching user by id : 6b127984-03dc-49d2-a6f9-78b2ebcd4fca
+2022-07-15 16:13:14,728 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-4] Fetching user by id : 6b127984-03dc-49d2-a6f9-78b2ebcd4fca
+2022-07-15 16:13:15,884 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-5] Fetching user by id : 6b127984-03dc-49d2-a6f9-78b2ebcd4fca
+2022-07-15 16:37:06,661 INFO com.example.user_service.UserServiceApplication [main] This is Medicine Adherence Project
+2022-07-15 16:37:07,378 INFO com.example.user_service.UserServiceApplication [main] Starting UserServiceApplication using Java 17.0.2 on nineleaps-ThinkPad-E480 with PID 32562 (/home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service/target/classes started by nineleaps in /home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service)
+2022-07-15 16:37:07,378 DEBUG com.example.user_service.UserServiceApplication [main] Running with Spring Boot v2.6.3, Spring v5.3.15
+2022-07-15 16:37:07,379 INFO com.example.user_service.UserServiceApplication [main] No active profile set, falling back to default profiles: default
+2022-07-15 16:37:14,740 INFO com.example.user_service.UserServiceApplication [main] Started UserServiceApplication in 7.896 seconds (JVM running for 8.564)
+2022-07-15 16:37:29,810 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-1] Fetching user by id : 84d29cd9-b0ca-4470-ad3a-2b820a286fba
+2022-07-15 16:37:30,299 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Starting of method execution
+2022-07-15 16:37:30,299 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Get by id
+2022-07-15 16:37:30,365 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] http-nio-8080-exec-1
+2022-07-15 16:37:30,365 DEBUG com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Fetching user by 84d29cd9-b0ca-4470-ad3a-2b820a286fba id
+2022-07-15 16:37:30,365 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Exiting of method execution
+2022-07-15 16:37:31,383 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-1] Fetching user by id : 84d29cd9-b0ca-4470-ad3a-2b820a286fba
+2022-07-15 16:37:31,387 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Starting of method execution
+2022-07-15 16:37:31,387 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Get by id
+2022-07-15 16:37:31,394 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] http-nio-8080-exec-1
+2022-07-15 16:37:31,394 DEBUG com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Fetching user by 84d29cd9-b0ca-4470-ad3a-2b820a286fba id
+2022-07-15 16:37:31,394 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Exiting of method execution
+2022-07-15 16:37:32,402 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-1] Fetching user by id : 84d29cd9-b0ca-4470-ad3a-2b820a286fba
+2022-07-15 16:37:32,406 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Starting of method execution
+2022-07-15 16:37:32,407 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Get by id
+2022-07-15 16:37:32,413 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] http-nio-8080-exec-1
+2022-07-15 16:37:32,414 DEBUG com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Fetching user by 84d29cd9-b0ca-4470-ad3a-2b820a286fba id
+2022-07-15 16:37:32,414 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-1] Exiting of method execution
+2022-07-15 16:37:32,444 ERROR org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet] [http-nio-8080-exec-1] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.data.redis.serializer.SerializationException: Cannot serialize; nested exception is org.springframework.core.serializer.support.SerializationFailedException: Failed to serialize object using DefaultSerializer; nested exception is java.io.NotSerializableException: com.example.user_service.model.UserDetails] with root cause
+java.io.NotSerializableException: com.example.user_service.model.UserDetails
+	at java.base/java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1197)
+	at java.base/java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1582)
+	at java.base/java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1539)
+	at java.base/java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1448)
+	at java.base/java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1191)
+	at java.base/java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:354)
+	at org.springframework.core.serializer.DefaultSerializer.serialize(DefaultSerializer.java:46)
+	at org.springframework.core.serializer.Serializer.serializeToByteArray(Serializer.java:56)
+	at org.springframework.core.serializer.support.SerializingConverter.convert(SerializingConverter.java:60)
+	at org.springframework.core.serializer.support.SerializingConverter.convert(SerializingConverter.java:33)
+	at org.springframework.data.redis.serializer.JdkSerializationRedisSerializer.serialize(JdkSerializationRedisSerializer.java:94)
+	at org.springframework.data.redis.serializer.DefaultRedisElementWriter.write(DefaultRedisElementWriter.java:44)
+	at org.springframework.data.redis.serializer.RedisSerializationContext$SerializationPair.write(RedisSerializationContext.java:287)
+	at org.springframework.data.redis.cache.RedisCache.serializeCacheValue(RedisCache.java:282)
+	at org.springframework.data.redis.cache.RedisCache.put(RedisCache.java:168)
+	at org.springframework.cache.interceptor.AbstractCacheInvoker.doPut(AbstractCacheInvoker.java:87)
+	at org.springframework.cache.interceptor.CacheAspectSupport$CachePutRequest.apply(CacheAspectSupport.java:837)
+	at org.springframework.cache.interceptor.CacheAspectSupport.execute(CacheAspectSupport.java:430)
+	at org.springframework.cache.interceptor.CacheAspectSupport.execute(CacheAspectSupport.java:345)
+	at org.springframework.cache.interceptor.CacheInterceptor.invoke(CacheInterceptor.java:64)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:753)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:698)
+	at com.example.user_service.service.user.UserServiceImpl$$EnhancerBySpringCGLIB$$a6da08ef.getUserById(<generated>)
+	at com.example.user_service.controller.UserController.getUserById(UserController.java:166)
+	at com.example.user_service.controller.UserController$$FastClassBySpringCGLIB$$2c24561d.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:783)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:753)
+	at org.springframework.validation.beanvalidation.MethodValidationInterceptor.invoke(MethodValidationInterceptor.java:123)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:753)
+	at org.springframework.retry.interceptor.RetryOperationsInterceptor$1.doWithRetry(RetryOperationsInterceptor.java:97)
+	at org.springframework.retry.support.RetryTemplate.doExecute(RetryTemplate.java:329)
+	at org.springframework.retry.support.RetryTemplate.execute(RetryTemplate.java:209)
+	at org.springframework.retry.interceptor.RetryOperationsInterceptor.invoke(RetryOperationsInterceptor.java:133)
+	at org.springframework.retry.annotation.AnnotationAwareRetryOperationsInterceptor.invoke(AnnotationAwareRetryOperationsInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:753)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:698)
+	at com.example.user_service.controller.UserController$$EnhancerBySpringCGLIB$$1f6f08b6.getUserById(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:655)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:764)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:122)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:109)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:540)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:382)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:895)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1732)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-07-15 16:38:42,225 INFO com.example.user_service.UserServiceApplication [main] This is Medicine Adherence Project
+2022-07-15 16:38:42,955 INFO com.example.user_service.UserServiceApplication [main] Starting UserServiceApplication using Java 17.0.2 on nineleaps-ThinkPad-E480 with PID 474 (/home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service/target/classes started by nineleaps in /home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service)
+2022-07-15 16:38:42,956 DEBUG com.example.user_service.UserServiceApplication [main] Running with Spring Boot v2.6.3, Spring v5.3.15
+2022-07-15 16:38:42,956 INFO com.example.user_service.UserServiceApplication [main] No active profile set, falling back to default profiles: default

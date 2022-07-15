@@ -8,10 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.example.user_service.model.UserCaretaker;
+import org.springframework.stereotype.Repository;
 
 /**
  * This is a Caretaker repository
  */
+@Repository
 public interface UserCaretakerRepository extends PagingAndSortingRepository<UserCaretaker, String> {
     @Query("select u from UserCaretaker u where u.patientId=?1 and u.caretakerId=?2")
     UserCaretaker check(String patientId, String caretakerId);

@@ -33,6 +33,9 @@ public class Messages {
     public static final String UNABLE_TO_SYNC = "Unable to sync";
     public static final String NO_MEDICINE_FOUND = "No medicine found";
     public static final String ERROR = "Error try again";
+    public static final String STARTING_METHOD_EXECUTION = "Starting of method execution";
+    public static final String EXITING_METHOD_EXECUTION = "Exiting of method execution";
+
 
 }
 

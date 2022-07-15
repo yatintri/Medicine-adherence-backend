@@ -3,6 +3,8 @@ package com.example.user_service.controller;
 import java.io.IOException;
 
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -46,47 +48,12 @@ public class CaretakerController {
     @Value("${project.rabbitmq.routingkey2}")
     private String routingKey2;
 
+    private final Logger logger = LoggerFactory.getLogger(CaretakerController.class);
+
+
     public CaretakerController(CareTakerService careTakerService, RabbitTemplate rabbitTemplate) {
         this.careTakerService = careTakerService;
         this.rabbitTemplate = rabbitTemplate;
-    }
-
-    /**
-     * Deletes Patients Request for a caretaker
-     */
-    @Retryable(maxAttempts = 3)    // retrying up to 3 times
-    @GetMapping(
-            value = "/delete",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<CaretakerDelete> delPatientReq(@NotBlank
-                                                         @NotNull
-                                                         @RequestParam(name = "cId") String cId) throws UserExceptionMessage, UserCaretakerException, UserExceptions {
-        String delPatientStatus = careTakerService.delPatientReq(cId);
-        CaretakerDelete caretakerDelete = new CaretakerDelete(delPatientStatus, Messages.DELETED_SUCCESS);
-
-        return new ResponseEntity<>(caretakerDelete, HttpStatus.OK);
-    }
-
-    /**
-     * Caretaker notifies user to take medicines
-     */
-    @Retryable(maxAttempts = 3)    // retrying up to 3 times
-    @GetMapping(
-            value = "/notifyuser",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @Transactional(timeout = 4)
-    public ResponseEntity<String> notifyUserForMed(@NotNull
-                                                   @NotBlank
-                                                   @RequestParam(name = "fcmToken") String fcmToken, @NotNull
-                                                   @NotBlank
-                                                   @RequestParam("medname") String body) {
-        rabbitTemplate.convertAndSend(topicExchange,
-                routingKey2,
-                new Notificationmessage(fcmToken, "Take medicine", "patient", body, ""));
-
-        return new ResponseEntity<>("Ok", HttpStatus.OK);
     }
 
     /**
@@ -103,6 +70,8 @@ public class CaretakerController {
     public ResponseEntity<CaretakerResponse> saveCaretaker(@Valid
                                                            @RequestBody UserCaretakerDTO userCaretakerDTO, BindingResult bindingResult)
             throws UserCaretakerException, UserExceptions, UserExceptionMessage {
+
+        logger.info("Saving Caretaker(s) : {}",userCaretakerDTO);
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new CaretakerResponse(Messages.VALIDATION,
                     Objects.requireNonNull(
@@ -112,6 +81,25 @@ public class CaretakerController {
         }
 
         CaretakerResponse userCaretaker = careTakerService.saveCareTaker(userCaretakerDTO);
+
+        return new ResponseEntity<>(userCaretaker, HttpStatus.OK);
+    }
+
+    /**
+     * Update request status if request is accepted or rejected
+     */
+    @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @PutMapping(
+            value = "/accept",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = "application/json"
+    )
+    public ResponseEntity<CaretakerResponse> updateCaretakerStatus(@NotNull
+                                                                   @NotBlank
+                                                                   @RequestParam(name = "cId") String cId) throws UserCaretakerException, UserExceptions {
+        logger.info("Updating Caretaker request status : {}",cId);
+
+        CaretakerResponse userCaretaker = careTakerService.updateCaretakerStatus(cId);
 
         return new ResponseEntity<>(userCaretaker, HttpStatus.OK);
     }
@@ -131,6 +119,9 @@ public class CaretakerController {
     public ResponseEntity<SendImageResponse> sendImageToCaretaker(@Valid
                                                                   @ModelAttribute SendImageDto sendImageDto, BindingResult bindingResult)
             throws IOException, UserCaretakerException, UserExceptions {
+
+        logger.info("Sending image to caretaker : {}",sendImageDto);
+
         SendImageResponse sendImageResponse = careTakerService.sendImageToCaretaker(sendImageDto.getImage(),
                 sendImageDto.getName(),
                 sendImageDto.getMedName(),
@@ -138,23 +129,6 @@ public class CaretakerController {
                 sendImageDto.getMedId());
 
         return new ResponseEntity<>(sendImageResponse, HttpStatus.OK);
-    }
-
-    /**
-     * Update request status if request is accepted or rejected
-     */
-    @Retryable(maxAttempts = 3)    // retrying up to 3 times
-    @PutMapping(
-            value = "/accept",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = "application/json"
-    )
-    public ResponseEntity<CaretakerResponse> updateCaretakerStatus(@NotNull
-                                                                   @NotBlank
-                                                                   @RequestParam(name = "cId") String cId) throws UserCaretakerException, UserExceptions {
-        CaretakerResponse userCaretaker = careTakerService.updateCaretakerStatus(cId);
-
-        return new ResponseEntity<>(userCaretaker, HttpStatus.OK);
     }
 
     /**
@@ -167,13 +141,11 @@ public class CaretakerController {
     )
     public ResponseEntity<CaretakerResponsePage> getCaretakerRequestsP(@NotNull
                                                                        @NotBlank
-                                                                       @RequestParam(name = "patientId") String userId, @RequestParam(
-            value = "page",
-            defaultValue = "0"
-    ) int page, @RequestParam(
-            value = "limit",
-            defaultValue = "30"
-    ) int limit) throws UserCaretakerException, UserExceptions {
+                                                                       @RequestParam(name = "patientId") String userId, @RequestParam(value = "page") int page,
+                                                                       @RequestParam(value = "limit") int limit)
+                                                                       throws UserCaretakerException, UserExceptions {
+        logger.info("Fetching caretaker requests : {}",userId);
+
         CaretakerResponsePage userCaretakerList = careTakerService.getCaretakerRequestsP(userId, page, limit);
 
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
@@ -192,6 +164,9 @@ public class CaretakerController {
                                                                  @RequestParam(name = "patientId") String userId, @RequestParam(value = "page") int page,
                                                                  @RequestParam(value = "limit") int limit)
             throws UserCaretakerException, UserExceptions {
+
+        logger.info("Fetching caretaker(s) : {}",userId);
+
         CaretakerResponsePage userCaretakerList = careTakerService.getMyCaretakers(userId, page, limit);
 
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
@@ -210,6 +185,9 @@ public class CaretakerController {
                                                                      @RequestParam(name = "caretakerId") String userId, @RequestParam(value = "page") int page,
                                                                      @RequestParam(value = "limit") int limit)
             throws UserCaretakerException, UserExceptions {
+
+        logger.info("Fetching patient requests  : {}",userId);
+
         CaretakerResponsePage userCaretakerList = careTakerService.getPatientRequests(userId, page, limit);
 
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
@@ -225,16 +203,59 @@ public class CaretakerController {
     )
     public ResponseEntity<CaretakerResponsePage> getPatientsUnderMe(@NotBlank
                                                                     @NotNull
-                                                                    @RequestParam(name = "caretakerId") String userId, @RequestParam(
-            value = "page",
-            defaultValue = "0"
-    ) int page, @RequestParam(
-            value = "limit",
-            defaultValue = "30"
-    ) int limit) throws UserCaretakerException, UserExceptions {
+                                                                    @RequestParam(name = "caretakerId") String userId, @RequestParam(value = "page") int page,
+                                                                    @RequestParam(value = "limit") int limit)
+                                                                    throws UserCaretakerException, UserExceptions {
+        logger.info("Fetching patients  : {}",userId);
+
         CaretakerResponsePage userCaretakerList = careTakerService.getPatientsUnderMe(userId, page, limit);
 
         return new ResponseEntity<>(userCaretakerList, HttpStatus.OK);
     }
+
+    /**
+     * Deletes Patients Request for a caretaker
+     */
+    @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @GetMapping(
+            value = "/delete",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CaretakerDelete> delPatientReq(@NotBlank
+                                                         @NotNull
+                                                         @RequestParam(name = "cId") String cId)
+                                                         throws UserExceptionMessage, UserCaretakerException, UserExceptions {
+        logger.info("Deleting Request(s) : {}",cId);
+
+        String delPatientStatus = careTakerService.delPatientReq(cId);
+        CaretakerDelete caretakerDelete = new CaretakerDelete(delPatientStatus, Messages.DELETED_SUCCESS);
+
+        return new ResponseEntity<>(caretakerDelete, HttpStatus.OK);
+    }
+
+    /**
+     * Caretaker notifies user to take medicines
+     */
+    @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @GetMapping(
+            value = "/notifyuser",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Transactional(timeout = 4)
+    public ResponseEntity<String> notifyUserForMed(@NotNull
+                                                   @NotBlank
+                                                   @RequestParam(name = "fcmToken") String fcmToken,
+                                                   @NotNull
+                                                   @NotBlank
+                                                   @RequestParam("medname") String body) {
+
+        logger.info("Notifying user(s) : {}",body);
+
+        rabbitTemplate.convertAndSend(topicExchange, routingKey2,
+                new Notificationmessage(fcmToken, "Take medicine", "patient", body, ""));
+
+        return new ResponseEntity<>("Ok", HttpStatus.OK);
+    }
+
 }
 

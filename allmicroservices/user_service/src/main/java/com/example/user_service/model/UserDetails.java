@@ -13,6 +13,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * This is entity class for User details
  */
@@ -22,7 +24,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "user_details")
 @ToString(exclude = "")
-public class UserDetails {
+public class UserDetails implements Serializable {
     @Id
     @Column(
             name = "userdet_id",

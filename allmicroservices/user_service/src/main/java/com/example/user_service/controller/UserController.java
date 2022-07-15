@@ -13,15 +13,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.MessagingException;
 import org.springframework.retry.annotation.Retryable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -53,67 +53,22 @@ public class UserController {
     private final UserService userService;
     UserMedicineService userMedicineService;
     private final RabbitTemplate rabbitTemplate;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+    private final JwtUtil jwtUtil;
+
     @Value("${project.rabbitmq.routingkey}")
     private String routingKey;
     @Value("${project.rabbitmq.exchange}")
     private String topicExchange;
 
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     public UserController(UserService userService, UserMedicineService userMedicineService,
-                          RabbitTemplate rabbitTemplate) {
+                          RabbitTemplate rabbitTemplate,JwtUtil jwtUtil) {
         this.userMedicineService = userMedicineService;
         this.userService = userService;
         this.rabbitTemplate = rabbitTemplate;
-    }
-
-    /**
-     * Logins the user when they want to Add a caretaker
-     */
-    @Retryable(maxAttempts = 3)    // retrying up to 3 times
-    @PostMapping(
-            value = "/login",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = "application/json"
-    )
-    public ResponseEntity<UserResponse> login(@Valid
-                                              @RequestBody LoginDTO loginDTO, BindingResult bindingResult) throws UserExceptionMessage, UserExceptions {
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(new UserResponse(Messages.VALIDATION,
-                    Objects.requireNonNull(
-                            bindingResult.getFieldError()).getDefaultMessage(),
-                    null,
-                    "",
-                    ""),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(userService.login(loginDTO.getEmail(), loginDTO.getFcmToken()), HttpStatus.OK);
-    }
-
-    /**
-     * This allows you to have short-lived access tokens without having to collect credentials every time one expires.
-     */
-    @Retryable(maxAttempts = 3)    // retrying up to 3 times
-    @PostMapping(
-            value = "/refreshToken",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = "application/json"
-    )
-    public ResponseEntity<String> refreshToken(@NotNull
-                                               @NotBlank
-                                               @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest, BindingResult bindingResult)
-            throws UserExceptionMessage, UserExceptions, UserMedicineException, ExecutionException,
-            InterruptedException {
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(Messages.VALIDATION, HttpStatus.BAD_REQUEST);
-        }
-
-        String jwtToken = jwtUtil.generateToken(userService.getUserById(uid).getUserName());
-
-        return new ResponseEntity<>(jwtToken, HttpStatus.CREATED);
+        this.jwtUtil = jwtUtil;
     }
 
     /**
@@ -131,31 +86,37 @@ public class UserController {
                                                  @NotBlank
                                                  @RequestParam(name = "picPath") String picPath, @Valid
                                                  @RequestBody UserEntityDTO userEntityDTO) throws UserExceptionMessage, UserExceptions {
+
+        logger.info("Saving user : {}",userEntityDTO);
+
         return new ResponseEntity<>(userService.saveUser(userEntityDTO, fcmToken, picPath), HttpStatus.CREATED);
     }
 
     /**
-     * Generates a pdf for the adherence maintained by a user
+     * Logins the user when they want to Add a caretaker
      */
-    @GetMapping(
-            value = "/pdf",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.ALL_VALUE
-    )
-    @Transactional(timeout = 10)
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
-    public ResponseEntity<UserResponse> sendPdf(@NotNull
-                                                @NotBlank
-                                                @RequestParam(name = "medId") Integer medId)
-            throws IOException, MessagingException, UserExceptionMessage, UserExceptions {
-        if (userService.sendUserMedicines(medId).equals(Messages.FAILED)) {
-            throw new UserExceptionMessage(Messages.MEDICINE_NOT_FOUND);
+    @PostMapping(
+            value = "/login",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = "application/json"
+    )
+    public ResponseEntity<UserResponse> login(@Valid
+                                              @RequestBody LoginDTO loginDTO, BindingResult bindingResult)
+                                              throws UserExceptionMessage, UserExceptions {
+        logger.info("Login in the application : {}",loginDTO);
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(new UserResponse(Messages.VALIDATION,
+                    Objects.requireNonNull(
+                            bindingResult.getFieldError()).getDefaultMessage(),
+                    null,
+                    "",
+                    ""),
+                    HttpStatus.BAD_REQUEST);
         }
 
-        String filePath = userService.sendUserMedicines(medId);
-        UserResponse userResponse = new UserResponse(Messages.SUCCESS, filePath, null, "", "");
-
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        return new ResponseEntity<>(userService.login(loginDTO.getEmail(), loginDTO.getFcmToken()), HttpStatus.OK);
     }
 
     /**
@@ -170,6 +131,9 @@ public class UserController {
                                                  @NotBlank
                                                  @RequestParam("email") String email, @RequestParam("sender") String sender)
             throws UserExceptionMessage, UserExceptions {
+
+        logger.info("Sending mail : {}",email);
+
         UserEntity userEntity = userService.getUserByEmail(email);
 
         if (userEntity == null) {
@@ -196,6 +160,9 @@ public class UserController {
                                                            @RequestParam("userId") String userId)
             throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException,
             UserExceptions {
+
+        logger.info("Fetching user by id : {}",userId);
+
         List<UserEntity> user = Arrays.asList(userService.getUserById(userId));
         List<UserMedicines> list = user.get(0).getUserMedicines();
         UserProfileResponse userProfileResponse = new UserProfileResponse("OK", user, list);
@@ -214,7 +181,64 @@ public class UserController {
     public ResponseEntity<UserResponsePage> getUsers(@RequestParam(value = "page") int page,
                                                      @RequestParam(value = "limit") int limit)
             throws UserExceptionMessage, ExecutionException, InterruptedException, UserExceptions {
+
+        logger.info("Fetching users ");
         return new ResponseEntity<>(userService.getUsers(page, limit).get(), HttpStatus.OK);
     }
+
+    /**
+     * This allows you to have short-lived access tokens without having to collect credentials every time one expires.
+     */
+    @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @PostMapping(
+            value = "/refreshToken",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = "application/json"
+    )
+    public ResponseEntity<String> refreshToken(@NotNull
+                                               @NotBlank
+                                               @RequestParam(name = "uid") String uid, HttpServletRequest httpServletRequest, BindingResult bindingResult)
+            throws UserExceptionMessage, UserExceptions, UserMedicineException, ExecutionException,
+            InterruptedException {
+
+        logger.info("Generating new token : {}",uid);
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(Messages.VALIDATION, HttpStatus.BAD_REQUEST);
+        }
+
+        String jwtToken = jwtUtil.generateToken(userService.getUserById(uid).getUserName());
+
+        return new ResponseEntity<>(jwtToken, HttpStatus.CREATED);
+    }
+
+    /**
+     * Generates a pdf for the adherence maintained by a user
+     */
+    @GetMapping(
+            value = "/pdf",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.ALL_VALUE
+    )
+    @Transactional(timeout = 10)
+    @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    public ResponseEntity<UserResponse> sendPdf(@NotNull
+                                                @NotBlank
+                                                @RequestParam(name = "medId") Integer medId)
+            throws IOException, MessagingException, UserExceptionMessage, UserExceptions {
+
+        logger.info("Sending pdf : {}",medId);
+
+        if (userService.sendUserMedicines(medId).equals(Messages.FAILED)) {
+            throw new UserExceptionMessage(Messages.MEDICINE_NOT_FOUND);
+        }
+
+        String filePath = userService.sendUserMedicines(medId);
+        UserResponse userResponse = new UserResponse(Messages.SUCCESS, filePath, null, "", "");
+
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    }
+
+
 }
 

@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
 @Table(name = "user")
 @NamedEntityGraph(name = "userDetail_graph",
         attributeNodes = @NamedAttributeNode(value = "userDetails"))
-public class UserEntity {
+public class UserEntity implements Serializable {
 
     @Id
     @Column(name = "user_id", nullable = false, length = 100)
@@ -60,7 +61,7 @@ public class UserEntity {
             fetch = FetchType.EAGER
     )
     @JsonIgnore
-    private List<UserMedicines> userMedicines;
+    private transient List<UserMedicines> userMedicines;
 
 
 }
