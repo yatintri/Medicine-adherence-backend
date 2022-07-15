@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+
 /**
  * This is a Pojo class for medicine
  */
@@ -25,7 +26,7 @@ public class MedicinePojo {
     private int currentCount;
 
     @NotNull(message = "EndDate is mandatory")
-    private  Date endDate;
+    private Date endDate;
 
     @NotBlank(message = "Description is mandatory")
     @NotNull(message = "Description is mandatory")
@@ -51,6 +52,4 @@ public class MedicinePojo {
     private String time;
 
 
-
-///
 }

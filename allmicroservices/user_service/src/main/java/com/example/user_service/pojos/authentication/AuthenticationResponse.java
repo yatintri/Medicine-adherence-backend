@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 /**
  * This is a Pojo response class for JWT Authentication
  */
@@ -19,4 +20,3 @@ public class AuthenticationResponse {
     private String jwt;
 
 }
-//
