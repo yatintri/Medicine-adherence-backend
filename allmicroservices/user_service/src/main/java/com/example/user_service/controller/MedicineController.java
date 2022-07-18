@@ -138,7 +138,8 @@ public class MedicineController {
     )
     public ResponseEntity<ImageListResponse> getMedicineImages(@NotBlank
                                                                @NotNull
-                                                               @RequestParam(name = "medId") Integer medId, @RequestParam(value = "page") int page,
+                                                               @RequestParam(name = "medId") Integer medId
+                                                              , @RequestParam(value = "page") int page,
                                                                @RequestParam(value = "limit") int limit)
                                                                throws UserExceptions, UserMedicineException {
         logger.info("Fetching medicine images : {}",medId);

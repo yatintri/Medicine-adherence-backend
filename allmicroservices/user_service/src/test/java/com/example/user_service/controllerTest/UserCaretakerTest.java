@@ -105,7 +105,7 @@ class UserCaretakerTest {
  @ExtendWith(MockitoExtension.class)
  void getPatientsUnderMe() throws Exception{
   mockMvc.perform(MockMvcRequestBuilders
-                  .get("/api/v1/patients?caretakerId=73578dfd-e7c9-4381-a348-113e72d80fa2")
+                  .get("/api/v1/patients?caretakerId=73578dfd-e7c9-4381-a348-113e72d80fa2&page=0&limit=2")
                   .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk());
 
