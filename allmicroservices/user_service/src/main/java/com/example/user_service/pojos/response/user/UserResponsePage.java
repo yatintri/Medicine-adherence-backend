@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 /**
  * This is a response class for User to return total items, current page, total page
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponsePage {
+public class UserResponsePage implements Serializable {
 
     private String status;
     private String message;

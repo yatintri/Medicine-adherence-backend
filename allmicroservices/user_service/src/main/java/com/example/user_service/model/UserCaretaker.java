@@ -1,5 +1,6 @@
 package com.example.user_service.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "my_caretakers")
-public class UserCaretaker {
+public class UserCaretaker implements Serializable {
     @Id
     @Column(
             name = "c_id",

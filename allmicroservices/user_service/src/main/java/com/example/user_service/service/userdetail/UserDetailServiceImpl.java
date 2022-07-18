@@ -8,6 +8,7 @@ import org.hibernate.exception.JDBCConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,7 @@ public class UserDetailServiceImpl implements UserDetailService {
      * This class contains the business logic to save all the details of a user by its user id
      */
     @Override
+    @CachePut(value = "userCache")
     public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO)
             throws UserExceptionMessage, UserExceptions {
         logger.info(Messages.STARTING_METHOD_EXECUTION);

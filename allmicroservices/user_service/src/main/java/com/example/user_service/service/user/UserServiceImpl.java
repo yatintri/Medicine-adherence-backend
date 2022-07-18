@@ -119,16 +119,7 @@ public class UserServiceImpl implements UserService {
         logger.info(Messages.STARTING_METHOD_EXECUTION);
 
         try {
-            UserEntity user = getUserByEmail(userEntityDTO.getEmail());
-
-            if (user != null) {
-                return new UserResponse(Messages.FAILED,
-                        Messages.USER_PRESENT,
-                        new ArrayList<>(Arrays.asList(user)),
-                        "",
-                        "");
-            }
-
+             checkForUser(userEntityDTO);
             logger.info(Thread.currentThread().getName());
 
             UserEntity userEntity = mapToEntity(userEntityDTO);
@@ -140,6 +131,7 @@ public class UserServiceImpl implements UserService {
 
             userDetails.setFcmToken(fcmToken);
             userDetails.setPicPath(picPath);
+            userDetails.setUser(userEntity);
             userEntity.setUserDetails(userDetails);
 
             UserEntity ue = userRepository.save(userEntity);
@@ -161,8 +153,14 @@ public class UserServiceImpl implements UserService {
                     refreshToken);
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error("Save user:" + Messages.SQL_ERROR_MSG);
+            logger.error(Messages.SQL_ERROR_MSG);
             throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+        }
+    }
+
+    private void checkForUser(UserEntityDTO userEntityDTO) throws UserExceptionMessage {
+        if (userRepository.findByMail(userEntityDTO.getEmail())!= null) {
+            throw new UserExceptionMessage(Messages.USER_PRESENT);
         }
     }
 
@@ -197,6 +195,7 @@ public class UserServiceImpl implements UserService {
      * This method fetches user by its email ignoring the case
      */
     @Override
+    @Cacheable(value = "userMail")
     public UserEntity getUserByEmail(String email) throws UserExceptionMessage, UserExceptions {
         logger.info(Messages.STARTING_METHOD_EXECUTION);
 
@@ -257,7 +256,7 @@ public class UserServiceImpl implements UserService {
             return userEntity;
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error("Get user by name" + Messages.SQL_ERROR_MSG);
+            logger.error("Get user by name :" + Messages.SQL_ERROR_MSG);
             throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
         }
     }

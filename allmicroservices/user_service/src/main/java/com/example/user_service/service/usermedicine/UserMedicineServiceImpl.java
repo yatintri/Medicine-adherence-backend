@@ -11,6 +11,7 @@ import org.hibernate.exception.JDBCConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      */
     @Override
     @Async
+    @Cacheable(value = "medicineCache")
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId, int page, int limit)
             throws UserMedicineException, UserExceptionMessage {
         logger.info(Messages.STARTING_METHOD_EXECUTION);
@@ -195,6 +197,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      * This method contains logic to fetch all the medicine history for a particular user
      */
     @Override
+    @Cacheable(value = "medicineCache")
     public MedicineResponse getMedicineHistory(Integer medId, int page, int limit) throws UserMedicineException {
         logger.info(Messages.STARTING_METHOD_EXECUTION);
 
@@ -220,6 +223,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      * This method contains logic to fetch all the medicine images for a particular user
      */
     @Override
+    @Cacheable(value = "medicineCache")
     public ImageListResponse getUserMedicineImages(Integer medId, int page, int limit)
             throws UserExceptions, UserMedicineException {
         logger.info(Messages.STARTING_METHOD_EXECUTION);

@@ -21,6 +21,9 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,6 +84,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      * This method deletes patient request sent to a caretaker
      */
     @Override
+    @CacheEvict(value = "caretakerCache")
     public String delPatientReq(String cId) throws UserExceptionMessage, UserCaretakerException, UserExceptions {
         logger.info(Messages.STARTING_METHOD_EXECUTION);
 
@@ -150,6 +154,10 @@ public class CareTakerServiceImpl implements CareTakerService {
             Files.write(path, multipartFile.getBytes());
 
             UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
+            if(userMedicines == null){
+                throw new UserCaretakerException(Messages.NO_MEDICINE_FOUND);
+
+            }
             String userName = userMedicines.getUserEntity().getUserName();
             Image image = new Image();
 
@@ -184,6 +192,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      * This method contains logic which updates caretaker request status
      */
     @Override
+    @CachePut(value = "caretakerCache")
     public CaretakerResponse updateCaretakerStatus(String cId) throws UserCaretakerException {
         logger.info(Messages.STARTING_METHOD_EXECUTION);
 
@@ -264,6 +273,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      * This method fetches all the caretakers for a patient
      */
     @Override
+    @Cacheable(value = "caretakerCache")
     public CaretakerResponsePage getMyCaretakers(String userId, int page, int limit) throws UserCaretakerException {
 
         logger.info(Messages.STARTING_METHOD_EXECUTION);
@@ -296,6 +306,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      * This method fetches all the patient request to a caretaker
      */
     @Override
+    @Cacheable(value = "caretakerCache")
     public CaretakerResponsePage getPatientRequests(String userId, int page, int limit)
             throws UserCaretakerException, UserExceptions {
 
@@ -329,6 +340,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      * This method fetches all the patients under a caretaker
      */
     @Override
+    @Cacheable(value = "caretakerCache")
     public CaretakerResponsePage getPatientsUnderMe(String userId, int page, int limit)
             throws UserCaretakerException, UserExceptions {
 

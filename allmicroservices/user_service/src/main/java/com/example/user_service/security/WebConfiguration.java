@@ -23,7 +23,7 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(authenticationHandler())
                 .addPathPatterns(
                         "/api/v1/email",
-                      //  "/api/v1/users",
+                        "/api/v1/users",
                         "/api/v1/request",
                         "/api/v1/accept",
                         "/api/v1/patients",

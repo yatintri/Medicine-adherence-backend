@@ -1,13 +1,8 @@
-2022-07-15 16:38:50,895 INFO com.example.user_service.UserServiceApplication [main] Started UserServiceApplication in 8.477 seconds (JVM running for 9.167)
-2022-07-15 16:38:52,723 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-2] Fetching user by id : 84d29cd9-b0ca-4470-ad3a-2b820a286fba
-2022-07-15 16:38:53,134 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] Starting of method execution
-2022-07-15 16:38:53,134 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] Get by id
-2022-07-15 16:38:53,207 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] http-nio-8080-exec-2
-2022-07-15 16:38:53,207 DEBUG com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] Fetching user by 84d29cd9-b0ca-4470-ad3a-2b820a286fba id
-2022-07-15 16:38:53,207 INFO com.example.user_service.service.user.UserServiceImpl [http-nio-8080-exec-2] Exiting of method execution
-2022-07-15 16:39:06,735 INFO com.example.user_service.UserServiceApplication [main] This is Medicine Adherence Project
-2022-07-15 16:39:07,529 INFO com.example.user_service.UserServiceApplication [main] Starting UserServiceApplication using Java 17.0.2 on nineleaps-ThinkPad-E480 with PID 702 (/home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service/target/classes started by nineleaps in /home/nineleaps/Medicine-adherence-backend/allmicroservices/user_service)
-2022-07-15 16:39:07,530 DEBUG com.example.user_service.UserServiceApplication [main] Running with Spring Boot v2.6.3, Spring v5.3.15
-2022-07-15 16:39:07,530 INFO com.example.user_service.UserServiceApplication [main] No active profile set, falling back to default profiles: default
-2022-07-15 16:39:15,077 INFO com.example.user_service.UserServiceApplication [main] Started UserServiceApplication in 8.14 seconds (JVM running for 8.739)
-2022-07-15 16:39:18,136 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-2] Fetching user by id : 84d29cd9-b0ca-4470-ad3a-2b820a286fba
+2022-07-16 18:29:06,502 INFO com.example.user_service.security.AuthenticationHandler [http-nio-8080-exec-4] vyyy
+2022-07-16 18:29:06,504 INFO com.example.user_service.controller.UserController [http-nio-8080-exec-4] Sending mail : abhichhimwal2901@gmail.com
+2022-07-16 18:29:45,229 INFO com.example.user_service.security.AuthenticationHandler [http-nio-8080-exec-5] null
+2022-07-16 18:29:45,229 INFO com.example.user_service.security.AuthenticationHandler [http-nio-8080-exec-5] Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2eXl5IiwiZXhwIjoxNjU4MzM1MDg5LCJpYXQiOjE2NTc5NzUwODl9.MkXXHhEbovBOFL0lI4kvb3p1B6u_fYNWvfNxqHVw6Bc
+2022-07-16 18:29:45,230 INFO com.example.user_service.security.AuthenticationHandler [http-nio-8080-exec-5] vyyy
+2022-07-16 18:31:44,342 INFO com.example.user_service.security.AuthenticationHandler [http-nio-8080-exec-8] null
+2022-07-16 18:31:44,342 INFO com.example.user_service.security.AuthenticationHandler [http-nio-8080-exec-8] Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2YXkiLCJleHAiOjE2NTgyNDAyMjksImlhdCI6MTY1Nzg4MDIyOX0.JNmoV1lC5CILyfAM6rpyu9q601dXRPqGpU90BP7x2FY
+2022-07-16 18:31:44,343 INFO com.example.user_service.security.AuthenticationHandler [http-nio-8080-exec-8] vay
