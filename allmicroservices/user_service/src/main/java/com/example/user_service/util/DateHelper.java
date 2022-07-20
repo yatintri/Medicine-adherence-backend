@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 /**
  * This is a Date helper class for getting dates and time
  */
-public class Datehelper {
-    private Datehelper(){}
+public class DateHelper {
+    private DateHelper(){}
 
     public static java.sql.Date getcurrentdate(){
         java.util.Date date=new java.util.Date();

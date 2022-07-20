@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
+import com.example.user_service.util.Constants;
 import org.hibernate.exception.JDBCConnectionException;
 
 import org.modelmapper.ModelMapper;
@@ -37,7 +38,6 @@ import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.util.Datehelper;
 import com.example.user_service.util.JwtUtil;
-import com.example.user_service.util.Messages;
 
 /**
  * This class contains all the business logic for the User controller
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserResponse login(String mail, String fcmToken) throws UserExceptionMessage, UserExceptions {
-        logger.info(Messages.STARTING_METHOD_EXECUTION);
+        logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
             UserEntity user = getUserByEmail(mail);
@@ -91,10 +91,10 @@ public class UserServiceImpl implements UserService {
                 String jwtToken = jwtUtil.generateToken(user.getUserName());
                 String refreshToken = passwordEncoder.encode(user.getUserId());
 
-                logger.info(Messages.EXITING_METHOD_EXECUTION);
+                logger.info(Constants.EXITING_METHOD_EXECUTION);
                 logger.debug("Logging in with {} email",mail);
-                return new UserResponse(Messages.SUCCESS,
-                        Messages.SUCCESS,
+                return new UserResponse(Constants.SUCCESS,
+                        Constants.SUCCESS,
                         new ArrayList<>(Arrays.asList(user)),
                         jwtToken,
                         refreshToken);
@@ -102,11 +102,11 @@ public class UserServiceImpl implements UserService {
 
             logger.error("LOGIN: Error logging in!");
 
-            throw new UserExceptionMessage(Messages.MSG);
+            throw new UserExceptionMessage(Constants.MSG);
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+            logger.error(Constants.SQL_ERROR_MSG);
+            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
         }
     }
 
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath)
             throws UserExceptionMessage, UserExceptions {
-        logger.info(Messages.STARTING_METHOD_EXECUTION);
+        logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
              checkForUser(userEntityDTO);
@@ -139,28 +139,28 @@ public class UserServiceImpl implements UserService {
             if (ue.getUserName() == null) {
                 logger.error("Save user: Error try again!");
 
-                throw new UserExceptionMessage(Messages.ERROR);
+                throw new UserExceptionMessage(Constants.ERROR);
             }
 
             String jwtToken = jwtUtil.generateToken(ue.getUserName());
             String refreshToken = passwordEncoder.encode(ue.getUserId());
-            logger.info(Messages.EXITING_METHOD_EXECUTION);
+            logger.info(Constants.EXITING_METHOD_EXECUTION);
             logger.debug("Saving {} user ", userEntityDTO);
-            return new UserResponse(Messages.SUCCESS,
-                    Messages.SAVED_USER,
+            return new UserResponse(Constants.SUCCESS,
+                    Constants.SAVED_USER,
                     new ArrayList<>(Arrays.asList(ue)),
                     jwtToken,
                     refreshToken);
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+            logger.error(Constants.SQL_ERROR_MSG);
+            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
         }
     }
 
     private void checkForUser(UserEntityDTO userEntityDTO) throws UserExceptionMessage {
         if (userRepository.findByMail(userEntityDTO.getEmail())!= null) {
-            throw new UserExceptionMessage(Messages.USER_PRESENT);
+            throw new UserExceptionMessage(Constants.USER_PRESENT);
         }
     }
 
@@ -170,24 +170,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public String sendUserMedicines(Integer medId)
             throws MessagingException, IOException, UserExceptions, UserExceptionMessage {
-        logger.info(Messages.STARTING_METHOD_EXECUTION);
+        logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
             Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
 
             if (userMedicines.isEmpty()) {
-                return Messages.FAILED;
+                return Constants.FAILED;
             }
 
             UserEntity entity = userMedicines.get().getUserEntity();
             List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
-            logger.info(Messages.EXITING_METHOD_EXECUTION);
+            logger.info(Constants.EXITING_METHOD_EXECUTION);
             logger.debug("Creating pdf for {} medicine",medId);
             return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error("Send user medicines :" + Messages.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+            logger.error("Send user medicines :" + Constants.SQL_ERROR_MSG);
+            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
         }
     }
 
@@ -195,18 +195,19 @@ public class UserServiceImpl implements UserService {
      * This method fetches user by its email ignoring the case
      */
     @Override
-    @Cacheable(value = "userMail")
+
+    @Cacheable(value = "userMail",key = "#email")
     public UserEntity getUserByEmail(String email) throws UserExceptionMessage, UserExceptions {
-        logger.info(Messages.STARTING_METHOD_EXECUTION);
+        logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
             logger.debug("fetching {} mail",email);
-            logger.info(Messages.EXITING_METHOD_EXECUTION);
+            logger.info(Constants.EXITING_METHOD_EXECUTION);
             return userRepository.findByMail(email);
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error("Get user by email :" + Messages.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+            logger.error("Get user by email :" + Constants.SQL_ERROR_MSG);
+            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
         }
     }
 
@@ -214,9 +215,9 @@ public class UserServiceImpl implements UserService {
      * This method return values that will be stored in the cache
      */
     @Override
-    @Cacheable(value = "userCache")
+    @Cacheable(value = "userCache" ,key = "#userId")
     public UserEntity getUserById(String userId) throws UserExceptionMessage {
-        logger.info(Messages.STARTING_METHOD_EXECUTION);
+        logger.info(Constants.STARTING_METHOD_EXECUTION);
         logger.info("Get by id");
         try {
             Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.getUserById(userId));
@@ -224,15 +225,15 @@ public class UserServiceImpl implements UserService {
             logger.info(Thread.currentThread().getName());
 
             if (optionalUserEntity.isEmpty()) {
-                throw new UserExceptionMessage(Messages.MSG);
+                throw new UserExceptionMessage(Constants.MSG);
             }
             logger.debug("Fetching user by {} id",userId);
-            logger.info(Messages.EXITING_METHOD_EXECUTION);
+            logger.info(Constants.EXITING_METHOD_EXECUTION);
             return optionalUserEntity.get();
         } catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error("Get user by id:" + Messages.SQL_ERROR_MSG);
+            logger.error("Get user by id:" + Constants.SQL_ERROR_MSG);
 
-            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
         }
     }
 
@@ -241,7 +242,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<UserEntity> getUserByName(String userName) throws UserExceptionMessage, NullPointerException {
-        logger.info(Messages.STARTING_METHOD_EXECUTION);
+        logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
             List<UserEntity> userEntity = userRepository.findByNameIgnoreCase(userName);
@@ -249,15 +250,15 @@ public class UserServiceImpl implements UserService {
             if (userEntity.isEmpty()) {
                 logger.error("Save user: Error try again!");
 
-                throw new UserExceptionMessage(Messages.MSG);
+                throw new UserExceptionMessage(Constants.MSG);
             }
             logger.debug("Fetching user by {} name",userName);
-            logger.info(Messages.EXITING_METHOD_EXECUTION);
+            logger.info(Constants.EXITING_METHOD_EXECUTION);
             return userEntity;
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error("Get user by name :" + Messages.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+            logger.error("Get user by name :" + Constants.SQL_ERROR_MSG);
+            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
         }
     }
 
@@ -269,24 +270,24 @@ public class UserServiceImpl implements UserService {
     public CompletableFuture<UserResponsePage> getUsers(int page, int limit)
             throws UserExceptionMessage, UserExceptions {
 
-        logger.info(Messages.STARTING_METHOD_EXECUTION);
+        logger.info(Constants.STARTING_METHOD_EXECUTION);
         Pageable pageableRequest = PageRequest.of(page, limit);
 
         try {
             Page<UserEntity> list = userRepository.findAllUsers(pageableRequest);
 
             logger.info(Thread.currentThread().getName());
-            logger.info(Messages.EXITING_METHOD_EXECUTION);
-            return CompletableFuture.completedFuture(new UserResponsePage(Messages.SUCCESS,
-                    Messages.DATA_FOUND,
+            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            return CompletableFuture.completedFuture(new UserResponsePage(Constants.SUCCESS,
+                    Constants.DATA_FOUND,
                     list.getTotalElements(),
                     list.getTotalPages(),
                     page,
                     list.getContent()));
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error("Get users:" + Messages.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+            logger.error("Get users:" + Constants.SQL_ERROR_MSG);
+            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.user_service.service.userdetail;
 
 import java.util.Optional;
 
+import com.example.user_service.util.Constants;
 import org.hibernate.exception.JDBCConnectionException;
 
 
@@ -16,10 +17,9 @@ import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserEntity;
-import com.example.user_service.pojos.dto.UserDetailsDTO;
+import com.example.user_service.pojos.dto.request.UserDetailsDTO;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
-import com.example.user_service.util.Messages;
 
 /**
  * This class contains all the business logic for the user detail controller
@@ -42,10 +42,10 @@ public class UserDetailServiceImpl implements UserDetailService {
      * This class contains the business logic to save all the details of a user by its user id
      */
     @Override
-    @CachePut(value = "userCache")
+    @CachePut(value = "userCache",key = "#id")
     public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO)
             throws UserExceptionMessage, UserExceptions {
-        logger.info(Messages.STARTING_METHOD_EXECUTION);
+        logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
             Optional<UserEntity> user = Optional.ofNullable(userRepository.getUserById(id));
@@ -53,7 +53,7 @@ public class UserDetailServiceImpl implements UserDetailService {
             if (user.isEmpty()) {
                 logger.error("Save user details: User not found");
 
-                throw new UserExceptionMessage(Messages.USER_NOT_FOUND);
+                throw new UserExceptionMessage(Constants.USER_NOT_FOUND);
             }
 
             UserDetails userDetails1 = user.get().getUserDetails();
@@ -67,12 +67,12 @@ public class UserDetailServiceImpl implements UserDetailService {
             userDetails1.setUserContact(userDetailsDTO.getUserContact());
             userDetailsRepository.save(userDetails1);
             logger.debug("Saving {} user {} details",id,userDetailsDTO);
-            logger.info(Messages.EXITING_METHOD_EXECUTION);
+            logger.info(Constants.EXITING_METHOD_EXECUTION);
             return userDetails1;
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
-            logger.error(Messages.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Messages.SQL_ERROR_MSG);
+            logger.error(Constants.SQL_ERROR_MSG);
+            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
         }
     }
 }
