@@ -50,7 +50,7 @@ public class UserController {
 
     private final JwtUtil jwtUtil;
 
-    @Value("${project.rabbitmq.routingkey}")
+    @Value("${project.rabbitmq.routingKey}")
     private String routingKey;
     @Value("${project.rabbitmq.exchange}")
     private String topicExchange;

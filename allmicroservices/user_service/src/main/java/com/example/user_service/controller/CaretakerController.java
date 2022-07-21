@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.request.SendImageDto;
 import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
@@ -48,8 +47,8 @@ public class CaretakerController {
     RabbitTemplate rabbitTemplate;
     @Value("${project.rabbitmq.exchange}")
     private String topicExchange;
-    @Value("${project.rabbitmq.routingkey2}")
-    private String routingKey2;
+    @Value("${project.rabbitmq.routingKeyNotification}")
+    private String routingKeyNotification;
 
     private final Logger logger = LoggerFactory.getLogger(CaretakerController.class);
 
@@ -263,7 +262,7 @@ public class CaretakerController {
 
         logger.info("Notifying user(s) : {}",body);
 
-        rabbitTemplate.convertAndSend(topicExchange, routingKey2,
+        rabbitTemplate.convertAndSend(topicExchange, routingKeyNotification,
                 new Notificationmessage(fcmToken, "Take medicine", "patient", body, ""));
 
         return new ResponseEntity<>("Ok", HttpStatus.OK);

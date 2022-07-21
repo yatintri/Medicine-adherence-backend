@@ -64,8 +64,8 @@ public class CareTakerServiceImpl implements CareTakerService {
     private final UserMedicineRepository userMedicineRepository;
 
     RabbitTemplate rabbitTemplate;
-    @Value("${project.rabbitmq.routingkey2}")
-    private String routingKey2;
+    @Value("${project.rabbitmq.routingKeyNotification}")
+    private String routingKeyNotification;
     @Value("${project.rabbitmq.exchange}")
     private String topicExchange;
 
@@ -172,7 +172,7 @@ public class CareTakerServiceImpl implements CareTakerService {
                     "epkw4MI-RxyMzZjvD6fUl6:APA91bEUyAJpJ5RmDyI1KLcMLJbBPiYSX64oIW4WkNq62zeUlMPUPknGkBHTB_drOBX6CUkiI0Pyfc4Myvt87v6BU69kz0LPq4YM9iWnG9RrNbxIpC4LrtE-zWfNdbB3dbjR2bmogops";
 
             rabbitTemplate.convertAndSend(topicExchange,
-                    routingKey2,
+                    routingKeyNotification,
                     new Notificationmessage(fcmToken,
                             "Take medicine",
                             "caretaker",

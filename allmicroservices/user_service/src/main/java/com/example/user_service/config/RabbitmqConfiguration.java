@@ -16,23 +16,23 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitmqConfiguration {
     @Value("${project.rabbitmq.queue}")
     private String queueName;
-    @Value("${project.rabbitmq.queue2}")
-    private String queue2Name;
+    @Value("${project.rabbitmq.queueNotification}")
+    private String queueNameNotification;
     @Value("${project.rabbitmq.exchange}")
     private String topicExchange;
-    @Value("${project.rabbitmq.routingkey}")
+    @Value("${project.rabbitmq.routingKey}")
     private String routingKey;
-    @Value("${project.rabbitmq.routingkey2}")
-    private String routingKey2;
+    @Value("${project.rabbitmq.routingKeyNotification}")
+    private String routingKeyNotification;
 
-    @Bean(name = "bind1")
-    Binding binding1(@Qualifier("queue1") Queue queue, TopicExchange exchange) {
+    @Bean(name = "bindMail")
+    Binding bindingMail(@Qualifier("queueMail") Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
-    @Bean(name = "bind2")
-    Binding binding2(@Qualifier("queue2") Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKey2);
+    @Bean(name = "bindNotification")
+    Binding bindingNotification(@Qualifier("queueNotification") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKeyNotification);
     }
 
     @Bean
@@ -49,15 +49,14 @@ public class RabbitmqConfiguration {
         return rabbitTemplate;
     }
 
-    @Bean(name = "queue1")
+    @Bean(name = "queueMail")
     public Queue getMailQueue() {
         return new Queue(queueName);
     }
 
-    //
-    @Bean(name = "queue2")
+    @Bean(name = "queueNotification")
     public Queue getNotificationQueue() {
-        return new Queue(queue2Name);
+        return new Queue(queueNameNotification);
     }
 
     @Bean

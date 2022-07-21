@@ -51,7 +51,7 @@ import java.time.Duration;
                                 .entryTtl(Duration.ofMinutes(5)))
                 .withCacheConfiguration("medicineCache",RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(15)))
                 .withCacheConfiguration("caretakerCache",RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(15)))
-                .withCacheConfiguration("userMail",RedisCacheConfiguration.defaultCacheConfig().disableCachingNullValues().entryTtl(Duration.ofMinutes(15)));
+                .withCacheConfiguration("userMail",RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(15)));
     }
 
     @Bean
