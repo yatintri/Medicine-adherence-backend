@@ -33,5 +33,5 @@ public interface CareTakerService {
 
      CaretakerDelete deletePatientRequest(String caretakerId) ;
 
-    SendImageResponse sendImageToCaretaker(MultipartFile multipartFile , String filename , String medName, String caretakerId , Integer medId) ;
+    SendImageResponse sendImageToCaretaker(MultipartFile multipartFile , String filename , String medicineName, String caretakerId , Integer medicineId) ;
 }

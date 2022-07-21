@@ -20,10 +20,10 @@ public interface UserMedicineService {
 
     SyncResponse syncData(String userId , List<MedicinePojo> list) ;
 
-    MedicineResponse syncMedicineHistory(Integer medId , List<MedicineHistoryDTO> medicineHistoryDTOS) ;
+    MedicineResponse syncMedicineHistory(Integer medicineId , List<MedicineHistoryDTO> medicineHistoryDTOS) ;
 
-    MedicineResponse getMedicineHistory(Integer medId, int page, int limit) ;
+    MedicineResponse getMedicineHistory(Integer medicineId, int page, int limit) ;
 
-    ImageListResponse getUserMedicineImages(Integer medId, int page, int limit);
+    ImageListResponse getUserMedicineImages(Integer medicineId, int page, int limit);
 
 }
