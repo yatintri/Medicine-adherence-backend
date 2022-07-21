@@ -1,8 +1,10 @@
-package com.example.user_service.service.userdetail;
+package com.example.user_service.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import com.example.user_service.util.Constants;
+import com.example.user_service.util.DateHelper;
 import org.hibernate.exception.JDBCConnectionException;
 
 
@@ -14,9 +16,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserDetails;
-import com.example.user_service.model.UserEntity;
+import com.example.user_service.model.User;
 import com.example.user_service.pojos.dto.request.UserDetailsDTO;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserRepository;
@@ -44,11 +45,11 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Override
     @CachePut(value = "userCache",key = "#id")
     public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO)
-            throws UserExceptionMessage, UserExceptions {
+           {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
-            Optional<UserEntity> user = Optional.ofNullable(userRepository.getUserById(id));
+            Optional<User> user = Optional.ofNullable(userRepository.getUserById(id));
 
             if (user.isEmpty()) {
                 logger.error("Save user details: User not found");
@@ -57,7 +58,8 @@ public class UserDetailServiceImpl implements UserDetailService {
             }
 
             UserDetails userDetails1 = user.get().getUserDetails();
-
+            userDetails1.setUpdatedAt(DateHelper.getCurrentDatetime());
+            userDetails1.setCreatedAt(LocalDateTime.now());
             userDetails1.setAge(userDetailsDTO.getAge());
             userDetails1.setBloodGroup(userDetailsDTO.getBloodGroup());
             userDetails1.setBio(userDetailsDTO.getBio());

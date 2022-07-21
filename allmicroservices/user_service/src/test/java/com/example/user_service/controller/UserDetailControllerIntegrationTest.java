@@ -1,7 +1,7 @@
 //package com.example.user_service.controller;
 //
 //import com.example.user_service.model.UserDetails;
-//import com.example.user_service.pojos.dto.UserDetailsDTO;
+//import com.example.user_service.pojos.dto.request.UserDetailsDTO;
 //import com.example.user_service.pojos.response.user.UserDetailResponse;
 //import org.json.JSONException;
 //import org.junit.jupiter.api.Test;

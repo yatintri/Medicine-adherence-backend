@@ -2,13 +2,13 @@ package com.example.user_service.controllerTest;
 
 import com.example.user_service.controller.MedicineController;
 import com.example.user_service.exception.UserExceptions;
-import com.example.user_service.model.UserEntity;
-import com.example.user_service.pojos.dto.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.MedicinePojo;
-import com.example.user_service.pojos.response.medicine.SyncResponse;
+import com.example.user_service.model.User;
+import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
+import com.example.user_service.pojos.dto.request.MedicinePojo;
+import com.example.user_service.pojos.dto.response.medicine.SyncResponse;
 import com.example.user_service.repository.UserRepository;
-import com.example.user_service.service.usermedicine.UserMedicineService;
-import com.example.user_service.util.Messages;
+import com.example.user_service.service.UserMedicineService;
+import com.example.user_service.util.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -60,20 +60,20 @@ class UserMedicineTest {
         this.mockMvc= MockMvcBuilders.standaloneSetup(medicineController).build();
     }
 
-    UserEntity userEntity = new UserEntity("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),null,null);
+    User userEntity = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,null);
     MedicinePojo medicinePojo= new MedicinePojo(123,"Mon",1,null,"something",10,"PCM","something",null,0,"10:00 AM");
     List<MedicinePojo> medicinePojoList = new ArrayList<>();
 
-    SyncResponse syncResponse = new SyncResponse(Messages.SUCCESS,Messages.SYNC);
-//    SyncResponse syncResponse1 = new SyncResponse(Messages.VALIDATION, Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+    SyncResponse syncResponse = new SyncResponse(Constants.SUCCESS, Constants.SYNC);
+//    SyncResponse syncResponse1 = new SyncResponse(Constants.VALIDATION, Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
 
     @Test
     @DisplayName("Sync Test")
     @ExtendWith(MockitoExtension.class)
-    void syncData() throws Exception, UserExceptions {
+    void syncData() throws Exception {
 
         when(result.hasErrors()).thenReturn(false);
-        ResponseEntity<SyncResponse> mav = medicineController.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2", medicinePojoList,result);
+        ResponseEntity<SyncResponse> mav = medicineController.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2", medicinePojoList);
         medicinePojoList.add(medicinePojo);
         when(userMedicineService.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2",medicinePojoList)).thenReturn(syncResponse);
         String jsonText= objectMapper.writeValueAsString(medicinePojoList);

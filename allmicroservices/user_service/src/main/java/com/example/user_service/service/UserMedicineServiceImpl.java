@@ -1,5 +1,6 @@
-package com.example.user_service.service.usermedicine;
+package com.example.user_service.service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -17,14 +18,13 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.model.*;
 import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
 import com.example.user_service.pojos.dto.request.MedicinePojo;
-import com.example.user_service.pojos.response.image.ImageListResponse;
-import com.example.user_service.pojos.response.medicine.MedicineResponse;
-import com.example.user_service.pojos.response.medicine.SyncResponse;
+import com.example.user_service.pojos.dto.response.image.ImageListResponse;
+import com.example.user_service.pojos.dto.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.dto.response.medicine.SyncResponse;
 import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserMedHistoryRepository;
 import com.example.user_service.repository.UserMedicineRepository;
@@ -62,11 +62,11 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Async
     @Cacheable(value = "medicineCache")
     public CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId, int page, int limit)
-            throws UserMedicineException, UserExceptionMessage {
+             {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
-            UserEntity user = userRepository.getUserById(userId);
+            User user = userRepository.getUserById(userId);
 
             if (user == null) {
                 logger.error("Get user medicines: Provide valid id");
@@ -90,11 +90,11 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      */
     @Override
     public SyncResponse syncData(String userId, List<MedicinePojo> medicinePojo)
-            throws UserMedicineException, UserExceptions {
+             {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
-            UserEntity userEntity = userRepository.getUserById(userId);
+            User userEntity = userRepository.getUserById(userId);
 
             if (userEntity.getUserMedicines().isEmpty()) {
                 logger.error("Sync data:Unable to sync");
@@ -108,6 +108,8 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                                 UserMedicines userMedicines =
                                         new UserMedicines();
 
+                                userMedicines.setCreatedAt(LocalDateTime.now());
+                                userMedicines.setUpdatedAt(LocalDateTime.now());
                                 userMedicines.setMedicineDes(
                                         medicinePojo1.getMedicineDes());
                                 userMedicines.setMedicineName(
@@ -148,11 +150,11 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      */
     @Override
     public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS)
-            throws UserMedicineException, UserExceptions {
+            {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
-            UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
+            UserMedicines userMedicines = userMedicineRepository.getMedicineById(medId);
 
             if (userMedicines == null) {
                 logger.error("Sync medicine History: Unable to sync");
@@ -166,6 +168,8 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                                 MedicineHistory medicineHistory1 =
                                         new MedicineHistory();
 
+                                medicineHistory1.setCreatedAt(LocalDateTime.now());
+                                medicineHistory1.setUpdatedAt(LocalDateTime.now());
                                 medicineHistory1.setHistoryId(
                                         medHid.getRemId());
                                 medicineHistory1.setDate(
@@ -199,11 +203,11 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      */
     @Override
     @Cacheable(value = "medicineCache")
-    public MedicineResponse getMedicineHistory(Integer medId, int page, int limit) throws UserMedicineException {
+    public MedicineResponse getMedicineHistory(Integer medId, int page, int limit) {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
-            List<MedicineHistory> medicineHistories = userMedicineRepository.getMedById(medId).getMedicineHistories();
+            List<MedicineHistory> medicineHistories = userMedicineRepository.getMedicineById(medId).getMedicineHistories();
 
             if (medicineHistories.isEmpty()) {
                 logger.error("Get Medicine history: Data not found");
@@ -226,7 +230,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
     @Override
     @Cacheable(value = "medicineCache")
     public ImageListResponse getUserMedicineImages(Integer medId, int page, int limit)
-            throws UserExceptions, UserMedicineException {
+             {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
@@ -234,7 +238,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
             logger.info(EXITING_METHOD_EXECUTION);
             return new ImageListResponse("",
                     "",
-                    userMedicineRepository.getMedById(medId).getImages().stream().sorted(
+                    userMedicineRepository.getMedicineById(medId).getImages().stream().sorted(
                             Comparator.comparing(Image::getDate).reversed()).collect(
                             Collectors.toList()));
         }

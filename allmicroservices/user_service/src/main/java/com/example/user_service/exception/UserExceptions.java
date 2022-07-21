@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
-import com.example.user_service.pojos.response.medicine.MedicineResponse;
-import com.example.user_service.pojos.response.sql.SqlErrorResponse;
-import com.example.user_service.pojos.response.user.UserResponse;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.dto.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.dto.response.sql.SqlErrorResponse;
+import com.example.user_service.pojos.dto.response.user.UserResponse;
 
 /**
  * This class is used to send error response
@@ -31,7 +31,7 @@ public class UserExceptions extends Throwable {
      * Returns caretaker exception response
      */
     @ExceptionHandler({UserCaretakerException.class})
-    public ResponseEntity<CaretakerResponse> getcaretakerexception(UserCaretakerException uce, WebRequest webRequest) {
+    public ResponseEntity<CaretakerResponse> caretakerException(UserCaretakerException uce, WebRequest webRequest) {
         CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getMessage(), null);
 
         return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
@@ -41,18 +41,18 @@ public class UserExceptions extends Throwable {
      * Returns exception response if caretaker is not valid
      */
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<CaretakerResponse> getcaretakernotvalidexception(MethodArgumentNotValidException uce,
+    public ResponseEntity<CaretakerResponse> caretakerNotValidException(MethodArgumentNotValidException uce,
                                                                            WebRequest webRequest) {
         CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR,
                 Objects.requireNonNull(
                         uce.getFieldError()).getDefaultMessage(),
                 null);
 
-        return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(caretakerResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler({UserExceptionMessage.class})
-    public ResponseEntity<UserResponse> getuserException(UserExceptionMessage uem, WebRequest webRequest) {
+    public ResponseEntity<UserResponse> userException(UserExceptionMessage uem, WebRequest webRequest) {
         UserResponse userResponse = new UserResponse(ERROR, uem.getMessage(), null, "", "");
 
         return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
@@ -65,14 +65,14 @@ public class UserExceptions extends Throwable {
     public ResponseEntity<CaretakerResponse> imageException(ConstraintViolationException uce, WebRequest webRequest) {
         CaretakerResponse caretakerResponse = new CaretakerResponse(ERROR, uce.getMessage(), null);
 
-        return new ResponseEntity<>(caretakerResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(caretakerResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     /**
      * Returns Sql exception response
      */
     @ExceptionHandler({DataAccessExceptionMessage.class})
-    public ResponseEntity<SqlErrorResponse> getSqlException(DataAccessExceptionMessage dae, WebRequest webRequest) {
+    public ResponseEntity<SqlErrorResponse> sqlException(DataAccessExceptionMessage dae, WebRequest webRequest) {
         SqlErrorResponse sqlErrorResponse = new SqlErrorResponse(ERROR, dae.getMessage());
 
         return new ResponseEntity<>(sqlErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -82,9 +82,10 @@ public class UserExceptions extends Throwable {
      * Returns user medicine exception response
      */
     @ExceptionHandler({UserMedicineException.class})
-    public ResponseEntity<MedicineResponse> getUserMedicineException(UserMedicineException udm, WebRequest webRequest) {
+    public ResponseEntity<MedicineResponse> userMedicineException(UserMedicineException udm, WebRequest webRequest) {
         MedicineResponse medicineResponse = new MedicineResponse(ERROR, udm.getMessage(), null);
 
         return new ResponseEntity<>(medicineResponse, HttpStatus.NOT_FOUND);
     }
+
 }

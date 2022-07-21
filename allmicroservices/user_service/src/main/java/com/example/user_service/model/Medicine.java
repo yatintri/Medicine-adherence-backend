@@ -2,19 +2,20 @@ package com.example.user_service.model;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 /**
  * @Deprecated This is entity class for Medicine
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "medicine")
-public class MedicineEntity {
+public class Medicine {
     @Id
     @Column(
             name = "med_id",
@@ -28,5 +29,17 @@ public class MedicineEntity {
             length = 150
     )
     private String medName;
+
+    @Column(
+            name = "created_at",
+            nullable = false
+    )
+    private LocalDateTime createdAt;
+
+    @Column(
+            name = "updated_at",
+            nullable = false
+    )
+    private LocalDateTime updatedAt;
 }
 

@@ -10,21 +10,19 @@ import org.springframework.stereotype.Component;
 
 import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.UserDetails;
-import com.example.user_service.model.UserEntity;
+import com.example.user_service.model.User;
 import com.example.user_service.model.UserMedicines;
 
 import com.itextpdf.html2pdf.HtmlConverter;
+
+import static com.example.user_service.util.Constants.*;
 
 /**
  * This is config class to create pdf
  */
 @Component
 public class PdfMailSender {
-    private static final String DIV = "</div>\n";
-    private static final String SPAN = "</span><br>\n";
-    private static final String TD = "</td>\n";
-    private static final String STYLE =
-            "<td style='border: 0.5px solid black;text-align: center;vertical-align: middle;height: 40px;'>";
+
 
     private StringBuilder medicineHistory(List<MedicineHistory> medicineHistories) {
         StringBuilder medicineHistory = new StringBuilder();
@@ -39,13 +37,13 @@ public class PdfMailSender {
                     .append(STYLE)
                     .append(medicineHistory1.getNotTaken())
                     .append(TD)
-                    .append("            </tr>\n");
+                    .append("</tr>\n");
         }
 
         return medicineHistory;
     }
 
-    public String send(UserEntity userEntity, UserMedicines userMedicines, List<MedicineHistory> medicineHistoryList)
+    public String send(User userEntity, UserMedicines userMedicines, List<MedicineHistory> medicineHistoryList)
             throws FileNotFoundException {
         UserDetails userDetails = userEntity.getUserDetails();
         final String[] filepath = new String[1];

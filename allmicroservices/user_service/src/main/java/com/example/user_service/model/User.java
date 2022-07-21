@@ -2,9 +2,7 @@ package com.example.user_service.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -16,14 +14,16 @@ import java.util.List;
 /**
  * This is entity class for User
  */
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
 @NamedEntityGraph(name = "userDetail_graph",
         attributeNodes = @NamedAttributeNode(value = "userDetails"))
-public class UserEntity implements Serializable {
+public class User implements Serializable {
 
     @Id
     @Column(name = "user_id", nullable = false, length = 100)
@@ -47,11 +47,17 @@ public class UserEntity implements Serializable {
     @Column(name = "created_at", nullable = false, length = 30)
     private LocalDateTime createdAt;
 
+    @Column(
+            name = "updated_at",
+            nullable = false
+    )
+    private LocalDateTime updatedAt;
+
     @OneToOne(
             cascade = CascadeType.ALL,
-            mappedBy = "user",
-            fetch = FetchType.LAZY
+            mappedBy = "user"
     )
+
     private UserDetails userDetails;
 
 

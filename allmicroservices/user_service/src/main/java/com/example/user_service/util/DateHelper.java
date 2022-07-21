@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public class DateHelper {
     private DateHelper(){}
 
-    public static java.sql.Date getcurrentdate(){
+    public static java.sql.Date getCurrentDate(){
         java.util.Date date=new java.util.Date();
 
         return new java.sql.Date(date.getTime());
@@ -15,7 +15,7 @@ public class DateHelper {
     }
 
 
-    public static LocalDateTime getcurrentdatatime(){
+    public static LocalDateTime getCurrentDatetime(){
 
         return (LocalDateTime.now());
 

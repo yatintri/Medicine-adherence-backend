@@ -1,4 +1,4 @@
-package com.example.user_service.pojos.response.caretaker;
+package com.example.user_service.pojos.dto.response.caretaker;
 
 
 import lombok.AllArgsConstructor;

@@ -2,11 +2,11 @@ package com.example.user_service.util;
 /**
  * This is class for handling all the hardcoded messages
  */
-public class Messages {
+public class Constants {
 
     public static final String NO_RECORD_FOUND = "No Record found";
 
-    private Messages(){}
+    private Constants(){}
     public static final String MSG = "Data not found";
     public static final String DATA_FOUND = "Data Found";
     public static final String REQ_SENT_SUCCESS = "Request sent successfully";
@@ -35,7 +35,12 @@ public class Messages {
     public static final String ERROR = "Error try again";
     public static final String STARTING_METHOD_EXECUTION = "Starting of method execution";
     public static final String EXITING_METHOD_EXECUTION = "Exiting of method execution";
+    public static final String DIV = "</div>\n";
+    public static final String SPAN = "</span><br>\n";
+    public static final String TD = "</td>\n";
+    public static final String STYLE =
+            "<td style='border: 0.5px solid black;text-align: center;vertical-align: middle;height: 40px;'>";
 
-
+    public static final String INVALID_REFRESH_TOKEN = "Invalid Refresh Token";
 }
 

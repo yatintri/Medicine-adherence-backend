@@ -1,7 +1,7 @@
 //package com.example.user_service.controller;
 //
 //import com.example.user_service.model.UserDetails;
-//import com.example.user_service.pojos.dto.UserCaretakerDTO;
+//import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
 //import org.json.JSONException;
 //import org.junit.jupiter.api.Test;
 //import org.skyscreamer.jsonassert.JSONAssert;

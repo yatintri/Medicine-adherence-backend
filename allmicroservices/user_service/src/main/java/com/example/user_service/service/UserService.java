@@ -1,37 +1,34 @@
-package com.example.user_service.service.user;
+package com.example.user_service.service;
 
-import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
-import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.model.UserEntity;
-import com.example.user_service.pojos.dto.UserEntityDTO;
-import com.example.user_service.pojos.response.user.UserResponse;
-import com.example.user_service.pojos.response.user.UserResponsePage;
-import org.springframework.messaging.MessagingException;
+import com.example.user_service.model.User;
+import com.example.user_service.pojos.dto.request.UserEntityDTO;
+import com.example.user_service.pojos.dto.response.RefreshTokenResponse;
+import com.example.user_service.pojos.dto.response.user.UserResponse;
+import com.example.user_service.pojos.dto.response.user.UserResponsePage;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * This is an interface for user service
  */
 public interface UserService {
 
-     UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath) throws UserExceptionMessage , UserExceptions;
+     UserResponse saveUser(UserEntityDTO userEntityDTO, String fcmToken, String picPath);
 
-     CompletableFuture<UserResponsePage> getUsers(int page, int limit) throws UserExceptionMessage, UserExceptions;
+     UserResponsePage getUsers(int page, int limit) ;
 
-     UserEntity getUserById(String userId) throws UserExceptionMessage, UserMedicineException, ExecutionException, InterruptedException, UserExceptions;
+     User getUserById(String userId) ;
 
-     List<UserEntity> getUserByName(String userName)throws UserExceptionMessage, UserExceptions;
+     List<User> getUserByName(String userName);
 
-     UserEntity getUserByEmail(String email) throws UserExceptionMessage, UserExceptions;
+     User getUserByEmail(String email) ;
 
-     String sendUserMedicines(Integer userId) throws MessagingException, IOException, UserExceptions, UserExceptionMessage;
+     String sendUserMedicines(Integer userId);
 
-     UserResponse login(String mail , String fcmToken) throws UserExceptionMessage, UserExceptions;
+     UserResponse login(String mail , String fcmToken) ;
+
+     RefreshTokenResponse getRefreshToken(HttpServletRequest token, String userId) ;
 
 
 

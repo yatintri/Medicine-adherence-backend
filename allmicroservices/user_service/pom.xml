@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>user_service</artifactId>
+	<artifactId>${project.artifactId}</artifactId>
 	<version>0.0.1</version>
-	<name>user_service</name>
+	<name>${project.artifactId}</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
@@ -21,28 +21,29 @@
 		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 		<sonar.language>java</sonar.language>
 		<sonar.coverage.exclusions>
-			**/com/example/user_service/batch/*,
-			**/com/example/user_service/config/*,
-			**/com/example/user_service/config/filter/*,
-			**/com/example/user_service/exception/*,
-			**/com/example/user_service/model/*,
-			**/com/example/user_service/model/user/*,
-			**/com/example/user_service/pojos/*,
-			**/com/example/user_service/pojos/dto/*,
-			**/com/example/user_service/pojos/authentication/*,
-			**/com/example/user_service/pojos/dto/user/*,
-			**/com/example/user_service/pojos/response/*,
-			**/com/example/user_service/pojos/response/user/*,
-			**/com/example/user_service/pojos/response/caretaker/*,
-			**/com/example/user_service/pojos/response/image/*,
-			**/com/example/user_service/pojos/response/medicine/*,
-			**/com/example/user_service/pojos/response/sql/*,
-			**/com/example/user_service/repository/*,
-			**/com/example/user_service/security/*,
-			**/com/example/user_service/util/*,
-			**/com/example/user_service/validators/*,
-			**/com/example/user_service/UserServiceApplication.java
+			**/com/example/${project.artifactId}/batch/*,
+			**/com/example/${project.artifactId}/config/*,
+			**/com/example/${project.artifactId}/config/filter/*,
+			**/com/example/${project.artifactId}/exception/*,
+			**/com/example/${project.artifactId}/model/*,
+			**/com/example/${project.artifactId}/model/user/*,
+			**/com/example/${project.artifactId}/pojos/*,
+			**/com/example/${project.artifactId}/pojos/dto/*,
+			**/com/example/${project.artifactId}/pojos/authentication/*,
+			**/com/example/${project.artifactId}/pojos/dto/user/*,
+			**/com/example/${project.artifactId}/pojos/response/*,
+			**/com/example/${project.artifactId}/pojos/response/user/*,
+			**/com/example/${project.artifactId}/pojos/response/caretaker/*,
+			**/com/example/${project.artifactId}/pojos/response/image/*,
+			**/com/example/${project.artifactId}/pojos/response/medicine/*,
+			**/com/example/${project.artifactId}/pojos/response/sql/*,
+			**/com/example/${project.artifactId}/repository/*,
+			**/com/example/${project.artifactId}/security/*,
+			**/com/example/${project.artifactId}/util/*,
+			**/com/example/${project.artifactId}/validators/*,
+			**/com/example/${project.artifactId}/UserServiceApplication.java
 		</sonar.coverage.exclusions>
+		<project.artifactId>user_service</project.artifactId>
 	</properties>
 	<dependencies>
 		<!--Starter for building web, including RESTful, applications using Spring MVC -->
@@ -236,6 +237,25 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 			<version>2.7.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>2.7.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<type>jar</type>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.github.vladimir-bukhtoyarov/bucket4j-core -->
+		<dependency>
+			<groupId>com.github.vladimir-bukhtoyarov</groupId>
+			<artifactId>bucket4j-core</artifactId>
+			<version>7.5.0</version>
 		</dependency>
 
 		<dependency>

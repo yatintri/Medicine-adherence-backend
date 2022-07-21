@@ -32,18 +32,18 @@
 
 
 
-    <logger name="com.example.user_service" level="trace" additivity="false">
+    <logger name="com.example.user_service" level="info" additivity="false">
         <appender-ref ref="FILE-ROLLING"/>
     </logger>
 
-    <root level="error">
+    <root level="info">
         <appender-ref ref="FILE-ROLLING"/>
     </root>
 
-    <logger name="com.com.example.user_service" level="debug" additivity="false">
+    <logger name="com.example.user_service" level="debug" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
-    <root level="error">
+    <root level="info">
         <appender-ref ref="CONSOLE"/>
     </root>
 

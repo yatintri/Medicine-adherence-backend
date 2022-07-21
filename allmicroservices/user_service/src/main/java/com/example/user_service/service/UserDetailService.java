@@ -1,7 +1,5 @@
-package com.example.user_service.service.userdetail;
+package com.example.user_service.service;
 
-import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.pojos.dto.request.UserDetailsDTO;
 
@@ -10,5 +8,5 @@ import com.example.user_service.pojos.dto.request.UserDetailsDTO;
  */
 public interface UserDetailService {
 
-    public UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO) throws  UserExceptionMessage, UserExceptions;
+     UserDetails saveUserDetail(String id, UserDetailsDTO userDetailsDTO) ;
 }

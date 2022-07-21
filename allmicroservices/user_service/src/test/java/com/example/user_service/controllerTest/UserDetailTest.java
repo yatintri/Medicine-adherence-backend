@@ -3,8 +3,8 @@ package com.example.user_service.controllerTest;
 import com.example.user_service.controller.UserDetailController;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserDetails;
-import com.example.user_service.pojos.dto.UserDetailsDTO;
-import com.example.user_service.service.userdetail.UserDetailService;
+import com.example.user_service.pojos.dto.request.UserDetailsDTO;
+import com.example.user_service.service.UserDetailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.LocalDateTime;
 
 @RunWith(SpringJUnit4ClassRunner.class)
  class UserDetailTest {
@@ -39,12 +41,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
         this.mockMvc = MockMvcBuilders.standaloneSetup(userDetailController).build();
     }
 
-    UserDetails userDetails = new UserDetails("73578dfd-e7c9-4381-a348-113e72d80fa2","something",null,21,null,414124,null,5L,56L,null,"male","AB+","Unmarried",60,2314,null,null);
+    UserDetails userDetails = new UserDetails("73578dfd-e7c9-4381-a348-113e72d80fa2","something",null,21,null,414124,null,5L,56L,null,"male","AB+","Unmarried",60,2314,null, LocalDateTime.now(),LocalDateTime.now(),null);
 
     @Test
     @DisplayName("Update details Test")
     @ExtendWith(MockitoExtension.class)
-    void updateUserDetails() throws Exception, UserExceptions {
+    void updateUserDetails() throws Exception {
         UserDetailsDTO userDetailsDTO= new UserDetailsDTO("something",21,352L,"male","Ab+","Unmarried",66);
         String jsonTest = objectMapper.writeValueAsString(userDetailsDTO);
         Mockito.when(userDetailService.saveUserDetail("534851457147",userDetailsDTO)).thenReturn(userDetails);

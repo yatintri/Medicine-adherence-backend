@@ -4,20 +4,19 @@ import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.MedicineHistory;
+import com.example.user_service.model.User;
 import com.example.user_service.model.UserCaretaker;
-import com.example.user_service.model.UserEntity;
 import com.example.user_service.model.UserMedicines;
-import com.example.user_service.pojos.dto.SendImageDto;
-import com.example.user_service.pojos.dto.UserCaretakerDTO;
-import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
-import com.example.user_service.pojos.response.caretaker.CaretakerResponse1;
-import com.example.user_service.pojos.response.caretaker.CaretakerResponsePage;
-import com.example.user_service.pojos.response.image.SendImageResponse;
+import com.example.user_service.pojos.dto.request.SendImageDto;
+import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse1;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponsePage;
+import com.example.user_service.pojos.dto.response.image.SendImageResponse;
 import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserCaretakerRepository;
 import com.example.user_service.repository.UserMedicineRepository;
-import com.example.user_service.service.caretaker.CareTakerServiceImpl;
-import com.example.user_service.util.Messages;
+import com.example.user_service.util.Constants;
 import org.hibernate.exception.JDBCConnectionException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +75,7 @@ import static org.mockito.Mockito.when;
         try{
             careTakerServiceImpl.saveCareTaker(userCaretakerDTO);
         }catch (UserCaretakerException | UserExceptionMessage userCaretakerException){
-            Assertions.assertEquals(Messages.ALREADY_PRESENT,userCaretakerException.getMessage());
+            Assertions.assertEquals(Constants.ALREADY_PRESENT,userCaretakerException.getMessage());
         }
     }
     @Test
@@ -89,15 +88,15 @@ import static org.mockito.Mockito.when;
         try{
             careTakerServiceImpl.saveCareTaker(userCaretakerDTO);
         }catch (UserCaretakerException | UserExceptionMessage userCaretakerException){
-            Assertions.assertEquals(Messages.SQL_ERROR_MSG,userCaretakerException.getMessage());
+            Assertions.assertEquals(Constants.SQL_ERROR_MSG,userCaretakerException.getMessage());
         }
     }
     @Test
     @DisplayName("Save caretaker Test")
-    void saveCaretakerTest() throws UserCaretakerException, UserExceptions, UserExceptionMessage {
+    void saveCaretakerTest() throws UserCaretakerException, UserExceptionMessage {
         UserCaretakerDTO userCaretakerDTO= new UserCaretakerDTO();
         userCaretakerDTO.setPatientName("vinay");
-        UserCaretaker userCaretaker= new UserCaretaker("jadkhk","Yatin",true,"gdhdl","gsgkj","Nikunj", LocalDateTime.now(),"jha");
+        UserCaretaker userCaretaker= new UserCaretaker("jadkhk","Yatin",true,"gdhdl","gsgkj","Nikunj", LocalDateTime.now(),LocalDateTime.now(),"jha");
         when(mapper.map(userCaretakerDTO,UserCaretaker.class)).thenReturn(userCaretaker);
         when(userCaretakerRepository.check(userCaretaker.getPatientId(),userCaretaker.getCaretakerId())).thenReturn(null);
         CaretakerResponse userCaretaker1= careTakerServiceImpl.saveCareTaker(userCaretakerDTO);
@@ -112,7 +111,7 @@ import static org.mockito.Mockito.when;
         try{
             careTakerServiceImpl.updateCaretakerStatus("feyfacakuvejgclgaglgu");
         }catch (UserCaretakerException  userCaretakerException){
-            Assertions.assertEquals(Messages.MSG,userCaretakerException.getMessage());
+            Assertions.assertEquals(Constants.MSG,userCaretakerException.getMessage());
         }
     }
     @Test
@@ -123,15 +122,15 @@ import static org.mockito.Mockito.when;
         try{
             careTakerServiceImpl.updateCaretakerStatus("feyfacakuvejgclgaglgu");
         }catch (UserCaretakerException  userCaretakerException){
-            Assertions.assertEquals(Messages.SQL_ERROR_MSG,userCaretakerException.getMessage());
+            Assertions.assertEquals(Constants.SQL_ERROR_MSG,userCaretakerException.getMessage());
         }
     }
 
     @Test
     @DisplayName("Update caretaker Test")
-    void updateCaretakerStatusTest() throws UserCaretakerException, UserExceptions {
-        UserCaretaker userCaretaker= new UserCaretaker("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay",true,"ftdutsaduifioadf","yfuydfafakjfdafdou","nikunj",LocalDateTime.now(),"p");
-        when(userCaretakerRepository.findById(userCaretaker.getCId())).thenReturn(Optional.of(userCaretaker));
+    void updateCaretakerStatusTest() throws UserCaretakerException {
+        UserCaretaker userCaretaker= new UserCaretaker("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay",true,"ftdutsaduifioadf","yfuydfafakjfdafdou","nikunj",LocalDateTime.now(),LocalDateTime.now(),"p");
+        when(userCaretakerRepository.findById(userCaretaker.getId())).thenReturn(Optional.of(userCaretaker));
         CaretakerResponse userCaretaker1= careTakerServiceImpl.updateCaretakerStatus("73578dfd-e7c9-4381-a348-113e72d80fa2");
         Assertions.assertEquals(userCaretaker.getCaretakerId(),userCaretaker1.getUserCaretaker().getCaretakerId());
     }
@@ -148,8 +147,8 @@ import static org.mockito.Mockito.when;
         when(userCaretakerRepository.getPatientsUnderMe("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
         try{
             careTakerServiceImpl.getPatientsUnderMe("73578dfd-e7c9-4381-a348-113e72d80fa2",pageNo,pageSize);
-        }catch (UserCaretakerException | UserExceptions userCaretakerException){
-            Assertions.assertEquals(Messages.MSG,userCaretakerException.getMessage());
+        }catch (UserCaretakerException userCaretakerException){
+            Assertions.assertEquals(Constants.MSG,userCaretakerException.getMessage());
         }
     }
     @Test
@@ -164,14 +163,14 @@ import static org.mockito.Mockito.when;
         when(userCaretakerRepository.getPatientsUnderMe("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenThrow(JDBCConnectionException.class);
         try{
             careTakerServiceImpl.getPatientsUnderMe("73578dfd-e7c9-4381-a348-113e72d80fa2",pageNo,pageSize);
-        }catch (UserCaretakerException | UserExceptions userCaretakerException){
-            Assertions.assertEquals(Messages.SQL_ERROR_MSG,userCaretakerException.getMessage());
+        }catch (UserCaretakerException userCaretakerException){
+            Assertions.assertEquals(Constants.SQL_ERROR_MSG,userCaretakerException.getMessage());
         }
     }
 
     @Test
     @DisplayName("Get patients under me Test")
-    void getPateientsUnderMeTest() throws UserCaretakerException, UserExceptions {
+    void getPatientsUnderMeTest() throws UserCaretakerException {
         int pageNo=0;
         int pageSize = 2;
         Pageable pageable= PageRequest.of(pageNo,pageSize);
@@ -179,7 +178,7 @@ import static org.mockito.Mockito.when;
         List<UserCaretaker> userCaretakerList= new ArrayList<>();
         userCaretakerList.add(userCaretaker);
         Page<UserCaretaker> userCaretakerPage= new PageImpl<>(userCaretakerList);
-        CaretakerResponsePage caretakerResponsePage= new CaretakerResponsePage(Messages.SUCCESS,Messages.DATA_FOUND,5L,2,0,userCaretakerList);
+        CaretakerResponsePage caretakerResponsePage= new CaretakerResponsePage(Constants.SUCCESS, Constants.DATA_FOUND,5L,2,0,userCaretakerList);
         when(userCaretakerRepository.getPatientsUnderMe("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
         CaretakerResponsePage caretakerResponsePage1= careTakerServiceImpl.getPatientsUnderMe("73578dfd-e7c9-4381-a348-113e72d80fa2",pageNo,pageSize);
         Assertions.assertEquals(caretakerResponsePage.getUserCaretakerStream(),caretakerResponsePage1.getUserCaretakerStream());
@@ -196,8 +195,8 @@ import static org.mockito.Mockito.when;
         when(userCaretakerRepository.getPatientRequests("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
         try{
             careTakerServiceImpl.getPatientRequests("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
-        }catch (UserCaretakerException | UserExceptions userCaretakerException){
-            Assertions.assertEquals(Messages.MSG,userCaretakerException.getMessage());
+        }catch (UserCaretakerException userCaretakerException){
+            Assertions.assertEquals(Constants.MSG,userCaretakerException.getMessage());
         }
     }
     @Test
@@ -211,14 +210,14 @@ import static org.mockito.Mockito.when;
         when(userCaretakerRepository.getPatientRequests("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenThrow(JDBCConnectionException.class);
         try{
             careTakerServiceImpl.getPatientRequests("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
-        }catch (UserCaretakerException | UserExceptions userCaretakerException){
-            Assertions.assertEquals(Messages.SQL_ERROR_MSG,userCaretakerException.getMessage());
+        }catch (UserCaretakerException userCaretakerException){
+            Assertions.assertEquals(Constants.SQL_ERROR_MSG,userCaretakerException.getMessage());
         }
     }
 
     @Test
     @DisplayName("Get patients request Test")
-    void getPatientRequestTest() throws UserCaretakerException, UserExceptions {
+    void getPatientRequestTest() throws UserCaretakerException {
         int pageNo=0;
         int pageSize = 2;
         Pageable pageable= PageRequest.of(pageNo,pageSize);
@@ -226,7 +225,7 @@ import static org.mockito.Mockito.when;
         List<UserCaretaker> userCaretakerList = new ArrayList<>();
         userCaretakerList.add(userCaretaker);
         Page<UserCaretaker> userCaretakerPage= new PageImpl<>(userCaretakerList);
-        CaretakerResponsePage caretakerResponsePage= new CaretakerResponsePage(Messages.SUCCESS,Messages.DATA_FOUND,5L,2,0,userCaretakerList);
+        CaretakerResponsePage caretakerResponsePage= new CaretakerResponsePage(Constants.SUCCESS, Constants.DATA_FOUND,5L,2,0,userCaretakerList);
         when(userCaretakerRepository.getPatientRequests("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
         CaretakerResponsePage userCaretakerList1 = careTakerServiceImpl.getPatientRequests("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
         Assertions.assertEquals(caretakerResponsePage.getUserCaretakerStream(),userCaretakerList1.getUserCaretakerStream());
@@ -244,7 +243,7 @@ import static org.mockito.Mockito.when;
         try{
             careTakerServiceImpl.getMyCaretakers("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
         }catch (UserCaretakerException userCaretakerException){
-            Assertions.assertEquals(Messages.MSG,userCaretakerException.getMessage());
+            Assertions.assertEquals(Constants.MSG,userCaretakerException.getMessage());
         }
     }
 
@@ -260,7 +259,7 @@ import static org.mockito.Mockito.when;
         try{
             careTakerServiceImpl.getMyCaretakers("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
         }catch (UserCaretakerException userCaretakerException){
-            Assertions.assertEquals(Messages.SQL_ERROR_MSG,userCaretakerException.getMessage());
+            Assertions.assertEquals(Constants.SQL_ERROR_MSG,userCaretakerException.getMessage());
         }
     }
     @Test
@@ -273,7 +272,7 @@ import static org.mockito.Mockito.when;
         List<UserCaretaker> userCaretakerList = new ArrayList<>();
         userCaretakerList.add(userCaretaker);
         Page<UserCaretaker> userCaretakerPage= new PageImpl<>(userCaretakerList);
-        CaretakerResponsePage caretakerResponsePage= new CaretakerResponsePage(Messages.SUCCESS,Messages.DATA_FOUND,5L,2,0,userCaretakerList);
+        CaretakerResponsePage caretakerResponsePage= new CaretakerResponsePage(Constants.SUCCESS, Constants.DATA_FOUND,5L,2,0,userCaretakerList);
         when(userCaretakerRepository.getMyCaretakers("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
         CaretakerResponsePage userCaretakerList1 = careTakerServiceImpl.getMyCaretakers("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
         Assertions.assertEquals(caretakerResponsePage.getUserCaretakerStream(),userCaretakerList1.getUserCaretakerStream());
@@ -287,7 +286,7 @@ import static org.mockito.Mockito.when;
         try{
             careTakerServiceImpl.getCaretakerRequestStatus("73578dfd-e7c9-4381-a348-113e72d80fa2");
         }catch (UserCaretakerException userCaretakerException){
-            Assertions.assertEquals(Messages.NO_RECORD_FOUND,userCaretakerException.getMessage());
+            Assertions.assertEquals(Constants.NO_RECORD_FOUND,userCaretakerException.getMessage());
         }
     }
 
@@ -299,7 +298,7 @@ import static org.mockito.Mockito.when;
         try{
             careTakerServiceImpl.getCaretakerRequestStatus("73578dfd-e7c9-4381-a348-113e72d80fa2");
         }catch (UserCaretakerException userCaretakerException){
-            Assertions.assertEquals(Messages.SQL_ERROR_MSG,userCaretakerException.getMessage());
+            Assertions.assertEquals(Constants.SQL_ERROR_MSG,userCaretakerException.getMessage());
         }
     }
 
@@ -309,7 +308,7 @@ import static org.mockito.Mockito.when;
         UserCaretaker userCaretaker = new UserCaretaker();
         List<UserCaretaker> userCaretakerList = new ArrayList<>();
         userCaretakerList.add(userCaretaker);
-        CaretakerResponse1 caretakerResponse = new CaretakerResponse1(Messages.SUCCESS,Messages.DATA_FOUND,userCaretakerList);
+        CaretakerResponse1 caretakerResponse = new CaretakerResponse1(Constants.SUCCESS, Constants.DATA_FOUND,userCaretakerList);
         when(userCaretakerRepository.getCaretakerRequestStatus("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(userCaretakerList);
         CaretakerResponse1 userCaretakerList1 = careTakerServiceImpl.getCaretakerRequestStatus("73578dfd-e7c9-4381-a348-113e72d80fa2");
         Assertions.assertEquals(caretakerResponse.getUserCaretakerList().size(),userCaretakerList1.getUserCaretakerList().size());
@@ -323,11 +322,11 @@ import static org.mockito.Mockito.when;
         Pageable pageable= PageRequest.of(pageNo,pageSize);
         List<UserCaretaker> userCaretakerList= new ArrayList<>();
         Page<UserCaretaker> userCaretakerPage= new PageImpl<>(userCaretakerList);
-        when(userCaretakerRepository.getCaretakerRequestsP("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
+        when(userCaretakerRepository.getCaretakerRequestsForPatients("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
         try{
-            careTakerServiceImpl.getCaretakerRequestsP("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
-        }catch (UserCaretakerException | UserExceptions userCaretakerException){
-            Assertions.assertEquals(Messages.MSG,userCaretakerException.getMessage());
+            careTakerServiceImpl.getCaretakerRequestsForPatient("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
+        }catch (UserCaretakerException userCaretakerException){
+            Assertions.assertEquals(Constants.MSG,userCaretakerException.getMessage());
         }
     }
     @Test
@@ -338,17 +337,18 @@ import static org.mockito.Mockito.when;
         Pageable pageable= PageRequest.of(pageNo,pageSize);
         List<UserCaretaker> userCaretakerList= new ArrayList<>();
         Page<UserCaretaker> userCaretakerPage= new PageImpl<>(userCaretakerList);
-        when(userCaretakerRepository.getCaretakerRequestsP("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenThrow(JDBCConnectionException.class);
+        when(userCaretakerRepository.getCaretakerRequestsForPatients("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenThrow(JDBCConnectionException.class);
         try{
-            careTakerServiceImpl.getCaretakerRequestsP("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
-        }catch (UserCaretakerException | UserExceptions userCaretakerException){
-            Assertions.assertEquals(Messages.SQL_ERROR_MSG,userCaretakerException.getMessage());
+            careTakerServiceImpl.getCaretakerRequestsForPatient("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
+        }catch (UserCaretakerException userCaretakerException){
+            Assertions.assertEquals(Constants.SQL_ERROR_MSG,userCaretakerException.getMessage());
         }
     }
 
+
     @Test
     @DisplayName("Get my caretaker status P Test")
-    void getCaretakerRequestPTest() throws UserCaretakerException, UserExceptions {
+    void getCaretakerRequestPTest() throws UserCaretakerException{
         int pageNo=0;
         int pageSize = 2;
         Pageable pageable= PageRequest.of(pageNo,pageSize);
@@ -356,9 +356,9 @@ import static org.mockito.Mockito.when;
         List<UserCaretaker> userCaretakerList = new ArrayList<>();
         userCaretakerList.add(userCaretaker);
         Page<UserCaretaker> userCaretakerPage= new PageImpl<>(userCaretakerList);
-        CaretakerResponsePage caretakerResponsePage= new CaretakerResponsePage(Messages.SUCCESS,Messages.DATA_FOUND,5L,2,0,userCaretakerList);
-        when(userCaretakerRepository.getCaretakerRequestsP("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
-        CaretakerResponsePage userCaretakerList1 = careTakerServiceImpl.getCaretakerRequestsP("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
+        CaretakerResponsePage caretakerResponsePage= new CaretakerResponsePage(Constants.SUCCESS, Constants.DATA_FOUND,5L,2,0,userCaretakerList);
+        when(userCaretakerRepository.getCaretakerRequestsForPatients("73578dfd-e7c9-4381-a348-113e72d80fa2",pageable)).thenReturn(userCaretakerPage);
+        CaretakerResponsePage userCaretakerList1 = careTakerServiceImpl.getCaretakerRequestsForPatient("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2);
         Assertions.assertEquals(caretakerResponsePage.getUserCaretakerStream(),userCaretakerList1.getUserCaretakerStream());
     }
 
@@ -367,49 +367,49 @@ import static org.mockito.Mockito.when;
     void delPatientReqException() {
         Optional<UserCaretaker> userCaretaker= Optional.empty();
         when(userCaretakerRepository.findById("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(userCaretaker);
-        try{careTakerServiceImpl.delPatientReq("73578dfd-e7c9-4381-a348-113e72d80fa2");
-        }catch (UserCaretakerException | UserExceptionMessage | UserExceptions userCaretakerException){
-            Assertions.assertEquals(Messages.MSG,userCaretakerException.getMessage());
+        try{careTakerServiceImpl.deletePatientRequest("73578dfd-e7c9-4381-a348-113e72d80fa2");
+        }catch (UserCaretakerException | UserExceptionMessage userCaretakerException){
+            Assertions.assertEquals(Constants.MSG,userCaretakerException.getMessage());
         }
     }
 
     @Test
     @DisplayName("Delete patient request Test")
-    void delPatientReqTest() throws UserExceptionMessage, UserCaretakerException, UserExceptions {
-        UserCaretaker userCaretaker= new UserCaretaker("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay",true,"ftdutsaduifioadf","yfuydfafakjfdafdou","nikunj",LocalDateTime.now(),"p");
+    void delPatientReqTest() throws UserExceptionMessage, UserCaretakerException {
+        UserCaretaker userCaretaker= new UserCaretaker("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay",true,"ftdutsaduifioadf","yfuydfafakjfdafdou","nikunj",LocalDateTime.now(),LocalDateTime.now(),"p");
         Optional<UserCaretaker> userCaretakerTest= Optional.of(userCaretaker);
         when(userCaretakerRepository.findById("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(userCaretakerTest);
-        String text =careTakerServiceImpl.delPatientReq("73578dfd-e7c9-4381-a348-113e72d80fa2");
-        Assertions.assertEquals(Messages.SUCCESS,text);
+        String text =careTakerServiceImpl.deletePatientRequest("73578dfd-e7c9-4381-a348-113e72d80fa2");
+        Assertions.assertEquals(Constants.SUCCESS,text);
     }
 
     @Test
     @DisplayName("Send image exception Test")
-    void sendImageToCaretakerException() throws UserCaretakerException, UserExceptions, IOException {
+    void sendImageToCaretakerException() throws UserCaretakerException {
         MockMultipartFile employeeJson = new MockMultipartFile("employee", null,
                 "application/json", "{\"name\": \"Emp Name\"}".getBytes());
         SendImageDto sendImageDto= new SendImageDto(employeeJson,"Vinay","PCM","73578dfd-e7c9-4381-a348-113e72d80fa2",123);
-        UserEntity user= new UserEntity();
+        User user= new User();
         List<MedicineHistory> medicineHistoryList= Collections.emptyList();
         UserMedicines userMedicines= new UserMedicines();
-        when(userMedicineRepository.getMedById(123)).thenReturn(userMedicines);
+        when(userMedicineRepository.getMedicineById(123)).thenReturn(userMedicines);
         SendImageResponse imageResponse= careTakerServiceImpl.sendImageToCaretaker(employeeJson,"fyiaifkvaf","73578dfd-e7c9-4381-a348-113e72d80fa2","PCM",123);
-        Assertions.assertEquals(Messages.FAILED,imageResponse.getStatus());
+        Assertions.assertEquals(Constants.FAILED,imageResponse.getStatus());
 
     }
 
     @Test
     @DisplayName("Send image Test")
-    void sendImageToCaretakerTest() throws UserCaretakerException, UserExceptions, IOException {
+    void sendImageToCaretakerTest() throws UserCaretakerException{
         MockMultipartFile employeeJson = new MockMultipartFile("employee", null,
                 "application/json", "{\"name\": \"Emp Name\"}".getBytes());
         SendImageDto sendImageDto= new SendImageDto(employeeJson,"Vinay","PCM","73578dfd-e7c9-4381-a348-113e72d80fa2",123);
-        UserEntity user= new UserEntity();
+        User user= new User();
         List<MedicineHistory> medicineHistoryList= Collections.emptyList();
-        UserMedicines userMedicines= new UserMedicines(123,new Date(),"PCM","something","Mon",new Date(),"10:00 AM","anything",12,5,user,medicineHistoryList,null);
-        when(userMedicineRepository.getMedById(123)).thenReturn(userMedicines);
+        UserMedicines userMedicines= new UserMedicines(123,new Date(),"PCM","something","Mon",new Date(),"10:00 AM","anything",12,5,LocalDateTime.now(),LocalDateTime.now(),user,medicineHistoryList,null);
+        when(userMedicineRepository.getMedicineById(123)).thenReturn(userMedicines);
         SendImageResponse imageResponseTest = careTakerServiceImpl.sendImageToCaretaker(sendImageDto.getImage(),"Something","73578dfd-e7c9-4381-a348-113e72d80fa2","PCM",123);
-        Assertions.assertEquals(Messages.SUCCESS,imageResponseTest.getStatus());
+        Assertions.assertEquals(Constants.SUCCESS,imageResponseTest.getStatus());
     }
 
 

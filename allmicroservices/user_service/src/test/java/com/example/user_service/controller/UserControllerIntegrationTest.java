@@ -1,7 +1,7 @@
 //package com.example.user_service.controller;
 //
 //import com.example.user_service.model.UserDetails;
-//import com.example.user_service.model.UserEntity;
+//import com.example.user_service.model.User;
 //import com.example.user_service.pojos.response.user.UserResponse;
 //import org.json.JSONException;
 //import org.junit.jupiter.api.Assertions;
@@ -37,7 +37,7 @@
 //    @Test
 //     void saveUser() {
 //
-//        UserEntity user = new UserEntity();
+//        User user = new User();
 //        user.setUserId("379dfb3b-4b78-4232-84af-110d406622a6");
 //        user.setUserName("VSoniBhai");
 //        user.setEmail("VinaySoniBhai@gmail.com");
@@ -45,7 +45,7 @@
 //        user.setLastLogin(LocalDateTime.parse("23/02"));
 //        user.setUserDetails(null);
 //
-//        HttpEntity<UserEntity> request = new HttpEntity<>(user);
+//        HttpEntity<User> request = new HttpEntity<>(user);
 //        try {
 //            ResponseEntity<String> response = testRestTemplate
 //                    .exchange("http://localhost:" + port +
@@ -72,7 +72,7 @@
 //    @Test
 //    void saveNewUser() {
 //
-//        UserEntity user = new UserEntity();
+//        User user = new User();
 //        user.setUserId("768753");
 //        user.setUserName("karan");
 //        user.setEmail("karan@gmail.com");
@@ -80,7 +80,7 @@
 //        user.setLastLogin(LocalDateTime.parse("03/02"));
 //        user.setUserDetails(null);
 //
-//        HttpEntity<UserEntity> request = new HttpEntity<>(user);
+//        HttpEntity<User> request = new HttpEntity<>(user);
 //        try {
 //            ResponseEntity<String> response = testRestTemplate
 //                    .exchange("http://localhost:" + port +
@@ -104,12 +104,12 @@
 //
 //    @Test
 //     void LoginUser() {
-//        UserEntity user = new UserEntity();
+//        User user = new User();
 //        user.setUserId("e61ef901-e105-4636-bef6-f664c204a825");
 //        user.setUserName("Yatin");
 //        user.setEmail("yatintri@gmail.com");
 //        user.setUserDetails(null);
-//        HttpEntity<UserEntity> request = new HttpEntity<>(user);
+//        HttpEntity<User> request = new HttpEntity<>(user);
 //        try {
 //            ResponseEntity<String> response = testRestTemplate
 //                    .exchange("http://localhost:" + port +
@@ -135,7 +135,7 @@
 //    @Test
 //    void testGetUser() {
 //
-//        List<UserEntity> user =testRestTemplate.getForObject("http://localhost:"+
+//        List<User> user =testRestTemplate.getForObject("http://localhost:"+
 //                        port + "/api/v1/users",
 //                List.class);
 //        Assertions.assertNotNull(user);

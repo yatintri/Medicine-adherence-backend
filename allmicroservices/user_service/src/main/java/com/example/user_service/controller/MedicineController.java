@@ -1,33 +1,34 @@
 package com.example.user_service.controller;
 
 import java.util.List;
-import java.util.Objects;
+
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.example.user_service.util.Constants;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Retryable;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.pojos.dto.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.MedicinePojo;
-import com.example.user_service.pojos.response.image.ImageListResponse;
-import com.example.user_service.pojos.response.medicine.MedicineResponse;
-import com.example.user_service.pojos.response.medicine.SyncResponse;
+import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
+import com.example.user_service.pojos.dto.request.MedicinePojo;
+import com.example.user_service.pojos.dto.response.image.ImageListResponse;
+import com.example.user_service.pojos.dto.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.dto.response.medicine.SyncResponse;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
-import com.example.user_service.service.usermedicine.UserMedicineService;
-import com.example.user_service.util.Messages;
+import com.example.user_service.service.UserMedicineService;
+
+import static com.example.user_service.util.Constants.UNABLE_TO_SYNC;
 
 /**
  * This controller is used to create restful web services for user medicines
@@ -54,6 +55,7 @@ public class MedicineController {
      * Syncs local storage data of the application with the server
      */
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @ApiOperation(value = "Syncs local storage data of the application with the server")
     @PostMapping(
             value = "/medicines/sync",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -62,25 +64,19 @@ public class MedicineController {
     public ResponseEntity<SyncResponse> syncData(@NotBlank
                                                  @NotNull
                                                  @RequestParam("userId") String userId, @Valid
-                                                 @RequestBody List<MedicinePojo> medicinePojo, BindingResult bindingResult)
-            throws UserMedicineException, UserExceptions {
+                                                 @RequestBody List<MedicinePojo> medicinePojo)
+             {
 
         logger.info("Syncing Data : {} {}",userId,medicinePojo);
 
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION,
-                    Objects.requireNonNull(
-                            bindingResult.getFieldError()).getDefaultMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(userMedicineService.syncData(userId, medicinePojo), HttpStatus.OK);
+        return new ResponseEntity<>(userMedicineService.syncData(userId, medicinePojo), HttpStatus.CREATED);
     }
 
     /**
      * Syncs medicine history of all the medicines from local storage to backend
      */
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @ApiOperation(value = "Syncs medicine history of all the medicines from local storage to backend")
     @PostMapping(
             value = "/medicine-history/sync",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -89,24 +85,17 @@ public class MedicineController {
     public ResponseEntity<SyncResponse> syncMedicineHistory(@NotNull
                                                             @NotBlank
                                                             @RequestParam(name = "medId") Integer medId, @Valid
-                                                            @RequestBody List<MedicineHistoryDTO> medicineHistory, BindingResult bindingResult)
-            throws UserMedicineException, UserExceptions {
+                                                            @RequestBody List<MedicineHistoryDTO> medicineHistory)
+             {
 
         logger.info("Syncing medicine history : {} {}",medId,medicineHistory);
-
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(new SyncResponse(Messages.VALIDATION,
-                    Objects.requireNonNull(
-                            bindingResult.getFieldError()).getDefaultMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
 
         try {
             userMedicineService.syncMedicineHistory(medId, medicineHistory);
 
-            return new ResponseEntity<>(new SyncResponse(Messages.SUCCESS, Messages.SYNC), HttpStatus.OK);
+            return new ResponseEntity<>(new SyncResponse(Constants.SUCCESS, Constants.SYNC), HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new UserMedicineException("Sync failed");
+            throw new UserMedicineException(UNABLE_TO_SYNC);
         }
     }
 
@@ -114,6 +103,7 @@ public class MedicineController {
      * Fetch all medicines for a user by id
      */
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @ApiOperation(value = "Fetch all medicines for a user by id")
     @GetMapping(
             value = "/medicine-histories",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -122,7 +112,7 @@ public class MedicineController {
                                                                  @NotNull
                                                                  @RequestParam(name = "medId") Integer medId, @RequestParam(value = "page") int page,
                                                                  @RequestParam(value = "limit") int limit)
-                                                                 throws UserMedicineException, UserExceptions {
+                                                                  {
         logger.info("Fetching medicine history : {}",medId);
 
         return new ResponseEntity<>(userMedicineService.getMedicineHistory(medId, page, limit), HttpStatus.OK);
@@ -132,6 +122,7 @@ public class MedicineController {
      * Fetches all the images stored for that medicine
      */
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @ApiOperation(value = "Fetches all the images stored for that medicine")
     @GetMapping(
             value = "/medicine-images",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -141,7 +132,7 @@ public class MedicineController {
                                                                @RequestParam(name = "medId") Integer medId
                                                               , @RequestParam(value = "page") int page,
                                                                @RequestParam(value = "limit") int limit)
-                                                               throws UserExceptions, UserMedicineException {
+                                                               {
         logger.info("Fetching medicine images : {}",medId);
 
         return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medId, page, limit), HttpStatus.OK);

@@ -1,6 +1,6 @@
-package com.example.user_service.pojos.response.user;
+package com.example.user_service.pojos.dto.response.user;
 
-import com.example.user_service.model.UserEntity;
+import com.example.user_service.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,5 +20,5 @@ public class UserResponsePage implements Serializable {
     private long totalItems;
     private int totalPage;
     private int currentPage;
-    private List<UserEntity> userEntityStream;
+    private List<User> userEntityStream;
 }

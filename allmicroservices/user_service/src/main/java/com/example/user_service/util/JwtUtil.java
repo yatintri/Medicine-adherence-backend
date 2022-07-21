@@ -23,7 +23,7 @@ public class JwtUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    @Value("${project.jwt.secretkey}")
+    @Value("${project.jwt.secretKey}")
     private String secretKey;
 
     @Value("${project.jwt.jwtExpirationMs}")
@@ -64,6 +64,18 @@ public class JwtUtil {
     private String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10 * 10))
+                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
+    }
+    public String generateRefreshToken(String userId) {
+        logger.info("Generating token");
+        Map<String, Object> claims = new HashMap<>();
+        return createRefreshToken(claims, userId);
+    }
+
+    private String createRefreshToken(Map<String, Object> claims, String subject) {
+
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10 * 10))
                 .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
@@ -87,5 +99,23 @@ public class JwtUtil {
         }
         return false;
 
+    }   public Boolean validateRefreshToken(String token, String name) {
+        try {
+            final String username = extractUsername(token);
+            return (username.equals(name
+            ) && !isTokenExpired(token));
+        }
+        catch (SignatureException e) {
+            logger.error("Invalid JWT signature: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            logger.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT claims string is empty: {}", e.getMessage());
+        }
+        return false;
+
     }
+
 }

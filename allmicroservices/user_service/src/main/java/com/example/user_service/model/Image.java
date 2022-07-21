@@ -1,23 +1,22 @@
 package com.example.user_service.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.*;
 
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * This is entity class for image
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -63,11 +62,18 @@ public class Image implements Serializable {
             length = 150
     )
     private String imageUrl;
+
+    @Column(
+            name = "created_at",
+            nullable = false
+    )
+    private LocalDateTime createdAt;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "medimage_id",
             referencedColumnName = "medicine_id"
     )
     @JsonIgnore
-    transient UserMedicines userMedicines;
+    UserMedicines userMedicines;
 }

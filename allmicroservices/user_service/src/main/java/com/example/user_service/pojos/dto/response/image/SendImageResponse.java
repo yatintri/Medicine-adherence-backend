@@ -1,4 +1,4 @@
-package com.example.user_service.pojos.response.image;
+package com.example.user_service.pojos.dto.response.image;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

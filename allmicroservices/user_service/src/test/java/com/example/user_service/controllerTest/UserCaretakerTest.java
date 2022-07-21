@@ -3,21 +3,16 @@ package com.example.user_service.controllerTest;
 import com.example.user_service.controller.CaretakerController;
 import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserCaretaker;
-import com.example.user_service.pojos.dto.SendImageDto;
-import com.example.user_service.pojos.dto.UserCaretakerDTO;
-import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
-import com.example.user_service.pojos.response.caretaker.CaretakerResponsePage;
-import com.example.user_service.service.caretaker.CareTakerService;
-import com.example.user_service.util.Messages;
+import com.example.user_service.pojos.dto.request.SendImageDto;
+import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponsePage;
+import com.example.user_service.service.CareTakerService;
+import com.example.user_service.util.Constants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import com.example.user_service.pojos.response.image.ImageResponse;
+import com.example.user_service.pojos.dto.response.image.ImageResponse;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -73,7 +68,7 @@ class UserCaretakerTest {
  @Test
 @DisplayName("Save caretaker Test")
  @ExtendWith(MockitoExtension.class)
- void saveCaretaker() throws Exception, UserExceptions {
+ void saveCaretaker() throws Exception {
   UserCaretakerDTO userCaretakerDTO1= new UserCaretakerDTO("vinay",false,"73578dfd-e7c9-4381-a348-113e72d80fa2","548259761235609","nikunj",LocalDateTime.now()
           ,"p");
   objectMapper.registerModule(new JavaTimeModule());
@@ -92,7 +87,7 @@ class UserCaretakerTest {
  @Test
  @DisplayName("Update caretaker Test")
  @ExtendWith(MockitoExtension.class)
- void updateCaretakerStatus() throws Exception, UserExceptions {
+ void updateCaretakerStatus() throws Exception {
   Mockito.when(careTakerService.updateCaretakerStatus("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(caretakerResponse);
   mockMvc.perform(MockMvcRequestBuilders
                   .put("/api/v1/accept?cId=73578dfd-e7c9-4381-a348-113e72d80fa2")
@@ -113,7 +108,7 @@ class UserCaretakerTest {
  @Test
  @DisplayName("Get Patients Request for caretaker Test")
  @ExtendWith(MockitoExtension.class)
- void getPatientRequestsC() throws Exception, UserExceptions {
+ void getPatientRequestsC() throws Exception{
   Mockito.when(careTakerService.getPatientRequests("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2)).thenReturn(caretakerResponsePage);
   mockMvc.perform(MockMvcRequestBuilders
                   .get("/api/v1/patient/requests?caretakerId=73578dfd-e7c9-4381-a348-113e72d80fa2&page=0&limit=2")
@@ -124,7 +119,7 @@ class UserCaretakerTest {
  @Test
  @DisplayName("Get my caretaker Test")
  @ExtendWith(MockitoExtension.class)
- void getMyCaretakers() throws Exception, UserExceptions {
+ void getMyCaretakers() throws Exception {
   Mockito.when(careTakerService.getMyCaretakers("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2)).thenReturn(caretakerResponsePage);
   mockMvc.perform(MockMvcRequestBuilders
                   .get("/api/v1/caretakers?patientId=73578dfd-e7c9-4381-a348-113e72d80fa2&page=0&limit=2")
@@ -135,8 +130,8 @@ class UserCaretakerTest {
  @Test
  @DisplayName("Get caretaker request Test")
  @ExtendWith(MockitoExtension.class)
- void getCaretakerRequestsP() throws Exception, UserExceptions {
-  Mockito.when(careTakerService.getCaretakerRequestsP("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2)).thenReturn(caretakerResponsePage);
+ void getCaretakerRequestsP() throws Exception {
+  Mockito.when(careTakerService.getCaretakerRequestsForPatient("73578dfd-e7c9-4381-a348-113e72d80fa2",0,2)).thenReturn(caretakerResponsePage);
   mockMvc.perform(MockMvcRequestBuilders
                   .get("/api/v1/caretaker/requests?patientId=73578dfd-e7c9-4381-a348-113e72d80fa2&page=0&limit=2")
                   .contentType(MediaType.APPLICATION_JSON))
@@ -146,8 +141,8 @@ class UserCaretakerTest {
  @Test
  @DisplayName("Delete Patient request Test")
  @ExtendWith(MockitoExtension.class)
- void delPatientReq() throws Exception, UserExceptions {
-  Mockito.when(careTakerService.delPatientReq("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(Messages.SUCCESS);
+ void delPatientReq() throws Exception {
+  Mockito.when(careTakerService.deletePatientRequest("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(Constants.SUCCESS);
   mockMvc.perform(MockMvcRequestBuilders
                   .get("/api/v1/delete?cId=73578dfd-e7c9-4381-a348-113e72d80fa2")
                   .contentType(MediaType.APPLICATION_JSON))
@@ -160,7 +155,7 @@ class UserCaretakerTest {
  @ExtendWith(MockitoExtension.class)
  void notifyUserForMed() throws Exception {
   mockMvc.perform(MockMvcRequestBuilders
-                  .get("/api/v1/notifyuser?fcmToken=egufagfljbgalgfoeiugi&medname=PCM")
+                  .get("/api/v1/notify-user?fcmToken=egufagfljbgalgfoeiugi&medname=PCM")
                   .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk());
  }

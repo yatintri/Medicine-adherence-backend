@@ -1,7 +1,7 @@
 //package com.example.user_service.controller;
 //
-//import com.example.user_service.pojos.dto.MedicineHistoryDTO;
-//import com.example.user_service.pojos.dto.MedicinePojo;
+//import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
+//import com.example.user_service.pojos.dto.request.MedicinePojo;
 //
 //import org.json.JSONException;
 //

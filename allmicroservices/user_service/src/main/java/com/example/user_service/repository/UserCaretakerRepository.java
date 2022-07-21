@@ -22,7 +22,7 @@ public interface UserCaretakerRepository extends PagingAndSortingRepository<User
     List<UserCaretaker> getCaretakerRequestStatus(String id);
 
     @Query("select u from UserCaretaker u where u.sentBy='c' and u.patientId= ?1 and u.reqStatus=false")
-    Page<UserCaretaker> getCaretakerRequestsP(String userId, Pageable pageable);
+    Page<UserCaretaker> getCaretakerRequestsForPatients(String userId, Pageable pageable);
 
     @Query("SELECT u from UserCaretaker u where u.reqStatus=true and u.patientId = ?1")
     Page<UserCaretaker> getMyCaretakers(String id, Pageable pageable);

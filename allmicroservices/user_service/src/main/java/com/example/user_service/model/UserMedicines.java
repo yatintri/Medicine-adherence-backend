@@ -1,20 +1,20 @@
 package com.example.user_service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 /**
  * This is entity class for medicines
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -52,6 +52,18 @@ public class UserMedicines implements Serializable {
     @Column(name = "current_count", nullable = false)
     private int currentCount;
 
+    @Column(
+            name = "created_at",
+            nullable = false
+    )
+    private LocalDateTime createdAt;
+
+    @Column(
+            name = "updated_at",
+            nullable = false
+    )
+    private LocalDateTime updatedAt;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
@@ -60,7 +72,7 @@ public class UserMedicines implements Serializable {
     )
 
     @JsonIgnore
-    private UserEntity userEntity;
+    private User userEntity;
 
     @OneToMany(
             fetch = FetchType.LAZY,

@@ -5,17 +5,15 @@ import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * This is entity class for Caretaker
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -32,7 +30,7 @@ public class UserCaretaker implements Serializable {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String cId;
+    private String id;
     @Column(
             name = "patient_name",
             nullable = false,
@@ -68,6 +66,12 @@ public class UserCaretaker implements Serializable {
             nullable = false
     )
     private LocalDateTime createdAt;
+
+    @Column(
+            name = "updated_at",
+            nullable = false
+    )
+    private LocalDateTime updatedAt;
     @Column(
             name = "sent_by",
             nullable = false,

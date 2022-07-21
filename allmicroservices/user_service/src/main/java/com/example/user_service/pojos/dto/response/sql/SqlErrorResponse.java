@@ -1,4 +1,4 @@
-package com.example.user_service.pojos.response.sql;
+package com.example.user_service.pojos.dto.response.sql;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

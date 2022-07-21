@@ -1,28 +1,24 @@
 package com.example.user_service.controller;
 
-import java.util.Objects;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.example.user_service.util.Constants;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Retryable;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserDetails;
-import com.example.user_service.pojos.dto.UserDetailsDTO;
-import com.example.user_service.pojos.response.user.UserDetailResponse;
-import com.example.user_service.service.userdetail.UserDetailService;
-import com.example.user_service.util.Messages;
+import com.example.user_service.pojos.dto.request.UserDetailsDTO;
+import com.example.user_service.pojos.dto.response.user.UserDetailResponse;
+import com.example.user_service.service.UserDetailService;
 
 /**
  * The controller class is responsible for processing incoming REST API requests
@@ -42,6 +38,7 @@ public class UserDetailController {
      * Updates user details with respect to its id
      */
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @ApiOperation(value = "Updates user details with respect to its id")
     @PutMapping(
             value = "/user-details",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -50,22 +47,13 @@ public class UserDetailController {
     public ResponseEntity<UserDetailResponse> updateUserDetails(@NotBlank
                                                                 @NotNull
                                                                 @RequestParam("userId") String id, @Valid
-                                                                @RequestBody UserDetailsDTO userDetailsDTO, BindingResult bindingResult)
-            throws UserExceptionMessage, UserExceptions {
+                                                                @RequestBody UserDetailsDTO userDetailsDTO)
+             {
 
         logger.info("Updating user details : {} {}",id,userDetailsDTO);
-
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(new UserDetailResponse(Messages.VALIDATION,
-                    Objects.requireNonNull(
-                            bindingResult.getFieldError()).getDefaultMessage(),
-                    null),
-                    HttpStatus.BAD_REQUEST);
-        }
-
         UserDetails userDetails = userDetailService.saveUserDetail(id, userDetailsDTO);
-        UserDetailResponse userDetailResponse = new UserDetailResponse(Messages.SUCCESS,
-                Messages.SAVE_DETAILS,
+        UserDetailResponse userDetailResponse = new UserDetailResponse(Constants.SUCCESS,
+                Constants.SAVE_DETAILS,
                 userDetails);
 
         return new ResponseEntity<>(userDetailResponse, HttpStatus.OK);

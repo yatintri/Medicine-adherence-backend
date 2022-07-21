@@ -4,26 +4,23 @@ import javax.persistence.*;
 
 import javax.validation.constraints.NotBlank;
 
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * This is entity class for User details
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "user_details")
-@ToString(exclude = "")
 public class UserDetails implements Serializable {
     @Id
     @Column(
@@ -62,17 +59,17 @@ public class UserDetails implements Serializable {
     )
     private String fcmToken;
     @Column(
-            name = "pincode",
+            name = "pin_code",
             columnDefinition = "int default 0"
     )
-    private int pincode;
+    private int pinCode;
     @Column(
             name = "user_contact",
             columnDefinition = "Long default 0"
     )
     private Long userContact;
-    @Column(name = "lattitude")
-    private float lattitude;
+    @Column(name = "latitude")
+    private float latitude;
     @Column(name = "longitude")
     private float longitude;
     @Column(name = "address")
@@ -100,13 +97,25 @@ public class UserDetails implements Serializable {
     private int emergencyContact;
     @Column(name = "past_medication")
     private String pastMedication;
+
+    @Column(
+            name = "created_at",
+            nullable = false
+    )
+    private LocalDateTime createdAt;
+
+    @Column(
+            name = "updated_at",
+            nullable = false
+    )
+    private LocalDateTime updatedAt;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "user_user_id",
             referencedColumnName = "user_id"
     )
     @JsonIgnore
-    private UserEntity user;
+    private User user;
 }
 
 

@@ -1,11 +1,11 @@
-package com.example.user_service.service.caretaker;
+package com.example.user_service.service;
 
-import java.io.IOException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Optional;
@@ -13,6 +13,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import com.example.user_service.util.Constants;
+import com.example.user_service.util.DateHelper;
 import org.hibernate.exception.JDBCConnectionException;
 
 import org.modelmapper.ModelMapper;
@@ -34,20 +35,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.Image;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.model.UserMedicines;
 import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
-import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
-import com.example.user_service.pojos.response.caretaker.CaretakerResponse1;
-import com.example.user_service.pojos.response.caretaker.CaretakerResponsePage;
-import com.example.user_service.pojos.response.image.SendImageResponse;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse1;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponsePage;
+import com.example.user_service.pojos.dto.response.image.SendImageResponse;
 import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserCaretakerRepository;
 import com.example.user_service.repository.UserMedicineRepository;
-import com.example.user_service.util.Datehelper;
 
 /**
  * This class contains all the business logic for the caretaker controller
@@ -85,7 +84,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      */
     @Override
     @CacheEvict(value = "caretakerCache",key = "#cId")
-    public String deletePatientRequest(String id) throws UserExceptionMessage, UserCaretakerException, UserExceptions {
+    public String deletePatientRequest(String id){
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
@@ -112,13 +111,14 @@ public class CareTakerServiceImpl implements CareTakerService {
      */
     @Override
     public CaretakerResponse saveCareTaker(@Valid UserCaretakerDTO userCaretakerDTO)
-            throws UserCaretakerException, UserExceptionMessage {
+             {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
             UserCaretaker userCaretaker = mapToEntity(userCaretakerDTO);
 
-            userCaretaker.setCreatedAt(Datehelper.getcurrentdatatime());
+            userCaretaker.setCreatedAt(DateHelper.getCurrentDatetime());
+            userCaretaker.setUpdatedAt(DateHelper.getCurrentDatetime());
 
             if (userCaretakerRepository.check(userCaretaker.getPatientId(), userCaretaker.getCaretakerId()) != null) {
 
@@ -144,7 +144,7 @@ public class CareTakerServiceImpl implements CareTakerService {
     @Override
     public SendImageResponse sendImageToCaretaker(MultipartFile multipartFile, String filename, String medName,
                                                   String caretakerId, Integer medId)
-            throws IOException, UserCaretakerException, UserExceptions {
+             {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
@@ -153,14 +153,14 @@ public class CareTakerServiceImpl implements CareTakerService {
 
             Files.write(path, multipartFile.getBytes());
 
-            UserMedicines userMedicines = userMedicineRepository.getMedById(medId);
+            UserMedicines userMedicines = userMedicineRepository.getMedicineById(medId);
             if(userMedicines == null){
                 throw new UserCaretakerException(Constants.NO_MEDICINE_FOUND);
 
             }
             String userName = userMedicines.getUserEntity().getUserName();
             Image image = new Image();
-
+            image.setCreatedAt(LocalDateTime.now());
             image.setImageUrl(path.getFileName().toString());
             image.setTime(Calendar.getInstance().getTime().toString());
             image.setDate(Calendar.getInstance().getTime());
@@ -193,7 +193,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      */
     @Override
     @CachePut(value = "caretakerCache",key = "#cId")
-    public CaretakerResponse updateCaretakerStatus(String id) throws UserCaretakerException {
+    public CaretakerResponse updateCaretakerStatus(String id)  {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
@@ -204,7 +204,7 @@ public class CareTakerServiceImpl implements CareTakerService {
 
                 throw new UserCaretakerException(Constants.MSG);
             }
-
+            uc.get().setUpdatedAt(DateHelper.getCurrentDatetime());
             uc.get().setReqStatus(true);
             userCaretakerRepository.save(uc.get());
             logger.info(Constants.EXITING_METHOD_EXECUTION);
@@ -221,7 +221,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      * @Deprecated This method is not in use
      */
     @Override
-    public CaretakerResponse1 getCaretakerRequestStatus(String userId) throws UserCaretakerException {
+    public CaretakerResponse1 getCaretakerRequestStatus(String userId)  {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
@@ -241,13 +241,13 @@ public class CareTakerServiceImpl implements CareTakerService {
      */
     @Override
     public CaretakerResponsePage getCaretakerRequestsForPatient(String userId, int page, int limit)
-            throws UserCaretakerException, UserExceptions {
+             {
 
         logger.info(Constants.STARTING_METHOD_EXECUTION);
         Pageable pageableRequest = PageRequest.of(page, limit);
 
         try {
-            Page<UserCaretaker> userCaretaker = userCaretakerRepository.getCaretakerRequestsP(userId, pageableRequest);
+            Page<UserCaretaker> userCaretaker = userCaretakerRepository.getCaretakerRequestsForPatients(userId, pageableRequest);
 
             if (userCaretaker.isEmpty()) {
                 logger.error("Get Caretaker Requests for patient: Data not found");
@@ -274,7 +274,7 @@ public class CareTakerServiceImpl implements CareTakerService {
      */
     @Override
     @Cacheable(value = "caretakerCache",key = "#userId")
-    public CaretakerResponsePage getMyCaretakers(String userId, int page, int limit) throws UserCaretakerException {
+    public CaretakerResponsePage getMyCaretakers(String userId, int page, int limit)  {
 
         logger.info(Constants.STARTING_METHOD_EXECUTION);
         Pageable pageableRequest = PageRequest.of(page, limit);
@@ -308,7 +308,7 @@ public class CareTakerServiceImpl implements CareTakerService {
     @Override
     @Cacheable(value = "caretakerCache",key = "#userId")
     public CaretakerResponsePage getPatientRequests(String userId, int page, int limit)
-            throws UserCaretakerException, UserExceptions {
+             {
 
         logger.info(Constants.STARTING_METHOD_EXECUTION);
         Pageable pageableRequest = PageRequest.of(page, limit);
@@ -342,7 +342,7 @@ public class CareTakerServiceImpl implements CareTakerService {
     @Override
     @Cacheable(value = "caretakerCache",key = "#userId")
     public CaretakerResponsePage getPatientsUnderMe(String userId, int page, int limit)
-            throws UserCaretakerException, UserExceptions {
+             {
 
         logger.info(Constants.STARTING_METHOD_EXECUTION);
         Pageable pageableRequest = PageRequest.of(page, limit);

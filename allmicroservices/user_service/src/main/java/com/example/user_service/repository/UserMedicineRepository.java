@@ -15,10 +15,10 @@ public interface UserMedicineRepository extends PagingAndSortingRepository<UserM
 
 
     @Query("SELECT u from UserMedicines u where u.medicineId = ?1")
-    public UserMedicines getMedById(Integer medicineId);
+     UserMedicines getMedicineById(Integer medicineId);
 
     @Query("SELECT U FROM UserMedicines U WHERE U.days like (%?1%)")
-    List<UserMedicines> getMedicinesforToday(String day , Pageable pageable);
+    List<UserMedicines> getMedicinesForToday(String day , Pageable pageable);
 
 
 
