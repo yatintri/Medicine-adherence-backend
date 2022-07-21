@@ -166,12 +166,12 @@ public class UserServiceImpl implements UserService {
      * Fetches medicines by id and then generates pdf and sends it as a response
      */
     @Override
-    public String sendUserMedicines(Integer medId)
+    public String sendUserMedicines(Integer medicineId)
             {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
-            Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
+            Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medicineId);
 
             if (userMedicines.isEmpty()) {
                 return FAILED;
@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService {
             User entity = userMedicines.get().getUserEntity();
             List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
             logger.info(EXITING_METHOD_EXECUTION);
-            logger.debug("Creating pdf for {} medicine",medId);
+            logger.debug("Creating pdf for {} medicine",medicineId);
             return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
         }
         catch (DataAccessException | JDBCConnectionException | FileNotFoundException dataAccessException) {

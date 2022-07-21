@@ -150,12 +150,12 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      * This method contains logic to sync medicine history from local storage to backend
      */
     @Override
-    public MedicineResponse syncMedicineHistory(Integer medId, List<MedicineHistoryDTO> medicineHistoryDTOS)
+    public MedicineResponse syncMedicineHistory(Integer medicineId, List<MedicineHistoryDTO> medicineHistoryDTOS)
             {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
-            UserMedicines userMedicines = userMedicineRepository.getMedicineById(medId);
+            UserMedicines userMedicines = userMedicineRepository.getMedicineById(medicineId);
 
             if (userMedicines == null) {
                 logger.error("Sync medicine History: Unable to sync");
@@ -189,7 +189,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                     .collect(Collectors.toList());
 
             CompletableFuture.completedFuture(userMedHistoryRepository.saveAll(medicineHistories));
-            logger.debug("Syncing {} medicine {} histories",medId,medicineHistoryDTOS);
+            logger.debug("Syncing {} medicine {} histories",medicineId,medicineHistoryDTOS);
             logger.info(EXITING_METHOD_EXECUTION);
             return new MedicineResponse(SUCCESS, DATA_FOUND, medicineHistories);
         } catch (DataAccessException | JDBCConnectionException dataAccessException) {
@@ -204,18 +204,18 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      */
     @Override
     @Cacheable(value = "medicineCache")
-    public MedicineResponse getMedicineHistory(Integer medId, int page, int limit) {
+    public MedicineResponse getMedicineHistory(Integer medicineId, int page, int limit) {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
-            List<MedicineHistory> medicineHistories = userMedicineRepository.getMedicineById(medId).getMedicineHistories();
+            List<MedicineHistory> medicineHistories = userMedicineRepository.getMedicineById(medicineId).getMedicineHistories();
 
             if (medicineHistories.isEmpty()) {
                 logger.error("Get Medicine history: Data not found");
 
                 throw new UserMedicineException(MSG);
             }
-            logger.debug("Fetching {} medicine history",medId);
+            logger.debug("Fetching {} medicine history",medicineId);
             logger.info(EXITING_METHOD_EXECUTION);
             return new MedicineResponse("OK", "Medicine History", medicineHistories);
         }
@@ -230,16 +230,16 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      */
     @Override
     @Cacheable(value = "medicineCache")
-    public ImageListResponse getUserMedicineImages(Integer medId, int page, int limit)
+    public ImageListResponse getUserMedicineImages(Integer medicineId, int page, int limit)
              {
         logger.info(STARTING_METHOD_EXECUTION);
 
         try {
-            logger.debug("Fetching images for {} medicines",medId);
+            logger.debug("Fetching images for {} medicines",medicineId);
             logger.info(EXITING_METHOD_EXECUTION);
             return new ImageListResponse("",
                     "",
-                    userMedicineRepository.getMedicineById(medId).getImages().stream().sorted(
+                    userMedicineRepository.getMedicineById(medicineId).getImages().stream().sorted(
                             Comparator.comparing(Image::getDate).reversed()).collect(
                             Collectors.toList()));
         }

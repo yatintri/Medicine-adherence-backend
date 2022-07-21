@@ -101,7 +101,7 @@ class UserMedicineTest {
         medicineHistoryDTOList.add(medicineHistoryDTO2);
         String jsonText= objectMapper.writeValueAsString(medicineHistoryDTOList);
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/medicine-history/sync?medId=123")
+                        .post("/api/v1/medicine-history/sync?medicineId=123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonText))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
@@ -114,7 +114,7 @@ class UserMedicineTest {
 
         when(result.hasErrors()).thenReturn(false);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/medicine-histories?medId=123&page=0&limit=2")
+                        .get("/api/v1/medicine-histories?medicineId=123&page=0&limit=2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
@@ -124,7 +124,7 @@ class UserMedicineTest {
     @ExtendWith(MockitoExtension.class)
     void getMedicineImages() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/medicine-images?medId=123&page=0&limit=2")
+                        .get("/api/v1/medicine-images?medicineId=123&page=0&limit=2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

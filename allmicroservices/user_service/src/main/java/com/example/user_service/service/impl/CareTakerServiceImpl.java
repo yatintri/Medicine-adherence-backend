@@ -147,8 +147,8 @@ public class CareTakerServiceImpl implements CareTakerService {
      * This method uses fcm to send image to caretaker as a notification message
      */
     @Override
-    public SendImageResponse sendImageToCaretaker(MultipartFile multipartFile, String filename, String medName,
-                                                  String caretakerId, Integer medId)
+    public SendImageResponse sendImageToCaretaker(MultipartFile multipartFile, String filename, String medicineName,
+                                                  String caretakerId, Integer medicineId)
              {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
@@ -158,7 +158,7 @@ public class CareTakerServiceImpl implements CareTakerService {
 
             Files.write(path, multipartFile.getBytes());
 
-            UserMedicines userMedicines = userMedicineRepository.getMedicineById(medId);
+            UserMedicines userMedicines = userMedicineRepository.getMedicineById(medicineId);
             if(userMedicines == null){
                 throw new UserCaretakerException(Constants.NO_MEDICINE_FOUND);
 
@@ -181,7 +181,7 @@ public class CareTakerServiceImpl implements CareTakerService {
                     new Notificationmessage(fcmToken,
                             "Take medicine",
                             "caretaker",
-                            medName,
+                            medicineName,
                             filename + ".jpg"));
         } catch (Exception e) {
             logger.info(e.getMessage());
@@ -189,7 +189,7 @@ public class CareTakerServiceImpl implements CareTakerService {
             return new SendImageResponse(Constants.FAILED, Constants.UNABLE_TO_SEND);
         }
         logger.info(EXITING_METHOD_EXECUTION);
-        logger.debug("Sending image {} to {} caretaker for {} medicine",filename,caretakerId,medId);
+        logger.debug("Sending image {} to {} caretaker for {} medicine",filename,caretakerId,medicineId);
         return new SendImageResponse(Constants.SUCCESS, Constants.SENT_SUCCESSFULLY);
     }
 

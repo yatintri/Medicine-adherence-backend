@@ -84,14 +84,14 @@ public class MedicineController {
     )
     public ResponseEntity<SyncResponse> syncMedicineHistory(@NotNull
                                                             @NotBlank
-                                                            @RequestParam(name = "medId") Integer medId, @Valid
+                                                            @RequestParam(name = "medId") Integer medicineId, @Valid
                                                             @RequestBody List<MedicineHistoryDTO> medicineHistory)
              {
 
-        logger.info("Syncing medicine history : {} {}",medId,medicineHistory);
+        logger.info("Syncing medicine history : {} {}",medicineId,medicineHistory);
 
         try {
-            userMedicineService.syncMedicineHistory(medId, medicineHistory);
+            userMedicineService.syncMedicineHistory(medicineId, medicineHistory);
 
             return new ResponseEntity<>(new SyncResponse(Constants.SUCCESS, Constants.SYNC), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -110,12 +110,12 @@ public class MedicineController {
     )
     public ResponseEntity<MedicineResponse> getMedicineHistories(@NotBlank
                                                                  @NotNull
-                                                                 @RequestParam(name = "medId") Integer medId, @RequestParam(value = "page") int page,
+                                                                 @RequestParam(name = "medicineId") Integer medicineId, @RequestParam(value = "page") int page,
                                                                  @RequestParam(value = "limit") int limit)
                                                                   {
-        logger.info("Fetching medicine history : {}",medId);
+        logger.info("Fetching medicine history : {}", medicineId);
 
-        return new ResponseEntity<>(userMedicineService.getMedicineHistory(medId, page, limit), HttpStatus.OK);
+        return new ResponseEntity<>(userMedicineService.getMedicineHistory(medicineId, page, limit), HttpStatus.OK);
     }
 
     /**
@@ -129,13 +129,13 @@ public class MedicineController {
     )
     public ResponseEntity<ImageListResponse> getMedicineImages(@NotBlank
                                                                @NotNull
-                                                               @RequestParam(name = "medId") Integer medId
+                                                               @RequestParam(name = "medicineId") Integer medicineId
                                                               , @RequestParam(value = "page") int page,
                                                                @RequestParam(value = "limit") int limit)
                                                                {
-        logger.info("Fetching medicine images : {}",medId);
+        logger.info("Fetching medicine images : {}", medicineId);
 
-        return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medId, page, limit), HttpStatus.OK);
+        return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medicineId, page, limit), HttpStatus.OK);
     }
 }
 
