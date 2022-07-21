@@ -18,17 +18,17 @@ import java.time.LocalDateTime;
 public class Medicine {
     @Id
     @Column(
-            name = "med_id",
+            name = "medicine_id",
             nullable = false
     )
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int medId;
+    private int medicineId;
     @Column(
-            name = "med_name",
+            name = "medicine_name",
             nullable = false,
             length = 150
     )
-    private String medName;
+    private String medicineName;
 
     @Column(
             name = "created_at",
