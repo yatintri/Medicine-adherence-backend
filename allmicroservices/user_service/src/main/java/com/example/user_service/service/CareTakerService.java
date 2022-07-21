@@ -2,6 +2,7 @@ package com.example.user_service.service;
 
 
 import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerDelete;
 import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
 import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse1;
 import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponsePage;
@@ -30,7 +31,7 @@ public interface CareTakerService {
 
      CaretakerResponsePage getCaretakerRequestsForPatient(String userId, int page, int limit) ;
 
-     String deletePatientRequest(String caretakerId) ;
+     CaretakerDelete deletePatientRequest(String caretakerId) ;
 
     SendImageResponse sendImageToCaretaker(MultipartFile multipartFile , String filename , String medName, String caretakerId , Integer medId) ;
 }

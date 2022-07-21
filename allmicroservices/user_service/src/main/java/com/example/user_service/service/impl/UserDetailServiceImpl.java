@@ -1,8 +1,9 @@
-package com.example.user_service.service;
+package com.example.user_service.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import com.example.user_service.service.UserDetailService;
 import com.example.user_service.util.Constants;
 import com.example.user_service.util.DateHelper;
 import org.hibernate.exception.JDBCConnectionException;

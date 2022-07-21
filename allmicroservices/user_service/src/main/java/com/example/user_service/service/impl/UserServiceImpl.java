@@ -1,4 +1,4 @@
-package com.example.user_service.service;
+package com.example.user_service.service.impl;
 
 import java.io.FileNotFoundException;
 
@@ -6,6 +6,7 @@ import java.util.*;
 
 import com.example.user_service.model.*;
 import com.example.user_service.pojos.dto.response.RefreshTokenResponse;
+import com.example.user_service.service.UserService;
 import com.example.user_service.util.Constants;
 import com.example.user_service.util.DateHelper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,7 +22,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.user_service.config.PdfMailSender;
@@ -57,10 +57,9 @@ public class UserServiceImpl implements UserService {
 
     private final JwtUtil jwtUtil;
 
-    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, JwtUtil jwtUtil, UserDetailsRepository userDetailsRepository,
-                           ModelMapper mapper, PdfMailSender pdfMailSender, PasswordEncoder passwordEncoder,
+                           ModelMapper mapper, PdfMailSender pdfMailSender,
                            UserMedicineRepository userMedicineRepository) {
         this.userRepository = userRepository;
         this.userMedicineRepository = userMedicineRepository;
@@ -68,7 +67,6 @@ public class UserServiceImpl implements UserService {
         this.mapper = mapper;
         this.pdfMailSender = pdfMailSender;
         this.jwtUtil = jwtUtil;
-        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -88,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
             if (user.getUserName() != null) {
                 String jwtToken = jwtUtil.generateToken(user.getUserName());
-                String refreshToken = passwordEncoder.encode(user.getUserId());
+                String refreshToken = jwtUtil.generateRefreshToken(user.getUserName());
 
                 logger.info(Constants.EXITING_METHOD_EXECUTION);
                 logger.debug("Logging in with {} email",mail);
@@ -142,7 +140,7 @@ public class UserServiceImpl implements UserService {
             }
 
             String jwtToken = jwtUtil.generateToken(ue.getUserName());
-            String refreshToken = passwordEncoder.encode(ue.getUserId());
+            String refreshToken = jwtUtil.generateRefreshToken(ue.getUserName());
 
             logger.info(Constants.EXITING_METHOD_EXECUTION);
             logger.debug("Saving {} user ", userEntityDTO);
@@ -170,24 +168,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public String sendUserMedicines(Integer medId)
             {
-        logger.info(Constants.STARTING_METHOD_EXECUTION);
+        logger.info(STARTING_METHOD_EXECUTION);
 
         try {
             Optional<UserMedicines> userMedicines = userMedicineRepository.findById(medId);
 
             if (userMedicines.isEmpty()) {
-                return Constants.FAILED;
+                return FAILED;
             }
 
             User entity = userMedicines.get().getUserEntity();
             List<MedicineHistory> medicineHistories = userMedicines.get().getMedicineHistories();
-            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            logger.info(EXITING_METHOD_EXECUTION);
             logger.debug("Creating pdf for {} medicine",medId);
             return pdfMailSender.send(entity, userMedicines.get(), medicineHistories);
         }
         catch (DataAccessException | JDBCConnectionException | FileNotFoundException dataAccessException) {
-            logger.error("Send user medicines :" + Constants.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
+            logger.error("Send user medicines :" + SQL_ERROR_MSG);
+            throw new UserExceptionMessage(SQL_ERROR_MSG);
         }
     }
 

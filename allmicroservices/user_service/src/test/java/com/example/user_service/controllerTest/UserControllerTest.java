@@ -108,7 +108,7 @@ class UserControllerTest {
                         .post("/api/v1/login")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(jsonValue))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test

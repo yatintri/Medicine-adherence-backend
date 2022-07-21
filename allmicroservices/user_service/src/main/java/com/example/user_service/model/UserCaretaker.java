@@ -78,5 +78,12 @@ public class UserCaretaker implements Serializable {
             length = 100
     )
     private String sentBy;
+    @Column(
+            name = "delete",
+            nullable = false
+    )
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean delete;
+
 }
 

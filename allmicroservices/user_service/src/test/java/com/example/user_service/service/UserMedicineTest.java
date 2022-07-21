@@ -1,7 +1,6 @@
 package com.example.user_service.service;
 
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.model.Image;
 import com.example.user_service.model.MedicineHistory;
@@ -16,6 +15,7 @@ import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserMedHistoryRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
+import com.example.user_service.service.impl.UserMedicineServiceImpl;
 import com.example.user_service.util.Constants;
 import org.hibernate.exception.JDBCConnectionException;
 import org.junit.jupiter.api.Assertions;

@@ -102,8 +102,7 @@ public class JwtUtil {
     }   public Boolean validateRefreshToken(String token, String name) {
         try {
             final String username = extractUsername(token);
-            return (username.equals(name
-            ) && !isTokenExpired(token));
+            return (username.equals(name) && !isTokenExpired(token));
         }
         catch (SignatureException e) {
             logger.error("Invalid JWT signature: {}", e.getMessage());

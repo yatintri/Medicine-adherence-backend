@@ -45,7 +45,111 @@ RabbitMQ is an AMQP server. The server is freely available at https://www.rabbit
 Unpack the server and launch it with default settings by running the following command in a terminal window:
 
 `rabbitmq-server`
+# Project-Structure
+```
+    │   ├── com
+    │   │   └── example
+    │   │       └── user_service
+    │   │           ├── config
+    │   │           │   ├── filter
+    │   │           │   │   └── UserDetailService.class
+    │   │           │   ├── ImageConfig.class
+    │   │           │   ├── PdfMailSender.class
+    │   │           │   ├── RabbitmqConfiguration.class
+    │   │           │   ├── RedisConfig.class
+    │   │           │   ├── SwaggerConfig.class
+    │   │           │   └── ThreadConfig.class
+    │   │           ├── controller
+    │   │           │   ├── CaretakerController.class
+    │   │           │   ├── MedicineController.class
+    │   │           │   ├── UserController.class
+    │   │           │   └── UserDetailController.class
+    │   │           ├── exception
+    │   │           │   ├── DataAccessExceptionMessage.class
+    │   │           │   ├── UserCaretakerException.class
+    │   │           │   ├── UserExceptionMessage.class
+    │   │           │   ├── UserExceptions.class
+    │   │           │   └── UserMedicineException.class
+    │   │           ├── model
+    │   │           │   ├── Image.class
+    │   │           │   ├── Medicine.class
+    │   │           │   ├── MedicineHistory.class
+    │   │           │   ├── UserCaretaker.class
+    │   │           │   ├── User.class
+    │   │           │   ├── UserDetails.class
+    │   │           │   └── UserMedicines.class
+    │   │           ├── pojos
+    │   │           │   ├── authentication
+    │   │           │   │   └── AuthenticationResponse.class
+    │   │           │   ├── dto
+    │   │           │   │   ├── request
+    │   │           │   │   │   ├── DetailsDTO.class
+    │   │           │   │   │   ├── LoginDTO.class
+    │   │           │   │   │   ├── MedicineHistoryDTO.class
+    │   │           │   │   │   ├── MedicinePojo.class
+    │   │           │   │   │   ├── SendImageDto.class
+    │   │           │   │   │   ├── UserCaretakerDTO.class
+    │   │           │   │   │   ├── UserDetailsDTO.class
+    │   │           │   │   │   └── UserEntityDTO.class
+    │   │           │   │   └── response
+    │   │           │   │       ├── caretaker
+    │   │           │   │       │   ├── CaretakerDelete.class
+    │   │           │   │       │   ├── CaretakerResponse1.class
+    │   │           │   │       │   ├── CaretakerResponse.class
+    │   │           │   │       │   └── CaretakerResponsePage.class
+    │   │           │   │       ├── image
+    │   │           │   │       │   ├── ImageListResponse.class
+    │   │           │   │       │   ├── ImageResponse.class
+    │   │           │   │       │   └── SendImageResponse.class
+    │   │           │   │       ├── medicine
+    │   │           │   │       │   ├── MedicineResponse.class
+    │   │           │   │       │   ├── MedicineResponsePage.class
+    │   │           │   │       │   └── SyncResponse.class
+    │   │           │   │       ├── RefreshTokenResponse.class
+    │   │           │   │       ├── sql
+    │   │           │   │       │   └── SqlErrorResponse.class
+    │   │           │   │       └── user
+    │   │           │   │           ├── UserDetailResponse.class
+    │   │           │   │           ├── UserProfileResponse.class
+    │   │           │   │           ├── UserResponse.class
+    │   │           │   │           └── UserResponsePage.class
+    │   │           │   ├── MailInfo.class
+    │   │           │   └── Notificationmessage.class
+    │   │           ├── repository
+    │   │           │   ├── ImageRepository.class
+    │   │           │   ├── Medrepo.class
+    │   │           │   ├── UserCaretakerRepository.class
+    │   │           │   ├── UserDetailsRepository.class
+    │   │           │   ├── UserMedHistoryRepository.class
+    │   │           │   ├── UserMedicineRepository.class
+    │   │           │   └── UserRepository.class
+    │   │           ├── security
+    │   │           │   ├── AuthenticationHandler.class
+    │   │           │   ├── SecurityLayer.class
+    │   │           │   ├── TokenRefreshRequest.class
+    │   │           │   ├── WebConfiguration$1.class
+    │   │           │   └── WebConfiguration.class
+    │   │           ├── service
+    │   │           │   ├── CareTakerService.class
+    │   │           │   ├── CareTakerServiceImpl.class
+    │   │           │   ├── MailService.class
+    │   │           │   ├── UserDetailService.class
+    │   │           │   ├── UserDetailServiceImpl.class
+    │   │           │   ├── UserMedicineService.class
+    │   │           │   ├── UserMedicineServiceImpl.class
+    │   │           │   ├── UserService.class
+    │   │           │   └── UserServiceImpl.class
+    │   │           ├── UserServiceApplication$1.class
+    │   │           ├── UserServiceApplication.class
+    │   │           ├── util
+    │   │           │   ├── Constants.class
+    │   │           │   ├── DateHelper.class
+    │   │           │   └── JwtUtil.class
+    │   │           └── validators
+    │   │               ├── ImageValidator.class
+    │   │               └── ImageValidCheck.class
 
+```
 # Security
 
 Integration with Spring Security and add other filter for jwt token process.

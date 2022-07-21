@@ -45,9 +45,9 @@ public class WebConfiguration implements WebMvcConfigurer {
                         "/api/v1/caretakers",
                         "/api/v1/caretaker/requests",
                         "/api/v1/medicines/sync/**",
-                        "/api/v1/userdetails"
+                        "/api/v1/user-details"
                 );
-        registry.addInterceptor(new HandlerInterceptor() {
+        registry.addInterceptor(new HandlerInterceptor() {  //DDOS
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
                 String ipAddress = request.getRemoteAddr();

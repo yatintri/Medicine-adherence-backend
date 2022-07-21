@@ -81,7 +81,7 @@ class UserMedicineTest {
                         .post("/api/v1/medicines/sync?userId=73578dfd-e7c9-4381-a348-113e72d80fa2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonText))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test
@@ -104,7 +104,7 @@ class UserMedicineTest {
                         .post("/api/v1/medicine-history/sync?medId=123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonText))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test

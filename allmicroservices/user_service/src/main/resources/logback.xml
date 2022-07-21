@@ -47,4 +47,20 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
+    <!-- Configuration when the profile is dev -->
+    <springProfile name="dev">
+        <logger name="com.example.user_service" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE-ROLLING"/>
+        </logger>>
+    </springProfile>
+
+    <!-- Configuration when the profile is staging or prod -->
+    <springProfile name="prod">
+        <logger name="com.example.user_service" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE-ROLLING"/>
+        </logger>
+    </springProfile>
+
 </configuration>

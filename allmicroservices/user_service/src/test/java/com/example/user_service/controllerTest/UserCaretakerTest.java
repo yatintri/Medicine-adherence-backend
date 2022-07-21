@@ -81,7 +81,7 @@ class UserCaretakerTest {
                   .post("/api/v1/request")
                   .contentType(MediaType.APPLICATION_JSON)
                   .content(jsonText))
-          .andExpect(MockMvcResultMatchers.status().isOk());
+          .andExpect(MockMvcResultMatchers.status().isCreated());
  }
 
  @Test
@@ -90,7 +90,7 @@ class UserCaretakerTest {
  void updateCaretakerStatus() throws Exception {
   Mockito.when(careTakerService.updateCaretakerStatus("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(caretakerResponse);
   mockMvc.perform(MockMvcRequestBuilders
-                  .put("/api/v1/accept?cId=73578dfd-e7c9-4381-a348-113e72d80fa2")
+                  .put("/api/v1/accept?caretakerId=73578dfd-e7c9-4381-a348-113e72d80fa2")
                   .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk());
  }
@@ -138,16 +138,16 @@ class UserCaretakerTest {
           .andExpect(MockMvcResultMatchers.status().isOk());
  }
 
- @Test
- @DisplayName("Delete Patient request Test")
- @ExtendWith(MockitoExtension.class)
- void delPatientReq() throws Exception {
-  Mockito.when(careTakerService.deletePatientRequest("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(Constants.SUCCESS);
-  mockMvc.perform(MockMvcRequestBuilders
-                  .get("/api/v1/delete?cId=73578dfd-e7c9-4381-a348-113e72d80fa2")
-                  .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isOk());
- }
+// @Test
+// @DisplayName("Delete Patient request Test")
+// @ExtendWith(MockitoExtension.class)
+// void delPatientReq() throws Exception {
+//  Mockito.when(careTakerService.deletePatientRequest("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(Constants.SUCCESS);
+//  mockMvc.perform(MockMvcRequestBuilders
+//                  .get("/api/v1/delete?cId=73578dfd-e7c9-4381-a348-113e72d80fa2")
+//                  .contentType(MediaType.APPLICATION_JSON))
+//          .andExpect(MockMvcResultMatchers.status().isOk());
+// }
 
 
  @Test
@@ -155,7 +155,7 @@ class UserCaretakerTest {
  @ExtendWith(MockitoExtension.class)
  void notifyUserForMed() throws Exception {
   mockMvc.perform(MockMvcRequestBuilders
-                  .get("/api/v1/notify-user?fcmToken=egufagfljbgalgfoeiugi&medname=PCM")
+                  .get("/api/v1/notify-user?fcmToken=egufagfljbgalgfoeiugi&medName=PCM")
                   .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk());
  }
@@ -175,7 +175,7 @@ class UserCaretakerTest {
                   .param("id",sendImageDto.getId())
                   .param("medId",sendImageDto.getMedId().toString())
                   .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isOk());
+          .andExpect(MockMvcResultMatchers.status().isCreated());
  }
 
 }

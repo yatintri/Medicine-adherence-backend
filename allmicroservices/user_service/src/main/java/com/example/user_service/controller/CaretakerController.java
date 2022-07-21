@@ -35,6 +35,7 @@ import com.example.user_service.pojos.dto.response.image.SendImageResponse;
 import com.example.user_service.service.CareTakerService;
 
 import static com.example.user_service.util.Constants.DELETED_SUCCESS;
+import static com.example.user_service.util.Constants.SUCCESS;
 
 /**
  * This controller is used to create restful web services for caretaker
@@ -237,10 +238,9 @@ public class CaretakerController {
                                                          throws UserExceptionMessage, UserCaretakerException {
         logger.info("Deleting Request(s) : {}",caretakerId);
 
-        String deletePatientStatus = careTakerService.deletePatientRequest(caretakerId);
-        CaretakerDelete caretakerDelete = new CaretakerDelete(deletePatientStatus, DELETED_SUCCESS);
+        careTakerService.deletePatientRequest(caretakerId);
 
-        return new ResponseEntity<>(caretakerDelete, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>( new CaretakerDelete(SUCCESS, DELETED_SUCCESS), HttpStatus.NO_CONTENT);
     }
 
     /**

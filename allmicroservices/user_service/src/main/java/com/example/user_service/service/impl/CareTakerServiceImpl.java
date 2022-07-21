@@ -1,4 +1,4 @@
-package com.example.user_service.service;
+package com.example.user_service.service.impl;
 
 
 import java.nio.file.Files;
@@ -12,6 +12,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.example.user_service.pojos.dto.response.caretaker.CaretakerDelete;
+import com.example.user_service.service.CareTakerService;
 import com.example.user_service.util.Constants;
 import com.example.user_service.util.DateHelper;
 import org.hibernate.exception.JDBCConnectionException;
@@ -47,6 +49,8 @@ import com.example.user_service.pojos.dto.response.image.SendImageResponse;
 import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserCaretakerRepository;
 import com.example.user_service.repository.UserMedicineRepository;
+
+import static com.example.user_service.util.Constants.*;
 
 /**
  * This class contains all the business logic for the caretaker controller
@@ -84,25 +88,26 @@ public class CareTakerServiceImpl implements CareTakerService {
      */
     @Override
     @CacheEvict(value = "caretakerCache",key = "#cId")
-    public String deletePatientRequest(String id){
+    public CaretakerDelete deletePatientRequest(String id){
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
             Optional<UserCaretaker> userCaretaker = userCaretakerRepository.findById(id);
 
             if (userCaretaker.isPresent()) {
-                userCaretakerRepository.delete(userCaretaker.get());
+                userCaretaker.get().setDelete(true);
+                userCaretakerRepository.save(userCaretaker.get());
 
-                return "Success";
+                return new CaretakerDelete(Constants.SUCCESS,Constants.DELETED_SUCCESS);
             }
 
-            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            logger.info(EXITING_METHOD_EXECUTION);
             logger.debug("Deleted {} request",id);
 
-            throw new UserCaretakerException(Constants.MSG);
+            throw new UserCaretakerException(MSG);
         } catch (Exception e) {
-            logger.error("Delete patient request " + Constants.MSG);
-            throw new UserCaretakerException(Constants.MSG);
+            logger.error("Delete patient request " + MSG);
+            throw new UserCaretakerException(MSG);
         }
     }
 
@@ -123,18 +128,18 @@ public class CareTakerServiceImpl implements CareTakerService {
             if (userCaretakerRepository.check(userCaretaker.getPatientId(), userCaretaker.getCaretakerId()) != null) {
 
                 logger.error("Save Caretaker: Caretaker already present");
-                throw new UserCaretakerException(Constants.ALREADY_PRESENT);
+                throw new UserCaretakerException(ALREADY_PRESENT);
 
             } else {
                 userCaretakerRepository.save(userCaretaker);
-                logger.info(Constants.EXITING_METHOD_EXECUTION);
+                logger.info(EXITING_METHOD_EXECUTION);
                 logger.debug("Saving {} caretaker",userCaretakerDTO);
-                return new CaretakerResponse(Constants.SUCCESS, Constants.REQ_SENT_SUCCESS, userCaretaker);
+                return new CaretakerResponse(SUCCESS, REQ_SENT_SUCCESS, userCaretaker);
             }
         } catch (DataAccessException | JDBCConnectionException dataAccessException) {
 
-            logger.error("Caretaker :" + Constants.SQL_ERROR_MSG);
-            throw new UserExceptionMessage(Constants.SQL_ERROR_MSG);
+            logger.error("Caretaker :" + SQL_ERROR_MSG);
+            throw new UserExceptionMessage(SQL_ERROR_MSG);
         }
     }
 
@@ -183,7 +188,7 @@ public class CareTakerServiceImpl implements CareTakerService {
 
             return new SendImageResponse(Constants.FAILED, Constants.UNABLE_TO_SEND);
         }
-        logger.info(Constants.EXITING_METHOD_EXECUTION);
+        logger.info(EXITING_METHOD_EXECUTION);
         logger.debug("Sending image {} to {} caretaker for {} medicine",filename,caretakerId,medId);
         return new SendImageResponse(Constants.SUCCESS, Constants.SENT_SUCCESSFULLY);
     }
@@ -202,12 +207,12 @@ public class CareTakerServiceImpl implements CareTakerService {
             if (uc.isEmpty() || Objects.isNull(uc.get().getId())) {
                 logger.error("Update Caretaker Status: Data not found");
 
-                throw new UserCaretakerException(Constants.MSG);
+                throw new UserCaretakerException(MSG);
             }
             uc.get().setUpdatedAt(DateHelper.getCurrentDatetime());
             uc.get().setReqStatus(true);
             userCaretakerRepository.save(uc.get());
-            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            logger.info(EXITING_METHOD_EXECUTION);
             logger.debug("Updating {} request status", id);
             return new CaretakerResponse(Constants.SUCCESS, Constants.STATUS_UPDATED, uc.get());
         }
@@ -225,7 +230,7 @@ public class CareTakerServiceImpl implements CareTakerService {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
-            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            logger.info(EXITING_METHOD_EXECUTION);
             return new CaretakerResponse1(Constants.SUCCESS,
                     Constants.STATUS_UPDATED,
                     userCaretakerRepository.getCaretakerRequestStatus(userId));
@@ -252,9 +257,9 @@ public class CareTakerServiceImpl implements CareTakerService {
             if (userCaretaker.isEmpty()) {
                 logger.error("Get Caretaker Requests for patient: Data not found");
 
-                throw new UserCaretakerException(Constants.MSG);
+                throw new UserCaretakerException(MSG);
             }
-            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            logger.info(EXITING_METHOD_EXECUTION);
             logger.debug("Fetching {} request for patients",userId);
             return new CaretakerResponsePage(Constants.SUCCESS,
                     Constants.STATUS_UPDATED,
@@ -285,9 +290,9 @@ public class CareTakerServiceImpl implements CareTakerService {
             if (userCaretaker.isEmpty()) {
                 logger.error("Get Caretakers: Data not found");
 
-                throw new UserCaretakerException(Constants.MSG);
+                throw new UserCaretakerException(MSG);
             }
-            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            logger.info(EXITING_METHOD_EXECUTION);
             logger.debug("Fetching {} caretakers",userId);
             return new CaretakerResponsePage(Constants.SUCCESS,
                     Constants.STATUS_UPDATED,
@@ -319,9 +324,9 @@ public class CareTakerServiceImpl implements CareTakerService {
             if (userCaretaker.isEmpty()) {
                 logger.error("Get Patients Request: Data not found");
 
-                throw new UserCaretakerException(Constants.MSG);
+                throw new UserCaretakerException(MSG);
             }
-            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            logger.info(EXITING_METHOD_EXECUTION);
             logger.debug("Fetching patients {} request",userId);
             return new CaretakerResponsePage(Constants.SUCCESS,
                     Constants.STATUS_UPDATED,
@@ -353,9 +358,9 @@ public class CareTakerServiceImpl implements CareTakerService {
             if (userCaretaker.isEmpty()) {
                 logger.error("Get my patients: Data not found");
 
-                throw new UserCaretakerException(Constants.MSG);
+                throw new UserCaretakerException(MSG);
             }
-            logger.info(Constants.EXITING_METHOD_EXECUTION);
+            logger.info(EXITING_METHOD_EXECUTION);
             logger.debug("Fetching {} patients",userId);
             return new CaretakerResponsePage(Constants.SUCCESS,
                     Constants.STATUS_UPDATED,

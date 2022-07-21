@@ -93,8 +93,8 @@ public class UserController {
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
     @ApiOperation(value = "This allows you to have short-lived access tokens without having to collect credentials every time one expires.")
     @PostMapping(value = "/refreshToken",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RefreshTokenResponse> getRefreshToken(HttpServletRequest httpServletRequest, @RequestParam(name = "userId") String userId) throws UserExceptionMessage{
-        return new ResponseEntity<>(userService.getRefreshToken(httpServletRequest,userId),HttpStatus.OK);
+    public ResponseEntity<RefreshTokenResponse> getRefreshToken(HttpServletRequest httpServletRequest, @RequestParam(name = "userId") String userId) {
+        return new ResponseEntity<>(userService.getRefreshToken(httpServletRequest,userId),HttpStatus.CREATED);
     }
 
     /**

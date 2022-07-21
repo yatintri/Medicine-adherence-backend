@@ -19,6 +19,9 @@ public class SecurityLayer extends WebSecurityConfigurerAdapter {
     private UserDetailService userDetailService;
 
 
+    /**
+     *  Making an Application XSS Safe with Spring Security
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();

@@ -2,7 +2,6 @@ package com.example.user_service.service;
 
 import com.example.user_service.config.PdfMailSender;
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.User;
 import com.example.user_service.model.UserDetails;
@@ -14,6 +13,7 @@ import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 
+import com.example.user_service.service.impl.UserServiceImpl;
 import com.example.user_service.util.Constants;
 import com.example.user_service.util.JwtUtil;
 
@@ -67,7 +67,7 @@ import static org.mockito.Mockito.when;
 
     @BeforeEach
     void setup(){
-        this.userServiceimpl= new UserServiceImpl(userRepository,util,userDetailsRepository,mapper,pdfMailSender,passwordEncoder,userMedicineRepository);
+        this.userServiceimpl= new UserServiceImpl(userRepository,util,userDetailsRepository,mapper,pdfMailSender,userMedicineRepository);
     }
 
     @Test
@@ -259,7 +259,6 @@ import static org.mockito.Mockito.when;
         UserEntityDTO userEntityDTO= new UserEntityDTO("vinay","vinay@gmail.com");
         when(mapper.map(userEntityDTO, User.class)).thenReturn(user);
         when(util.generateToken(user.getUserName())).thenReturn("fiasfiugaojfbjkabfk");
-        when(passwordEncoder.encode(user.getUserId())).thenReturn("ujagfgouiaetfiugljgb");
         when(userRepository.save(user)).thenReturn(user);
         UserResponse userResponse1= userServiceimpl.saveUser(userEntityDTO,"eafyigfiagf","sfhoshgouahgo");
         Assertions.assertEquals(userResponse.getUserEntity().get(0).getUserName(),userResponse1.getUserEntity().get(0).getUserName());
