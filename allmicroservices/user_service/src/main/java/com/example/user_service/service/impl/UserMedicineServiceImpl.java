@@ -112,7 +112,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                                 userMedicines.setCreatedAt(LocalDateTime.now());
                                 userMedicines.setUpdatedAt(LocalDateTime.now());
                                 userMedicines.setMedicineDescription(
-                                        medicinePojo1.getMedicineDes());
+                                        medicinePojo1.getMedicineDescription());
                                 userMedicines.setMedicineName(
                                         medicinePojo1.getMedicineName());
                                 userMedicines.setDays(medicinePojo1.getDays());
@@ -125,7 +125,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                                 userMedicines.setCurrentCount(
                                         medicinePojo1.getCurrentCount());
                                 userMedicines.setTotalMedicineReminders(
-                                        medicinePojo1.getTotalMedReminders());
+                                        medicinePojo1.getTotalMedicineReminders());
                                 userMedicines.setStartDate(
                                         medicinePojo1.getStartDate());
                                 userMedicines.setTime(medicinePojo1.getTime());
@@ -172,7 +172,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                                 medicineHistory1.setCreatedAt(LocalDateTime.now());
                                 medicineHistory1.setUpdatedAt(LocalDateTime.now());
                                 medicineHistory1.setHistoryId(
-                                        medHid.getRemId());
+                                        medHid.getReminderId());
                                 medicineHistory1.setDate(
                                         medHid.getDate());
                                 medicineHistory1.setTaken(

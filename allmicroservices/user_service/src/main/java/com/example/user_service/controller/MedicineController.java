@@ -129,13 +129,13 @@ public class MedicineController {
     )
     public ResponseEntity<ImageListResponse> getMedicineImages(@NotBlank
                                                                @NotNull
-                                                               @RequestParam(name = "medicineId") Integer medicineId
+                                                               @RequestParam(name = "medId") Integer medId
                                                               , @RequestParam(value = "page") int page,
                                                                @RequestParam(value = "limit") int limit)
                                                                {
-        logger.info("Fetching medicine images : {}", medicineId);
+        logger.info("Fetching medicine images : {}",medId);
 
-        return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medicineId, page, limit), HttpStatus.OK);
+        return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medId, page, limit), HttpStatus.OK);
     }
 }
 

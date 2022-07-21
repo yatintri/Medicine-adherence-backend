@@ -30,9 +30,9 @@ public class MedicinePojo {
 
     @NotBlank(message = "Description is mandatory")
     @NotNull(message = "Description is mandatory")
-    private String medicineDes;
+    private String medicineDescription;
 
-    private int totalMedReminders;
+    private int totalMedicineReminders;
 
     @NotBlank(message = "Medicine name is mandatory")
     @NotNull(message = "Medicine name is mandatory")

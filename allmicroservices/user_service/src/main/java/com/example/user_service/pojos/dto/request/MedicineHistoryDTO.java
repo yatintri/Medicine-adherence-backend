@@ -16,7 +16,7 @@ import java.util.Date;
 public class MedicineHistoryDTO {
 
 
-    private int remId;
+    private int reminderId;
 
     @NotNull(message = "Date is mandatory")
     private Date date;

@@ -3,6 +3,7 @@ package com.example.user_service.controller;
 
 import java.util.Objects;
 
+import com.example.user_service.pojos.NotificationMessage;
 import com.example.user_service.util.Constants;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.request.SendImageDto;
 import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
 import com.example.user_service.pojos.dto.response.caretaker.CaretakerDelete;
@@ -130,9 +130,9 @@ public class CaretakerController {
 
         SendImageResponse sendImageResponse = careTakerService.sendImageToCaretaker(sendImageDto.getImage(),
                 sendImageDto.getName(),
-                sendImageDto.getMedName(),
+                sendImageDto.getMedicineName(),
                 sendImageDto.getId(),
-                sendImageDto.getMedId());
+                sendImageDto.getMedicineId());
 
         return new ResponseEntity<>(sendImageResponse, HttpStatus.CREATED);
     }
@@ -263,7 +263,7 @@ public class CaretakerController {
         logger.info("Notifying user(s) : {}",body);
 
         rabbitTemplate.convertAndSend(topicExchange, routingKeyNotification,
-                new Notificationmessage(fcmToken, "Take medicine", "patient", body, ""));
+                new NotificationMessage(fcmToken, "Take medicine", "patient", body, ""));
 
         return new ResponseEntity<>("Ok", HttpStatus.OK);
     }

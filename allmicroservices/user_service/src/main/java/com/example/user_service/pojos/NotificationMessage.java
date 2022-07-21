@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 /**
  * This is a pojo class for sending notifications using message broker
  */
-public class Notificationmessage {
+public class NotificationMessage {
 
     @NotNull
     @NotBlank
@@ -30,7 +30,7 @@ public class Notificationmessage {
         this.imageUrl = imageUrl;
     }
 
-    public Notificationmessage(String fcmToken, String message , String title , String body , String imageUrl) {
+    public NotificationMessage(String fcmToken, String message , String title , String body , String imageUrl) {
         this.fcmToken = fcmToken;
         this.message = message;
         this.title = title;

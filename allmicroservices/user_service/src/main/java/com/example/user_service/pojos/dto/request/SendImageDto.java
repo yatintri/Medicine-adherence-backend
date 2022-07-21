@@ -26,12 +26,12 @@ public class SendImageDto {
 
     @NotBlank(message = "MedName is mandatory")
     @NotNull(message = "MedName is mandatory")
-    private String medName;
+    private String medicineName;
 
     @NotBlank(message = "Id is mandatory")
     @NotNull(message = "Id is mandatory")
     private String id; //caretaker id
 
     @NotNull(message = "MedId is mandatory")
-    private Integer medId;
+    private Integer medicineId;
 }

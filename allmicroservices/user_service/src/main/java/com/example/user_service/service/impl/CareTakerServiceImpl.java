@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.example.user_service.pojos.NotificationMessage;
 import com.example.user_service.pojos.dto.response.caretaker.CaretakerDelete;
 import com.example.user_service.service.CareTakerService;
 import com.example.user_service.util.Constants;
@@ -40,7 +41,6 @@ import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.model.Image;
 import com.example.user_service.model.UserCaretaker;
 import com.example.user_service.model.UserMedicines;
-import com.example.user_service.pojos.Notificationmessage;
 import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
 import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
 import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse1;
@@ -178,7 +178,7 @@ public class CareTakerServiceImpl implements CareTakerService {
 
             rabbitTemplate.convertAndSend(topicExchange,
                     routingKeyNotification,
-                    new Notificationmessage(fcmToken,
+                    new NotificationMessage(fcmToken,
                             "Take medicine",
                             "caretaker",
                             medicineName,

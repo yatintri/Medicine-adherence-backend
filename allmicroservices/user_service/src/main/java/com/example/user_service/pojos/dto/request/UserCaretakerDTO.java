@@ -18,7 +18,7 @@ public class UserCaretakerDTO {
     @NotNull(message = "Patient Name is mandatory")
     private String patientName;
 
-    private boolean reqStatus;
+    private boolean requestStatus;
 
     @NotBlank(message = "Caretaker Id is mandatory")
     @NotNull(message = "Caretaker Id is mandatory")
