@@ -51,7 +51,7 @@ public class Image implements Serializable {
     )
     private String time;
     @Column(
-            name = "Caretaker_name",
+            name = "caretaker_name",
             nullable = false,
             length = 100
     )
@@ -71,7 +71,7 @@ public class Image implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
-            name = "medimage_id",
+            name = "med_image_id",
             referencedColumnName = "medicine_id"
     )
     @JsonIgnore

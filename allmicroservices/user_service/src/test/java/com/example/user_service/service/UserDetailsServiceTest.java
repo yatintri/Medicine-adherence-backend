@@ -58,7 +58,7 @@ class UserDetailsServiceTest {
         when(userRepository.getUserById("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(user);
         UserDetails userDetails1= userDetailServiceImpl.saveUserDetail("73578dfd-e7c9-4381-a348-113e72d80fa2",userDetailsDTO);
         System.out.println(userDetails1);
-        Assertions.assertEquals(userDetails.getUserDetId(),userDetails1.getUserDetId());
+        Assertions.assertEquals(userDetails.getUserDetailId(),userDetails1.getUserDetailId());
     }
 
     @Test

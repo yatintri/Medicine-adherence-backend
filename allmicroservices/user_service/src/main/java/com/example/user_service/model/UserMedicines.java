@@ -31,8 +31,8 @@ public class UserMedicines implements Serializable {
     @Column(name = "medicine_name", nullable = false, length = 150)
     private String medicineName;
 
-    @Column(name = "medicine_des", nullable = false, length = 150)
-    private String medicineDes;
+    @Column(name = "medicine_description", nullable = false, length = 150)
+    private String medicineDescription;
 
     @Column(name = "days", nullable = false, length = 200)
     private String days;
@@ -46,8 +46,8 @@ public class UserMedicines implements Serializable {
     @Column(name = "title", nullable = false, length = 150)
     private String title;
 
-    @Column(name = "total_med_reminders", nullable = false)
-    private int totalMedReminders;
+    @Column(name = "total_medicine_reminders", nullable = false)
+    private int totalMedicineReminders;
 
     @Column(name = "current_count", nullable = false)
     private int currentCount;

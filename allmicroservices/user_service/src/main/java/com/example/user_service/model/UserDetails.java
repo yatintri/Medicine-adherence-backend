@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 public class UserDetails implements Serializable {
     @Id
     @Column(
-            name = "userdet_id",
+            name = "id",
             nullable = false,
             length = 100
     )
@@ -33,7 +33,7 @@ public class UserDetails implements Serializable {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String userDetId;
+    private String userDetailId;
     @Column(
             name = "bio",
             columnDefinition = "String(250) default ''",

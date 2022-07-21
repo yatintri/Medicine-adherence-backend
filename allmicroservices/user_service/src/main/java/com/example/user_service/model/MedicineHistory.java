@@ -29,7 +29,7 @@ public class MedicineHistory implements Serializable {
     )
     private int historyId;
     @Column(
-            name = "med_date",
+            name = "medicine_date",
             nullable = false
     )
     @NotNull(message = "Date is mandatory")

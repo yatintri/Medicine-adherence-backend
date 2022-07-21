@@ -210,7 +210,7 @@ public class CareTakerServiceImpl implements CareTakerService {
                 throw new UserCaretakerException(MSG);
             }
             uc.get().setUpdatedAt(DateHelper.getCurrentDatetime());
-            uc.get().setReqStatus(true);
+            uc.get().setRequestStatus(true);
             userCaretakerRepository.save(uc.get());
             logger.info(EXITING_METHOD_EXECUTION);
             logger.debug("Updating {} request status", id);

@@ -55,7 +55,7 @@ public class PdfMailSender {
                         + "            <div style='background-color: #3743ab;border-radius: 15px; margin-bottom: 30px;height: 110px;'>\n"
                         + "                <div style='font-size: 60px;text-align: center;color: white;'>Patient Report</div>\n"
                         + "                <div style='font-size: 30px;text-align: center; color:white;'>Adherence Rate - "
-                        + (Math.ceil(((double) userMedicines.getCurrentCount() / userMedicines.getTotalMedReminders()) * 100))
+                        + (Math.ceil(((double) userMedicines.getCurrentCount() / userMedicines.getTotalMedicineReminders()) * 100))
                         + "%" + DIV + "            </div>\n"
                         + "           <div style='font-size:24px; margin-bottom: 8px; font-weight: 600; color: gray;'>Patient Details </div>\n"
                         + "            <div align='left'>\n" + "                 <div>Name - " + userEntity.getUserName() + DIV
@@ -65,7 +65,7 @@ public class PdfMailSender {
                         + userDetails.getUserContact() + DIV + "            </div><br>\n"
                         + "            <div style='font-size:24px; margin-bottom: 8px;font-weight: 600; color: gray;'>Medicine Details </div>\n"
                         + "                  <span>Name - " + userMedicines.getMedicineName() + SPAN
-                        + "             <span>Description -" + userMedicines.getMedicineDes() + SPAN
+                        + "             <span>Description -" + userMedicines.getMedicineDescription() + SPAN
                         + "                 <span>Start Date - " + userMedicines.getStartDate() + SPAN
                         + "                  <span>End Date - " + userMedicines.getEndDate() + SPAN
                         + "                  <span>Days - " + userMedicines.getDays() + SPAN + "                  <span>Timings - "

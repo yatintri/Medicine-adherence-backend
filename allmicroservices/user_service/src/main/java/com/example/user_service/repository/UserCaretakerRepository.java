@@ -18,22 +18,22 @@ public interface UserCaretakerRepository extends PagingAndSortingRepository<User
     @Query("select u from UserCaretaker u where u.patientId=?1 and u.caretakerId=?2")
     UserCaretaker check(String patientId, String caretakerId);
 
-    @Query("select u from UserCaretaker u where u.reqStatus=false and u.patientId = ?1")
+    @Query("select u from UserCaretaker u where u.requestStatus=false and u.patientId = ?1")
     List<UserCaretaker> getCaretakerRequestStatus(String id);
 
-    @Query("select u from UserCaretaker u where u.sentBy='c' and u.patientId= ?1 and u.reqStatus=false")
+    @Query("select u from UserCaretaker u where u.sentBy='c' and u.patientId= ?1 and u.requestStatus=false")
     Page<UserCaretaker> getCaretakerRequestsForPatients(String userId, Pageable pageable);
 
-    @Query("SELECT u from UserCaretaker u where u.reqStatus=true and u.patientId = ?1")
+    @Query("SELECT u from UserCaretaker u where u.requestStatus=true and u.patientId = ?1")
     Page<UserCaretaker> getMyCaretakers(String id, Pageable pageable);
 
-    @Query("select u from UserCaretaker u where u.reqStatus=false and u.caretakerId = ?1")
+    @Query("select u from UserCaretaker u where u.requestStatus=false and u.caretakerId = ?1")
     List<UserCaretaker> getPatientRequestStatus(String id);
 
-    @Query("select u from UserCaretaker u where u.reqStatus=false and u.caretakerId = ?1")
+    @Query("select u from UserCaretaker u where u.requestStatus=false and u.caretakerId = ?1")
     Page<UserCaretaker> getPatientRequests(String id, Pageable pageable);
 
-    @Query("SELECT u from UserCaretaker u where u.reqStatus=true and u.caretakerId = ?1")
+    @Query("SELECT u from UserCaretaker u where u.requestStatus=true and u.caretakerId = ?1")
     Page<UserCaretaker> getPatientsUnderMe(String id, Pageable pageable);
 }
 

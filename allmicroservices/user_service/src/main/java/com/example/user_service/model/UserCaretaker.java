@@ -21,7 +21,7 @@ import org.hibernate.annotations.Type;
 public class UserCaretaker implements Serializable {
     @Id
     @Column(
-            name = "c_id",
+            name = "id",
             nullable = false,
             length = 100
     )
@@ -38,11 +38,11 @@ public class UserCaretaker implements Serializable {
     )
     private String patientName;
     @Column(
-            name = "req_status",
+            name = "request_status",
             nullable = false
     )
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean reqStatus;
+    private boolean requestStatus;
     @Column(
             name = "caretaker_id",
             nullable = false,
