@@ -1,16 +1,13 @@
 package com.example.user_service.controller;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.example.user_service.model.User;
-import com.example.user_service.pojos.dto.response.RefreshTokenResponse;
+import com.example.user_service.pojos.response.user.MailResponse;
+import com.example.user_service.pojos.response.user.RefreshTokenResponse;
 import com.example.user_service.util.Constants;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -26,13 +23,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.model.UserMedicines;
-import com.example.user_service.pojos.MailInfo;
-import com.example.user_service.pojos.dto.request.LoginDTO;
-import com.example.user_service.pojos.dto.request.UserEntityDTO;
-import com.example.user_service.pojos.dto.response.user.UserProfileResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponsePage;
+import com.example.user_service.pojos.request.LoginDTO;
+import com.example.user_service.pojos.request.UserEntityDTO;
+import com.example.user_service.pojos.response.user.UserProfileResponse;
+import com.example.user_service.pojos.response.user.UserResponse;
+import com.example.user_service.pojos.response.user.UserResponsePage;
 import com.example.user_service.service.UserService;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.util.JwtUtil;
@@ -46,9 +41,6 @@ import com.example.user_service.util.JwtUtil;
 public class UserController {
     private final UserService userService;
     UserMedicineService userMedicineService;
-    private final RabbitTemplate rabbitTemplate;
-
-    private final JwtUtil jwtUtil;
 
     @Value("${project.rabbitmq.routingKey}")
     private String routingKey;
@@ -57,12 +49,12 @@ public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserService userService, UserMedicineService userMedicineService,
-                          RabbitTemplate rabbitTemplate, JwtUtil jwtUtil) {
+
+    public UserController(UserService userService, UserMedicineService userMedicineService
+                          ) {
         this.userMedicineService = userMedicineService;
         this.userService = userService;
-        this.rabbitTemplate = rabbitTemplate;
-        this.jwtUtil = jwtUtil;
+
     }
 
     /**
@@ -125,24 +117,14 @@ public class UserController {
             value = "/email",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Object> getUserByEmail(@NotNull
+    public ResponseEntity<MailResponse> getUserByEmail(@NotNull
                                                  @NotBlank
                                                  @RequestParam("email") String email, @RequestParam("sender") String sender)
             {
 
         logger.info("Sending mail : {}", email);
 
-        User userEntity = userService.getUserByEmail(email);
-
-        if (userEntity == null) {
-            rabbitTemplate.convertAndSend(topicExchange,
-                    routingKey,
-                    new MailInfo(email, "Please join", "patient_request", sender));
-
-            return new ResponseEntity<>("Invitation sent to user with given email id!", HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(userEntity, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserByEmail(email,sender),HttpStatus.OK);
     }
 
     /**
@@ -161,11 +143,7 @@ public class UserController {
 
         logger.info("Fetching user by id : {}", userId);
 
-        List<User> user = Arrays.asList(userService.getUserById(userId));
-        List<UserMedicines> list = user.get(0).getUserMedicines();
-        UserProfileResponse userProfileResponse = new UserProfileResponse("OK", user, list);
-
-        return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserMedicine(userId), HttpStatus.OK);
     }
 
     /**
@@ -198,16 +176,16 @@ public class UserController {
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
     public ResponseEntity<UserResponse> sendPdf(@NotNull
                                                 @NotBlank
-                                                @RequestParam(name = "medId") Integer medId)
+                                                @RequestParam(name = "medicineId") Integer medicineId)
             {
 
-        logger.info("Sending pdf : {}", medId);
+        logger.info("Sending pdf : {}", medicineId);
 
-        if (userService.sendUserMedicines(medId).equals(Constants.FAILED)) {
+        if (userService.sendUserMedicines(medicineId).equals(Constants.FAILED)) {
             throw new UserExceptionMessage(Constants.MEDICINE_NOT_FOUND);
         }
 
-        String filePath = userService.sendUserMedicines(medId);
+        String filePath = userService.sendUserMedicines(medicineId);
         UserResponse userResponse = new UserResponse(Constants.SUCCESS, filePath, null, "", "");
 
         return new ResponseEntity<>(userResponse, HttpStatus.OK);

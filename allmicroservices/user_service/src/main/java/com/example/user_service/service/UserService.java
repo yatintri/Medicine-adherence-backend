@@ -1,10 +1,12 @@
 package com.example.user_service.service;
 
 import com.example.user_service.model.User;
-import com.example.user_service.pojos.dto.request.UserEntityDTO;
-import com.example.user_service.pojos.dto.response.RefreshTokenResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponsePage;
+import com.example.user_service.pojos.request.UserEntityDTO;
+import com.example.user_service.pojos.response.user.MailResponse;
+import com.example.user_service.pojos.response.user.RefreshTokenResponse;
+import com.example.user_service.pojos.response.user.UserProfileResponse;
+import com.example.user_service.pojos.response.user.UserResponse;
+import com.example.user_service.pojos.response.user.UserResponsePage;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -18,11 +20,13 @@ public interface UserService {
 
      UserResponsePage getUsers(int page, int limit) ;
 
+     UserProfileResponse getUserMedicine(String userId);
+
      User getUserById(String userId) ;
 
      List<User> getUserByName(String userName);
 
-     User getUserByEmail(String email) ;
+     MailResponse getUserByEmail(String email,String sender) ;
 
      String sendUserMedicines(Integer userId);
 

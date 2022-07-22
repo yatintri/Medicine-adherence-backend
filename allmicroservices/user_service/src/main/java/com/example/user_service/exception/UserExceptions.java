@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
-import com.example.user_service.pojos.dto.response.medicine.MedicineResponse;
-import com.example.user_service.pojos.dto.response.sql.SqlErrorResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponse;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.response.sql.SqlErrorResponse;
+import com.example.user_service.pojos.response.user.UserResponse;
 
 /**
  * This class is used to send error response

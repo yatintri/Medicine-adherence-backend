@@ -16,8 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.user_service.model.UserDetails;
-import com.example.user_service.pojos.dto.request.UserDetailsDTO;
-import com.example.user_service.pojos.dto.response.user.UserDetailResponse;
+import com.example.user_service.pojos.request.UserDetailsDTO;
+import com.example.user_service.pojos.response.user.UserDetailResponse;
 import com.example.user_service.service.UserDetailService;
 
 /**

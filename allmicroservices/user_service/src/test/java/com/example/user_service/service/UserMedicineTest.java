@@ -6,11 +6,11 @@ import com.example.user_service.model.Image;
 import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.User;
 import com.example.user_service.model.UserMedicines;
-import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.request.MedicinePojo;
-import com.example.user_service.pojos.dto.response.image.ImageListResponse;
-import com.example.user_service.pojos.dto.response.medicine.MedicineResponse;
-import com.example.user_service.pojos.dto.response.medicine.SyncResponse;
+import com.example.user_service.pojos.request.MedicineHistoryDTO;
+import com.example.user_service.pojos.request.MedicinePojoDTO;
+import com.example.user_service.pojos.response.image.ImageListResponse;
+import com.example.user_service.pojos.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.response.medicine.SyncResponse;
 import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserMedHistoryRepository;
 import com.example.user_service.repository.UserMedicineRepository;
@@ -96,12 +96,12 @@ import static org.mockito.Mockito.when;
     @Test
     @DisplayName("Sync data Exception Test")
     void synDataException() throws UserMedicineException {
-        List<MedicinePojo> medicinePojoList = new ArrayList<>();
+        List<MedicinePojoDTO> medicinePojoDTOList = new ArrayList<>();
         List<UserMedicines> userMedicines1= new ArrayList<>();
         User user = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,userMedicines1);
         when(userRepository.getUserById("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(user);
         try{
-            userMedicineServiceImpl.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2",medicinePojoList);
+            userMedicineServiceImpl.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2", medicinePojoDTOList);
         }catch (UserMedicineException userMedicineException){
             Assertions.assertEquals("Unable to sync",userMedicineException.getMessage());
         }
@@ -110,12 +110,12 @@ import static org.mockito.Mockito.when;
     @Test
     @DisplayName("Sync data Sql Exception Test")
     void synDataSqlException() throws UserMedicineException {
-        List<MedicinePojo> medicinePojoList = new ArrayList<>();
+        List<MedicinePojoDTO> medicinePojoDTOList = new ArrayList<>();
         List<UserMedicines> userMedicines1= new ArrayList<>();
         User user = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,userMedicines1);
         when(userRepository.getUserById("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenThrow(JDBCConnectionException.class);
         try{
-            userMedicineServiceImpl.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2",medicinePojoList);
+            userMedicineServiceImpl.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2", medicinePojoDTOList);
         }catch (UserMedicineException userMedicineException){
             Assertions.assertEquals(Constants.SQL_ERROR_MSG,userMedicineException.getMessage());
         }
@@ -123,9 +123,9 @@ import static org.mockito.Mockito.when;
     @Test
     @DisplayName("Sync data Test")
     void syncDataTest() throws UserMedicineException {
-        MedicinePojo medicinePojo= new MedicinePojo(123,"Mon",1,null,"something",10,"PCM","something",null,0,"10:00 AM");
-        List<MedicinePojo> medicinePojoList = new ArrayList<>();
-        medicinePojoList.add(medicinePojo);
+        MedicinePojoDTO medicinePojoDTO = new MedicinePojoDTO(123,"Mon",1,null,"something",10,"PCM","something",null,0,"10:00 AM");
+        List<MedicinePojoDTO> medicinePojoDTOList = new ArrayList<>();
+        medicinePojoDTOList.add(medicinePojoDTO);
         List<MedicineHistory> medicineHistoryList = new ArrayList<>();
         List<UserMedicines> userMedicinesList= new ArrayList<>();
         User user = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,userMedicinesList);
@@ -134,7 +134,7 @@ import static org.mockito.Mockito.when;
         MedicineHistory medicineHistory= new MedicineHistory(123,null,"10:00 AM",null,LocalDateTime.now(),LocalDateTime.now(),null);
         medicineHistoryList.add(medicineHistory);
         when(userRepository.getUserById("73578dfd-e7c9-4381-a348-113e72d80fa2")).thenReturn(user);
-        SyncResponse value =userMedicineServiceImpl.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2",medicinePojoList);
+        SyncResponse value =userMedicineServiceImpl.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2", medicinePojoDTOList);
         Assertions.assertEquals(Constants.SUCCESS,value.getStatus());
     }
     @Test

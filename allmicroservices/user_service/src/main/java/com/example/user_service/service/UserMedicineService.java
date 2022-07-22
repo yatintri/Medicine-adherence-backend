@@ -1,11 +1,11 @@
 package com.example.user_service.service;
 
 import com.example.user_service.model.UserMedicines;
-import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.request.MedicinePojo;
-import com.example.user_service.pojos.dto.response.image.ImageListResponse;
-import com.example.user_service.pojos.dto.response.medicine.MedicineResponse;
-import com.example.user_service.pojos.dto.response.medicine.SyncResponse;
+import com.example.user_service.pojos.request.MedicineHistoryDTO;
+import com.example.user_service.pojos.request.MedicinePojoDTO;
+import com.example.user_service.pojos.response.image.ImageListResponse;
+import com.example.user_service.pojos.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.response.medicine.SyncResponse;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -18,7 +18,7 @@ public interface UserMedicineService {
 
     CompletableFuture<List<UserMedicines>> getallUserMedicines(String userId,int page,int limit) ;
 
-    SyncResponse syncData(String userId , List<MedicinePojo> list) ;
+    SyncResponse syncData(String userId , List<MedicinePojoDTO> list) ;
 
     MedicineResponse syncMedicineHistory(Integer medicineId , List<MedicineHistoryDTO> medicineHistoryDTOS) ;
 

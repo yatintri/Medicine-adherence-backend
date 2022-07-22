@@ -5,7 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.example.user_service.model.*;
-import com.example.user_service.pojos.dto.response.RefreshTokenResponse;
+import com.example.user_service.pojos.MailInfo;
+import com.example.user_service.pojos.response.user.MailResponse;
+import com.example.user_service.pojos.response.user.RefreshTokenResponse;
+import com.example.user_service.pojos.response.user.UserProfileResponse;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.Constants;
 import com.example.user_service.util.DateHelper;
@@ -17,6 +20,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -26,9 +31,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.user_service.config.PdfMailSender;
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.pojos.dto.request.UserEntityDTO;
-import com.example.user_service.pojos.dto.response.user.UserResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponsePage;
+import com.example.user_service.pojos.request.UserEntityDTO;
+import com.example.user_service.pojos.response.user.UserResponse;
+import com.example.user_service.pojos.response.user.UserResponsePage;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
@@ -56,17 +61,23 @@ public class UserServiceImpl implements UserService {
     UserMedicineRepository userMedicineRepository;
 
     private final JwtUtil jwtUtil;
+    private final RabbitTemplate rabbitTemplate;
+    @Value("${project.rabbitmq.routingKey}")
+    private String routingKey;
+    @Value("${project.rabbitmq.exchange}")
+    private String topicExchange;
 
 
     public UserServiceImpl(UserRepository userRepository, JwtUtil jwtUtil, UserDetailsRepository userDetailsRepository,
                            ModelMapper mapper, PdfMailSender pdfMailSender,
-                           UserMedicineRepository userMedicineRepository) {
+                           UserMedicineRepository userMedicineRepository, RabbitTemplate rabbitTemplate) {
         this.userRepository = userRepository;
         this.userMedicineRepository = userMedicineRepository;
         this.userDetailsRepository = userDetailsRepository;
         this.mapper = mapper;
         this.pdfMailSender = pdfMailSender;
         this.jwtUtil = jwtUtil;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     /**
@@ -77,22 +88,23 @@ public class UserServiceImpl implements UserService {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
-            User user = getUserByEmail(mail);
-            UserDetails userDetails = user.getUserDetails();
+            MailResponse user = getUserByEmail(mail,"");
+            UserDetails userDetails = user.getUser().getUserDetails();
 
             userDetails.setFcmToken(fcmToken);
             userDetailsRepository.save(userDetails);
-            user = getUserByEmail(mail);
+            user = getUserByEmail(mail,"");
 
-            if (user.getUserName() != null) {
-                String jwtToken = jwtUtil.generateToken(user.getUserName());
-                String refreshToken = jwtUtil.generateRefreshToken(user.getUserName());
+
+            if (user.getUser().getUserName() != null) {
+                String jwtToken = jwtUtil.generateToken(user.getUser().getUserName());
+                String refreshToken = jwtUtil.generateRefreshToken(user.getUser().getUserName());
 
                 logger.info(Constants.EXITING_METHOD_EXECUTION);
                 logger.debug("Logging in with {} email",mail);
                 return new UserResponse(SUCCESS,
                         SUCCESS,
-                        new ArrayList<>(Arrays.asList(user)),
+                        new ArrayList<>(Arrays.asList(user.getUser())),
                         jwtToken,
                         refreshToken);
             }
@@ -162,6 +174,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public UserProfileResponse getUserMedicine(String userId){
+        List<User> user = Arrays.asList(getUserById(userId));
+        List<UserMedicines> list = user.get(0).getUserMedicines();
+        return new UserProfileResponse("OK", user, list);
+    }
     /**
      * Fetches medicines by id and then generates pdf and sends it as a response
      */
@@ -193,15 +210,23 @@ public class UserServiceImpl implements UserService {
      * This method fetches user by its email ignoring the case
      */
     @Override
-
     @Cacheable(value = "userMail",key = "#email")
-    public User getUserByEmail(String email) {
+    public MailResponse getUserByEmail(String email, String sender) {
         logger.info(Constants.STARTING_METHOD_EXECUTION);
 
         try {
             logger.debug("fetching {} mail",email);
             logger.info(Constants.EXITING_METHOD_EXECUTION);
-            return userRepository.findByMail(email);
+            User user = userRepository.findByMail(email);
+            if (user == null) {
+                rabbitTemplate.convertAndSend(topicExchange,
+                        routingKey,
+                        new MailInfo(email, "Please join", "patient_request", sender));
+                return new MailResponse("Invitation sent to user with given email id!",SUCCESS,null);
+
+            }
+            return new MailResponse(DATA_FOUND,SUCCESS,user);
+
         }
         catch (DataAccessException | JDBCConnectionException dataAccessException) {
             logger.error("Get user by email :" + Constants.SQL_ERROR_MSG);

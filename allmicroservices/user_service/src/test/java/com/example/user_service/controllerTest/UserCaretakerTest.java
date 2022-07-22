@@ -1,14 +1,12 @@
 package com.example.user_service.controllerTest;
 
 import com.example.user_service.controller.CaretakerController;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.UserCaretaker;
-import com.example.user_service.pojos.dto.request.SendImageDto;
-import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponsePage;
+import com.example.user_service.pojos.request.SendImageDto;
+import com.example.user_service.pojos.request.UserCaretakerDTO;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponsePage;
 import com.example.user_service.service.CareTakerService;
-import com.example.user_service.util.Constants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -30,7 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import com.example.user_service.pojos.dto.response.image.ImageResponse;
+import com.example.user_service.pojos.response.image.ImageResponse;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -171,9 +169,9 @@ class UserCaretakerTest {
                   .multipart("/api/v1/image")
                   .file("image",sendImageDto.getImage().getBytes())
                   .param("name",sendImageDto.getName())
-                  .param("medName",sendImageDto.getMedName())
+                  .param("medName",sendImageDto.getMedicineName())
                   .param("id",sendImageDto.getId())
-                  .param("medId",sendImageDto.getMedId().toString())
+                  .param("medId",sendImageDto.getMedicineId().toString())
                   .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isCreated());
  }

@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.user_service.exception.UserCaretakerException;
 import com.example.user_service.exception.UserExceptionMessage;
-import com.example.user_service.pojos.dto.request.SendImageDto;
-import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerDelete;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponsePage;
-import com.example.user_service.pojos.dto.response.image.SendImageResponse;
+import com.example.user_service.pojos.request.SendImageDto;
+import com.example.user_service.pojos.request.UserCaretakerDTO;
+import com.example.user_service.pojos.response.caretaker.CaretakerDelete;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponsePage;
+import com.example.user_service.pojos.response.image.SendImageResponse;
 import com.example.user_service.service.CareTakerService;
 
 import static com.example.user_service.util.Constants.DELETED_SUCCESS;

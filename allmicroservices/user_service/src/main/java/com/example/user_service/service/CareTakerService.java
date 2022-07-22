@@ -1,12 +1,12 @@
 package com.example.user_service.service;
 
 
-import com.example.user_service.pojos.dto.request.UserCaretakerDTO;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerDelete;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponse1;
-import com.example.user_service.pojos.dto.response.caretaker.CaretakerResponsePage;
-import com.example.user_service.pojos.dto.response.image.SendImageResponse;
+import com.example.user_service.pojos.request.UserCaretakerDTO;
+import com.example.user_service.pojos.response.caretaker.CaretakerDelete;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponse1;
+import com.example.user_service.pojos.response.caretaker.CaretakerResponsePage;
+import com.example.user_service.pojos.response.image.SendImageResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;

@@ -1,7 +1,7 @@
 //package com.example.user_service.controller;
 //
 //import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
-//import com.example.user_service.pojos.dto.request.MedicinePojo;
+//import com.example.user_service.pojos.dto.request.MedicinePojoDTO;
 //
 //import org.json.JSONException;
 //
@@ -32,8 +32,8 @@
 //    HttpHeaders headers = new HttpHeaders();
 //    @Test
 //    void testSyncData() {
-//        List<MedicinePojo> list = new ArrayList<>();
-//        MedicinePojo user = new MedicinePojo();
+//        List<MedicinePojoDTO> list = new ArrayList<>();
+//        MedicinePojoDTO user = new MedicinePojoDTO();
 //        user.setCurrentCount(2);
 //        user.setDays("Sun");
 //        user.setEndDate(new Date());
@@ -49,7 +49,7 @@
 //
 //
 //
-//        HttpEntity<List<MedicinePojo>> request = new HttpEntity<>(list);
+//        HttpEntity<List<MedicinePojoDTO>> request = new HttpEntity<>(list);
 //        try {
 //            ResponseEntity<String> response = testRestTemplate
 //                    .exchange("http://localhost:" + port +

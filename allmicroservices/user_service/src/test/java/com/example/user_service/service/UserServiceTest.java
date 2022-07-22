@@ -6,9 +6,10 @@ import com.example.user_service.model.MedicineHistory;
 import com.example.user_service.model.User;
 import com.example.user_service.model.UserDetails;
 import com.example.user_service.model.UserMedicines;
-import com.example.user_service.pojos.dto.request.UserEntityDTO;
-import com.example.user_service.pojos.dto.response.user.UserResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponsePage;
+import com.example.user_service.pojos.request.UserEntityDTO;
+import com.example.user_service.pojos.response.user.MailResponse;
+import com.example.user_service.pojos.response.user.UserResponse;
+import com.example.user_service.pojos.response.user.UserResponsePage;
 import com.example.user_service.repository.UserDetailsRepository;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
@@ -27,6 +28,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,7 +40,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.example.user_service.util.Constants.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -65,9 +69,12 @@ import static org.mockito.Mockito.when;
     @Mock
     PasswordEncoder passwordEncoder;
 
+    @Mock
+    RabbitTemplate rabbitTemplate;
+
     @BeforeEach
     void setup(){
-        this.userServiceimpl= new UserServiceImpl(userRepository,util,userDetailsRepository,mapper,pdfMailSender,userMedicineRepository);
+        this.userServiceimpl= new UserServiceImpl(userRepository,util,userDetailsRepository,mapper,pdfMailSender,userMedicineRepository, rabbitTemplate);
     }
 
     @Test
@@ -185,9 +192,19 @@ import static org.mockito.Mockito.when;
     @DisplayName("Get Users by email Test")
     void getUserByEmail() throws UserExceptionMessage {
         User userEntity = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,null);
+        MailResponse mailResponse = new MailResponse(DATA_FOUND,SUCCESS,userEntity);
+        MailResponse mailResponse1= userServiceimpl.getUserByEmail("vinay@gmail.com","nikunj");
+        Assertions.assertEquals(mailResponse.getMessage(),mailResponse1.getMessage());
+    }
+    @Test
+    @DisplayName("Get Users by email Test")
+    void getUserByEmailUserNotNull() throws UserExceptionMessage {
+        User userEntity = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,null);
         when(userRepository.findByMail("vinay@gmail.com")).thenReturn(userEntity);
-        User user = userServiceimpl.getUserByEmail(userEntity.getEmail());
-        Assertions.assertEquals(userEntity.getUserId(),user.getUserId());
+        MailResponse mailResponse = new MailResponse(DATA_FOUND,SUCCESS,userEntity);
+        MailResponse mailResponse1= userServiceimpl.getUserByEmail("vinay@gmail.com","nikunj");
+        Assertions.assertEquals(mailResponse.getUser().getUserName(),mailResponse1.getUser().getUserName());
+        Assertions.assertEquals(mailResponse.getMessage(),mailResponse1.getMessage());
     }
 
     @Test
@@ -196,9 +213,9 @@ import static org.mockito.Mockito.when;
         User userEntity = new User("73578dfd-e7c9-4381-a348-113e72d80fa2", "vinay", "vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(), null, null);
         when(userRepository.findByMail("vinay@gmail.com")).thenThrow(JDBCConnectionException.class);
         try {
-            userServiceimpl.getUserByEmail(userEntity.getEmail());
+            userServiceimpl.getUserByEmail("vinay@gmail.com","nikunj");
         } catch (UserExceptionMessage userExceptionMessage) {
-            Assertions.assertEquals(Constants.SQL_ERROR_MSG,userExceptionMessage.getMessage());
+            Assertions.assertEquals(SQL_ERROR_MSG,userExceptionMessage.getMessage());
         }
     }
 
@@ -252,36 +269,26 @@ import static org.mockito.Mockito.when;
     @Test
     @DisplayName("Save user Test")
     void saveUserTest() throws UserExceptionMessage {
-
         User user = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,null);
-        UserResponse userResponse= new UserResponse("Failed","User is already present",new ArrayList<>(Arrays.asList(user)),null,null);
-        when(userServiceimpl.getUserByEmail(user.getEmail())).thenReturn(null);
+        List<User> userList= new ArrayList<>();
+        userList.add(user);
         UserEntityDTO userEntityDTO= new UserEntityDTO("vinay","vinay@gmail.com");
         when(mapper.map(userEntityDTO, User.class)).thenReturn(user);
         when(util.generateToken(user.getUserName())).thenReturn("fiasfiugaojfbjkabfk");
+        when(util.generateRefreshToken(user.getUserName())).thenReturn("fiasfiugaojfbjkabfk");
         when(userRepository.save(user)).thenReturn(user);
+        UserResponse userResponse= new UserResponse(SUCCESS,SAVED_USER,new ArrayList<>(Arrays.asList(user)),null,null);
         UserResponse userResponse1= userServiceimpl.saveUser(userEntityDTO,"eafyigfiagf","sfhoshgouahgo");
         Assertions.assertEquals(userResponse.getUserEntity().get(0).getUserName(),userResponse1.getUserEntity().get(0).getUserName());
 
     }
 
-    @Test
-    @DisplayName("Save user Test1")
-    void saveUserTest1() throws UserExceptionMessage {
 
-        User user = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,null);
-        UserResponse userResponse= new UserResponse("Failed","User is already present",new ArrayList<>(Arrays.asList(user)),null,null);
-        UserEntityDTO userEntityDTO= new UserEntityDTO("vinay","vinay@gmail.com");
-        when(userServiceimpl.getUserByEmail(user.getEmail())).thenReturn(user);
-        UserResponse userResponse1= userServiceimpl.saveUser(userEntityDTO,"eafyigfiagf","sfhoshgouahgo");
-        Assertions.assertEquals(userResponse.getUserEntity().get(0).getUserName(),userResponse1.getUserEntity().get(0).getUserName());
-    }
     @Test
     @DisplayName("Save user Exception Test")
     void saveUserInnerExcpetion() throws  UserExceptionMessage {
         User user = new User("73578dfd-e7c9-4381-a348-113e72d80fa2",null,"vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,null);
         UserEntityDTO userEntityDTO= new UserEntityDTO("vinay","vinay@gmail.com");
-        when(userServiceimpl.getUserByEmail(any())).thenReturn(null);
         when(mapper.map(userEntityDTO, User.class)).thenReturn(user);
         when(userRepository.save(user)).thenReturn(user);
         try{
@@ -295,7 +302,6 @@ import static org.mockito.Mockito.when;
     void saveUserSqlExcpetion() throws  UserExceptionMessage {
         User user = new User("73578dfd-e7c9-4381-a348-113e72d80fa2",null,"vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,null);
         UserEntityDTO userEntityDTO= new UserEntityDTO("vinay","vinay@gmail.com");
-        when(userServiceimpl.getUserByEmail(any())).thenReturn(null);
         when(mapper.map(userEntityDTO, User.class)).thenReturn(user);
         when(userRepository.save(user)).thenThrow(JDBCConnectionException.class);
         try{
@@ -310,7 +316,8 @@ import static org.mockito.Mockito.when;
         String fcmToken = "";
         UserDetails userDetails= new UserDetails();
         User userEntity = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","Nikunj123","nikunj123@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),userDetails,null);
-        when(userServiceimpl.getUserByEmail(any())).thenReturn(userEntity);
+        MailResponse mailResponse= new MailResponse("Success","",userEntity);
+        when(userRepository.findByMail("nikunj123@gmail.com")).thenReturn(userEntity);
         userDetails.setFcmToken("afyuauvfiualfviuaofga");
         when(userDetailsRepository.save(userDetails)).thenReturn(userDetails);
         String jwtToken= util.generateToken(userEntity.getUserName());
@@ -326,7 +333,7 @@ import static org.mockito.Mockito.when;
         String fcmToken = "";
         UserDetails userDetails= new UserDetails();
         User userEntity = new User("73578dfd-e7c9-4381-a348-113e72d80fa2",null,"nikunj123@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),userDetails,null);
-        when(userServiceimpl.getUserByEmail(any())).thenReturn(userEntity);
+        when(userRepository.findByMail("nikunj123@gmail.com")).thenReturn(userEntity);
         userDetails.setFcmToken("afyuauvfiualfviuaofga");
         when(userDetailsRepository.save(userDetails)).thenReturn(userDetails);
         String jwtToken= util.generateToken(userEntity.getUserName());
@@ -343,7 +350,7 @@ import static org.mockito.Mockito.when;
         String fcmToken = "";
         UserDetails userDetails= new UserDetails();
         User userEntity = new User("73578dfd-e7c9-4381-a348-113e72d80fa2",null,"nikunj123@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),userDetails,null);
-        when(userServiceimpl.getUserByEmail(any())).thenReturn(userEntity);
+        when(userRepository.findByMail("nikunj123@gmail.com")).thenReturn(userEntity);
         userDetails.setFcmToken("afyuauvfiualfviuaofga");
         when(userDetailsRepository.save(userDetails)).thenThrow(JDBCConnectionException.class);
         String jwtToken= util.generateToken(userEntity.getUserName());

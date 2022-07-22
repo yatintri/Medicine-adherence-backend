@@ -21,11 +21,11 @@ import org.springframework.stereotype.Service;
 import com.example.user_service.exception.UserExceptionMessage;
 import com.example.user_service.exception.UserMedicineException;
 import com.example.user_service.model.*;
-import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.request.MedicinePojo;
-import com.example.user_service.pojos.dto.response.image.ImageListResponse;
-import com.example.user_service.pojos.dto.response.medicine.MedicineResponse;
-import com.example.user_service.pojos.dto.response.medicine.SyncResponse;
+import com.example.user_service.pojos.request.MedicineHistoryDTO;
+import com.example.user_service.pojos.request.MedicinePojoDTO;
+import com.example.user_service.pojos.response.image.ImageListResponse;
+import com.example.user_service.pojos.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.response.medicine.SyncResponse;
 import com.example.user_service.repository.ImageRepository;
 import com.example.user_service.repository.UserMedHistoryRepository;
 import com.example.user_service.repository.UserMedicineRepository;
@@ -90,7 +90,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
      * This method contains logic to sync data from local storage to backend
      */
     @Override
-    public SyncResponse syncData(String userId, List<MedicinePojo> medicinePojo)
+    public SyncResponse syncData(String userId, List<MedicinePojoDTO> medicinePojoDTO)
              {
         logger.info(STARTING_METHOD_EXECUTION);
 
@@ -103,7 +103,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                 throw new UserMedicineException(UNABLE_TO_SYNC);
             }
 
-            List<UserMedicines> userMedicinesList = medicinePojo.stream()
+            List<UserMedicines> userMedicinesList = medicinePojoDTO.stream()
                     .map(
                             medicinePojo1 -> {
                                 UserMedicines userMedicines =
@@ -136,7 +136,7 @@ public class UserMedicineServiceImpl implements UserMedicineService {
                     .collect(Collectors.toList());
 
             userMedicineRepository.saveAll(userMedicinesList);
-            logger.debug("Syncing {} user {} medicine data",userId,medicinePojo);
+            logger.debug("Syncing {} user {} medicine data",userId, medicinePojoDTO);
             logger.info(EXITING_METHOD_EXECUTION);
             return new SyncResponse(SUCCESS, SYNC);
         }

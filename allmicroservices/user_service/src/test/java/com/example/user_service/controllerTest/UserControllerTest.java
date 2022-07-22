@@ -1,16 +1,12 @@
 package com.example.user_service.controllerTest;
 
 import com.example.user_service.controller.UserController;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.User;
-import com.example.user_service.pojos.dto.request.DetailsDTO;
-import com.example.user_service.pojos.dto.request.LoginDTO;
-import com.example.user_service.pojos.dto.request.MedicinePojo;
-import com.example.user_service.pojos.dto.request.UserEntityDTO;
-import com.example.user_service.pojos.dto.response.user.UserDetailResponse;
-import com.example.user_service.pojos.dto.response.user.UserProfileResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponse;
-import com.example.user_service.pojos.dto.response.user.UserResponsePage;
+import com.example.user_service.pojos.request.DetailsDTO;
+import com.example.user_service.pojos.request.LoginDTO;
+import com.example.user_service.pojos.request.MedicinePojoDTO;
+import com.example.user_service.pojos.request.UserEntityDTO;
+import com.example.user_service.pojos.response.user.*;
 import com.example.user_service.service.UserService;
 import com.example.user_service.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +30,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,8 +60,8 @@ class UserControllerTest {
     UserEntityDTO userEntityDTO= new UserEntityDTO("vinay","vinay@gmail.com");
     UserResponse userResponse= new UserResponse();
     DetailsDTO userDetailEntityDTO = new DetailsDTO("nikunj","vinay@gmail.com",LocalDateTime.now(),LocalDateTime.now(),"something",21,null,"Male","AB+","UnMarried",60);
-    MedicinePojo userMedicineDTO= new MedicinePojo();
-    List<MedicinePojo> userMedicineDTOList= new ArrayList<>();
+    MedicinePojoDTO userMedicineDTO= new MedicinePojoDTO();
+    List<MedicinePojoDTO> userMedicineDTOList= new ArrayList<>();
     UserProfileResponse userProfileResponse= new UserProfileResponse();
     UserDetailResponse userDetailResponsePage= new UserDetailResponse();
 
@@ -123,7 +118,6 @@ class UserControllerTest {
     @DisplayName("Get user by id Test")
     @ExtendWith(MockitoExtension.class)
     void getUserById() throws Exception {
-        Mockito.when(userService.getUserById(anyString())).thenReturn(userEntity);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/user?userId=69216495194519259")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -135,7 +129,8 @@ class UserControllerTest {
     @ExtendWith(MockitoExtension.class)
     void getUserByEmail() throws Exception {
         User userMailDTO= new User();
-        Mockito.when(userService.getUserByEmail(anyString())).thenReturn(userMailDTO);
+        MailResponse mailResponse = new MailResponse();
+        Mockito.when(userService.getUserByEmail("vinay@gmail.com","vinay")).thenReturn(mailResponse);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/email?email=vinay@gmail.com&sender=vinay")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -147,7 +142,7 @@ class UserControllerTest {
     @ExtendWith(MockitoExtension.class)
     void getUserByEmailException() throws Exception {
         User userMailDTO= new User();
-        Mockito.when(userService.getUserByEmail(anyString())).thenReturn(null);
+        Mockito.when(userService.getUserByEmail("vinay@gmail.com","vinay")).thenReturn(null);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/email?email=vinay@gmail.com&sender=vinay")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -161,7 +156,7 @@ class UserControllerTest {
     void sendPdf() throws Exception {
         Mockito.when(userService.sendUserMedicines(123)).thenReturn("dydytkgjvhviyfoutyrxuljh");
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/pdf?medId=123")
+                        .get("/api/v1/pdf?medicineId=123")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
 

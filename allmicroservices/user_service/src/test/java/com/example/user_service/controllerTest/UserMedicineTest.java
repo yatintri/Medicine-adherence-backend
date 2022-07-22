@@ -1,11 +1,10 @@
 package com.example.user_service.controllerTest;
 
 import com.example.user_service.controller.MedicineController;
-import com.example.user_service.exception.UserExceptions;
 import com.example.user_service.model.User;
-import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.request.MedicinePojo;
-import com.example.user_service.pojos.dto.response.medicine.SyncResponse;
+import com.example.user_service.pojos.request.MedicineHistoryDTO;
+import com.example.user_service.pojos.request.MedicinePojoDTO;
+import com.example.user_service.pojos.response.medicine.SyncResponse;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.service.UserMedicineService;
 import com.example.user_service.util.Constants;
@@ -61,8 +60,8 @@ class UserMedicineTest {
     }
 
     User userEntity = new User("73578dfd-e7c9-4381-a348-113e72d80fa2","vinay","vinay@gmail.com", LocalDateTime.now(), LocalDateTime.now(),LocalDateTime.now(),null,null);
-    MedicinePojo medicinePojo= new MedicinePojo(123,"Mon",1,null,"something",10,"PCM","something",null,0,"10:00 AM");
-    List<MedicinePojo> medicinePojoList = new ArrayList<>();
+    MedicinePojoDTO medicinePojoDTO = new MedicinePojoDTO(123,"Mon",1,null,"something",10,"PCM","something",null,0,"10:00 AM");
+    List<MedicinePojoDTO> medicinePojoDTOList = new ArrayList<>();
 
     SyncResponse syncResponse = new SyncResponse(Constants.SUCCESS, Constants.SYNC);
 //    SyncResponse syncResponse1 = new SyncResponse(Constants.VALIDATION, Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
@@ -73,10 +72,10 @@ class UserMedicineTest {
     void syncData() throws Exception {
 
         when(result.hasErrors()).thenReturn(false);
-        ResponseEntity<SyncResponse> mav = medicineController.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2", medicinePojoList);
-        medicinePojoList.add(medicinePojo);
-        when(userMedicineService.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2",medicinePojoList)).thenReturn(syncResponse);
-        String jsonText= objectMapper.writeValueAsString(medicinePojoList);
+        ResponseEntity<SyncResponse> mav = medicineController.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2", medicinePojoDTOList);
+        medicinePojoDTOList.add(medicinePojoDTO);
+        when(userMedicineService.syncData("73578dfd-e7c9-4381-a348-113e72d80fa2", medicinePojoDTOList)).thenReturn(syncResponse);
+        String jsonText= objectMapper.writeValueAsString(medicinePojoDTOList);
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/medicines/sync?userId=73578dfd-e7c9-4381-a348-113e72d80fa2")
                         .contentType(MediaType.APPLICATION_JSON)

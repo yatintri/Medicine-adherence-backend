@@ -1,7 +1,7 @@
 package com.example.user_service.service;
 
 import com.example.user_service.model.UserDetails;
-import com.example.user_service.pojos.dto.request.UserDetailsDTO;
+import com.example.user_service.pojos.request.UserDetailsDTO;
 
 /**
  * This is an interface for user details service

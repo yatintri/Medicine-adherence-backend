@@ -19,11 +19,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.user_service.exception.UserMedicineException;
-import com.example.user_service.pojos.dto.request.MedicineHistoryDTO;
-import com.example.user_service.pojos.dto.request.MedicinePojo;
-import com.example.user_service.pojos.dto.response.image.ImageListResponse;
-import com.example.user_service.pojos.dto.response.medicine.MedicineResponse;
-import com.example.user_service.pojos.dto.response.medicine.SyncResponse;
+import com.example.user_service.pojos.request.MedicineHistoryDTO;
+import com.example.user_service.pojos.request.MedicinePojoDTO;
+import com.example.user_service.pojos.response.image.ImageListResponse;
+import com.example.user_service.pojos.response.medicine.MedicineResponse;
+import com.example.user_service.pojos.response.medicine.SyncResponse;
 import com.example.user_service.repository.UserMedicineRepository;
 import com.example.user_service.repository.UserRepository;
 import com.example.user_service.service.UserMedicineService;
@@ -64,12 +64,12 @@ public class MedicineController {
     public ResponseEntity<SyncResponse> syncData(@NotBlank
                                                  @NotNull
                                                  @RequestParam("userId") String userId, @Valid
-                                                 @RequestBody List<MedicinePojo> medicinePojo)
+                                                 @RequestBody List<MedicinePojoDTO> medicinePojoDTO)
              {
 
-        logger.info("Syncing Data : {} {}",userId,medicinePojo);
+        logger.info("Syncing Data : {} {}",userId, medicinePojoDTO);
 
-        return new ResponseEntity<>(userMedicineService.syncData(userId, medicinePojo), HttpStatus.CREATED);
+        return new ResponseEntity<>(userMedicineService.syncData(userId, medicinePojoDTO), HttpStatus.CREATED);
     }
 
     /**
@@ -84,7 +84,7 @@ public class MedicineController {
     )
     public ResponseEntity<SyncResponse> syncMedicineHistory(@NotNull
                                                             @NotBlank
-                                                            @RequestParam(name = "medId") Integer medicineId, @Valid
+                                                            @RequestParam(name = "medicineId") Integer medicineId, @Valid
                                                             @RequestBody List<MedicineHistoryDTO> medicineHistory)
              {
 
@@ -129,13 +129,13 @@ public class MedicineController {
     )
     public ResponseEntity<ImageListResponse> getMedicineImages(@NotBlank
                                                                @NotNull
-                                                               @RequestParam(name = "medId") Integer medId
+                                                               @RequestParam(name = "medicineId") Integer medicineId
                                                               , @RequestParam(value = "page") int page,
                                                                @RequestParam(value = "limit") int limit)
                                                                {
-        logger.info("Fetching medicine images : {}",medId);
+        logger.info("Fetching medicine images : {}",medicineId);
 
-        return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medId, page, limit), HttpStatus.OK);
+        return new ResponseEntity<>(userMedicineService.getUserMedicineImages(medicineId, page, limit), HttpStatus.OK);
     }
 }
 
