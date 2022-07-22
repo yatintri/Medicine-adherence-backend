@@ -86,6 +86,7 @@ public class UserController {
     @ApiOperation(value = "This allows you to have short-lived access tokens without having to collect credentials every time one expires.")
     @PostMapping(value = "/refreshToken",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RefreshTokenResponse> getRefreshToken(HttpServletRequest httpServletRequest, @RequestParam(name = "userId") String userId) {
+
         return new ResponseEntity<>(userService.getRefreshToken(httpServletRequest,userId),HttpStatus.CREATED);
     }
 

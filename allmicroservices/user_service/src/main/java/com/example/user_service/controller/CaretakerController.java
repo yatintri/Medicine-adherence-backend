@@ -110,34 +110,6 @@ public class CaretakerController {
     }
 
     /**
-     * Sends image to caretaker for strict adherence
-     *
-     * @param bindingResult Spring's object that holds the result of the validation and binding and contains errors that may have occurred
-     */
-    @Retryable(maxAttempts = 3)    // retrying up to 3 times
-    @ApiOperation(value = "Sends image to caretaker for strict adherence")
-    @PostMapping(
-            value = "/image",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.ALL_VALUE
-    )
-    @Transactional(timeout = 10)
-    public ResponseEntity<SendImageResponse> sendImageToCaretaker(@Valid
-                                                                  @ModelAttribute SendImageDto sendImageDto, BindingResult bindingResult)
-            throws  UserCaretakerException {
-
-        logger.info("Sending image to caretaker : {}",sendImageDto);
-
-        SendImageResponse sendImageResponse = careTakerService.sendImageToCaretaker(sendImageDto.getImage(),
-                sendImageDto.getName(),
-                sendImageDto.getMedicineName(),
-                sendImageDto.getId(),
-                sendImageDto.getMedicineId());
-
-        return new ResponseEntity<>(sendImageResponse, HttpStatus.CREATED);
-    }
-
-    /**
      * To check the status of a request by caretaker
      */
     @Retryable(maxAttempts = 3)    // retrying up to 3 times
@@ -241,6 +213,34 @@ public class CaretakerController {
         careTakerService.deletePatientRequest(caretakerId);
 
         return new ResponseEntity<>( new CaretakerDelete(SUCCESS, DELETED_SUCCESS), HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Sends image to caretaker for strict adherence
+     *
+     * @param bindingResult Spring's object that holds the result of the validation and binding and contains errors that may have occurred
+     */
+    @Retryable(maxAttempts = 3)    // retrying up to 3 times
+    @ApiOperation(value = "Sends image to caretaker for strict adherence")
+    @PostMapping(
+            value = "/image",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.ALL_VALUE
+    )
+    @Transactional(timeout = 10)
+    public ResponseEntity<SendImageResponse> sendImageToCaretaker(@Valid
+                                                                  @ModelAttribute SendImageDto sendImageDto, BindingResult bindingResult)
+            throws  UserCaretakerException {
+
+        logger.info("Sending image to caretaker : {}",sendImageDto);
+
+        SendImageResponse sendImageResponse = careTakerService.sendImageToCaretaker(sendImageDto.getImage(),
+                sendImageDto.getName(),
+                sendImageDto.getMedicineName(),
+                sendImageDto.getId(),
+                sendImageDto.getMedicineId());
+
+        return new ResponseEntity<>(sendImageResponse, HttpStatus.CREATED);
     }
 
     /**
